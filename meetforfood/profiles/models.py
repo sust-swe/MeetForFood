@@ -3,7 +3,10 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
-
+from django.db.models.fields import DateField
+from rest_framework.settings import api_settings
+from phonenumber_field.modelfields import PhoneNumberField
+from datetime import date
 class UserProfileManager(BaseUserManager):
     """Manager for User Profiles"""
     def create_user(self, email, name, password=None):
@@ -54,13 +57,35 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
         """return string representation of User"""
         return self.email
 
-class ProfileFeedItem(models.Model):
+class ProfileAboutItem(models.Model):
+   
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    partner_CHOICES = (
+        ('A', 'Any'),
+        ('F', 'Female'),
+        ('M', 'Male'),
+
+    )
+    Current_City_CHOICES = (
+        ('D', 'Dhaka'),
+        ('S', 'Sylhet'),
+        ('C', 'Chittagong'),
+    )
     user_profile = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    feed_text = models.CharField(max_length=320)
+    phone_number = PhoneNumberField()
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default=GENDER_CHOICES[1][1],blank=False,null=False)
+    birth_date = models.DateField(default=date.today,blank=False,null=True)
+    what_you_crave_for = models.CharField(max_length=320)
+    current_city = models.CharField(max_length=1, choices=Current_City_CHOICES,default=Current_City_CHOICES[1][1],blank=False,null=False)
+    foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
+    one_wish = models.CharField(max_length=320,null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.feed_text
+        return self.user_profile.name

@@ -5,7 +5,7 @@ from profiles import views
 
 routers = DefaultRouter()
 routers.register('profile',views.UserProfileViewSet)
-routers.register('profile-feed',views.ProfileFeedItemViewSet)
+routers.register('profileaboutitem',views.ProfileAboutItemViewSet)
 
 
 

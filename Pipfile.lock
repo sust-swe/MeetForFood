@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b5531932ea4851a1b00ff83b42ca8d070440261bd0f229f8c03038780da57b24"
+            "sha256": "d01e33986371fc17fda3cc4160a3c5b69600d53125c5f4bfa0b323613f0a12a5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "babel": {
+            "hashes": [
+                "sha256:af92e6106cb7c55286b25b38ad7695f8b4efb36a90ba483d7f7a6628c46158ab",
+                "sha256:e86135ae101e31e2c8ec20a4e0c5220f4eed12487d5cf3f78be7e98d3a57fc28"
+            ],
+            "version": "==2.7.0"
+        },
         "django": {
             "hashes": [
                 "sha256:4025317ca01f75fc79250ff7262a06d8ba97cd4f82e93394b2a0a6a4a925caeb",
@@ -24,6 +31,14 @@
             "index": "pypi",
             "version": "==2.2.6"
         },
+        "django-phonenumber-field": {
+            "hashes": [
+                "sha256:1ab19f723928582fed412bd9844221fa4ff466276d8526b8b4a9913ee1487c5e",
+                "sha256:794ebbc3068a7af75aa72a80cb0cec67e714ff8409a965968040f1fd210b2d97"
+            ],
+            "index": "pypi",
+            "version": "==3.0.1"
+        },
         "djangorestframework": {
             "hashes": [
                 "sha256:5488aed8f8df5ec1d70f04b2114abc52ae6729748a176c453313834a9ee179c8",
@@ -31,6 +46,14 @@
             ],
             "index": "pypi",
             "version": "==3.10.3"
+        },
+        "phonenumbers": {
+            "hashes": [
+                "sha256:e4a9215fa1197fbbb1300832fa6eef41e4c3ef90103979657274b22454360498",
+                "sha256:f743940907118dacb552da39caf1839632a5cc510157fc468a1f497f36562e1c"
+            ],
+            "index": "pypi",
+            "version": "==8.10.20"
         },
         "psycopg2": {
             "hashes": [
@@ -155,7 +178,6 @@
         },
         "wrapt": {
             "hashes": [
-                "sha256:398a50ffb10cc339331c832afcf0b64da2bb9985a71502ab29c268699a8166e8",
                 "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1"
             ],
             "version": "==1.11.2"
