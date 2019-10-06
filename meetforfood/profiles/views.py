@@ -12,7 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from profiles import serializers
-from profiles import models,permissions
+from profiles import models
+from profiles import permissions
 
 
 
