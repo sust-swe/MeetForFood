@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': ['iso-8601', '%Y-%m-%dT%H:%M:%S.%fZ'],
+    'DEFAULT_PERMISSION_CLASSES': [
+      'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 # Application definition
 
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'phonenumber_field',
     'profiles',
+    'explorerestaurants',
 ]
 
 MIDDLEWARE = [
