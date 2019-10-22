@@ -57,23 +57,45 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
         """return string representation of User"""
         return self.email
 
+
+
+class ProfileSettings(models.Model):
+    partner_CHOICES = (
+        ('A', 'Any'),
+        ('F', 'Female'),
+        ('M', 'Male'),
+         )
+
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
+    location_range = models.IntegerField(blank=False,default= 10)
+    min_age = models.IntegerField(blank=False,default=18)
+    max_age = models.IntegerField(blank=False,default=23)
+
+
+    def __str__(self):
+        """return string representation of User"""
+        return self.user_profile.get_full_name
+
+
+
 class ProfileAboutItem(models.Model):
    
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
     )
-    partner_CHOICES = (
-        ('A', 'Any'),
-        ('F', 'Female'),
-        ('M', 'Male'),
-
-    )
-    Current_City_CHOICES = (
-        ('D', 'Dhaka'),
-        ('S', 'Sylhet'),
-        ('C', 'Chittagong'),
-    )
+    #partner_CHOICES = (
+        #('A', 'Any'),
+        #('F', 'Female'),
+        #('M', 'Male'), )
+   # Current_City_CHOICES = (
+     #   ('D', 'Dhaka'),
+      #  ('S', 'Sylhet'),
+      #  ('C', 'Chittagong'),)
     user_profile = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -82,9 +104,9 @@ class ProfileAboutItem(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default=GENDER_CHOICES[1][1],blank=False,null=False)
     birth_date = models.DateField(default=date.today,blank=False,null=True)
     what_you_crave_for = models.CharField(max_length=320)
-    current_city = models.CharField(max_length=1, choices=Current_City_CHOICES,default=Current_City_CHOICES[1][1],blank=False,null=False)
-    foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
-    one_wish = models.CharField(max_length=320,null=True)
+    #current_city = models.CharField(max_length=1, choices=Current_City_CHOICES,default=Current_City_CHOICES[1][1],blank=False,null=False)
+    #foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
+    #one_wish = models.CharField(max_length=100,null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

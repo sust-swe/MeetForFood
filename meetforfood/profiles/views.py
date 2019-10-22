@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings 
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +13,10 @@ from rest_framework.permissions import IsAuthenticated
 from profiles import serializers
 from profiles import models
 from profiles import permissions
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+from friendship.models import Friend, Follow, Block
 
 
 
@@ -97,8 +100,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name','email',)
+    #filter_class = SettingsFilter
+    #filter_backends = (filters.SearchFilter,)
+    #search_fields = ('name','email',)
 
 
 class UserLoginApiView(ObtainAuthToken):
@@ -112,3 +116,15 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
 
     def perform_create(self,serializer):
         serializer.save(user_profile = self.request.user)
+
+class ProfileSettingsViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileSettingsSerializer
+    queryset = models.ProfileSettings.objects.all()
+    permission_classes= (permissions.UpdateOwnSettings,IsAuthenticated)
+
+    def perform_create(self,serializer):
+        serializer.save(user_profile = self.request.user)
+
+#class SettingsFilter(filters.FilterSet):
+    #settings = filters.ModelChoiceFilter(queryset=models.ProfileSettings.objects.all())

@@ -25,6 +25,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
     'DATE_INPUT_FORMATS': ['iso-8601', '%Y-%m-%dT%H:%M:%S.%fZ'],
 }
 # Application definition
@@ -41,6 +42,11 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'profiles',
     'explorerestaurants',
+    'friendship',  # Django friendship
+  # Django REST Framework
+    'rest_friendship', 
+     # Django REST Friendship
+
 ]
 
 MIDDLEWARE = [

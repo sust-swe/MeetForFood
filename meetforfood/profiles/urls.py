@@ -6,6 +6,8 @@ from profiles import views
 routers = DefaultRouter()
 routers.register('profile',views.UserProfileViewSet)
 routers.register('profileaboutitem',views.ProfileAboutItemViewSet)
+routers.register('profilesettings',views.ProfileSettingsViewSet)
+
 
 
 

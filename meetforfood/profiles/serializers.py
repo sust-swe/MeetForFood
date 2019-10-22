@@ -28,7 +28,16 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id','user_profile','phone_number','birth_date','current_city',
-        'gender','what_you_crave_for','foodie_partner','one_wish','created_time')
+        fields = ('id','user_profile','phone_number','birth_date',
+        'gender','what_you_crave_for','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
+
+
+class ProfileSettingsSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.ProfileSettings
+        fields = ('id','user_profile','foodie_partner','location_range',
+        'min_age','max_age')
+        extra_kwargs = {'user_profile':{'read_only': True}}        
         
