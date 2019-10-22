@@ -12,6 +12,24 @@ body {
   overflow: hidden;
 }
 
+div.scroll {
+  margin: 4px, 4px;
+  padding: 4px;
+  height: 500px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-x: auto;
+  text-align: justify;
+}
+
+.divider {
+  display: block;
+  height: 3px;
+  border: 0;
+  border-top: 3px solid rgba(158, 0, 139, 1);
+  margin: 1em 0;
+}
+
 .overlay {
   height: 100%;
   width: 100%;

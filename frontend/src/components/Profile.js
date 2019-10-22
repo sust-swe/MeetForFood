@@ -1,6 +1,6 @@
 import React from "react";
 import {} from "react-router-dom";
-import { Container, Row, Col, Image, Card } from "react-bootstrap";
+import { Container, Row, Col, Image, Card, Badge } from "react-bootstrap";
 import NavBar from "./Navbar";
 import "../Styles/header.css";
 
@@ -27,57 +27,71 @@ class Profile extends React.Component {
                     <h3 style={{ textAlign: "center" }}>Rakib Hasan</h3>
                     <h5 style={{ textAlign: "center" }}>Love to eat</h5>
                   </Card.Title>
+                  <Card.Text>
+                    <span>
+                      <span style={{ fontWeight: "bold" }}>City: </span> Sylhet,
+                      Bangladesh
+                    </span>
+                    <br />
+                    <br />
+                    <Container style={{ padding: "0", margin: "0" }}>
+                      <span style={{ fontWeight: "bold" }}>
+                        Favourite Food:
+                      </span>
+                    </Container>
+                    <Container style={{ padding: "0", margin: "0" }}>
+                      <Badge pill variant="info">
+                        Pasta
+                      </Badge>
+                    </Container>
+                    <Container style={{ padding: "0", margin: "0" }}>
+                      <span style={{ fontWeight: "bold" }}>
+                        Favourite Drink:
+                      </span>
+                    </Container>
+                    <Container style={{ padding: "0", margin: "0" }}>
+                      <Badge pill variant="info">
+                        Milkshake
+                      </Badge>
+                    </Container>
+                  </Card.Text>
                 </Card.Body>
               </Card>
-              {/* <div class="profile-sidebar">
-				<!-- SIDEBAR USERPIC -->
-				<div class="profile-userpic">
-					<img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
-				</div>
-				<!-- END SIDEBAR USERPIC -->
-				<!-- SIDEBAR USER TITLE -->
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name">
-						Marcus Doe
-					</div>
-					<div class="profile-usertitle-job">
-						Developer
-					</div>
-				</div>
-				<!-- END SIDEBAR USER TITLE -->
-				<!-- SIDEBAR BUTTONS -->
-				<div class="profile-userbuttons">
-					<button type="button" class="btn btn-success btn-sm">Follow</button>
-					<button type="button" class="btn btn-danger btn-sm">Message</button>
-				</div>
-				<!-- END SIDEBAR BUTTONS -->
-				<!-- SIDEBAR MENU -->
-				<div class="profile-usermenu">
-					<ul class="nav">
-						<li class="active">
-							<a href="#">
-							<i class="glyphicon glyphicon-home"></i>
-							Overview </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-user"></i>
-							Account Settings </a>
-						</li>
-						<li>
-							<a href="#" target="_blank">
-							<i class="glyphicon glyphicon-ok"></i>
-							Tasks </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-flag"></i>
-							Help </a>
-						</li>
-					</ul>
-				</div> */}
             </Col>
-            <Col sm={8} id="profile-history"></Col>
+            <Col sm={8} id="profile-history">
+              <h1 style={{ textAlign: "left", marginTop: "15px" }}>
+                Visited Restaurants
+              </h1>
+              <div className="divider"></div>
+              <div className="scroll">
+                <Card style={{ margin: "10px" }}>
+                  <Row>
+                    <Col md={3}>
+                      <Image
+                        src={require("../Images/restaurants.jpg")}
+                        height="200px"
+                        width="200px"
+                        rounded
+                      />
+                    </Col>
+                    <Col md={8}>
+                      <Card.Title
+                        style={{ fontWeight: "bold", fontSize: "40px" }}
+                      >
+                        Moon House
+                      </Card.Title>
+                      <Card.Text
+                        style={{ fontSize: "22px", fontStyle: "italic" }}
+                      >
+                        mid range restaurants
+                        <br />
+                        Visited 2 times
+                      </Card.Text>
+                    </Col>
+                  </Row>
+                </Card>
+              </div>
+            </Col>
           </Row>
         </Container>
       </div>
