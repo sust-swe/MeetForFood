@@ -4,11 +4,12 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.settings import api_settings 
+from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
 from rest_framework.decorators import action
 
+from django.contrib.auth import get_user_model
 
 
 from profiles import serializers
@@ -16,7 +17,9 @@ from profiles import models
 from profiles import permissions
 from django.shortcuts import get_object_or_404
 
-from .models import UserProfile,ProfileAboutItem,ProfileSettings
+from .models import UserProfile, ProfileAboutItem, ProfileSettings
+
+from django.conf import settings
 
 # from django_filters.rest_framework import DjangoFilterBackend
 
@@ -31,7 +34,7 @@ config = apps.get_app_config('rest_friendship')
 #     # """Testing API View"""
 #     def get(self, request, format=None):
 #         an_apiview= [
-			
+
 
 #         ]
 #         return Response({'message':'Hello!!!','an_apiview':an_apiview})
@@ -48,7 +51,7 @@ config = apps.get_app_config('rest_friendship')
 #             return Response(
 #                 serializer.errors,
 #                 status = status.HTTP_400_BAD_REQUEST
-#             )    
+#             )
 
 #     def put(self,request,pk=None):
 #         return Response({'method':'PUT'})
@@ -58,7 +61,7 @@ config = apps.get_app_config('rest_friendship')
 #         return Response({'method':'PATCH'})
 
 #     def delete(self,request,pk=None):
-#         return Response({'method':'DELETE'})    
+#         return Response({'method':'DELETE'})
 
 
 # class HelloViewset(viewsets.ViewSet):
@@ -83,77 +86,75 @@ config = apps.get_app_config('rest_friendship')
 #                 serializer.errors,
 #                 status= status.HTTP_400_BAD_REQUEST
 
-#             )    
+#             )
 
 #     def retrieve(self,request,pk=None):
 #         return Response({'http_response':'GET'})
 
-	 
+
 #     def update(self,request,pk=None):
 #         return Response({'http_response':'PUT'})
 
-	
+
 #     def partial_update(self,request,pk=None):
 #         return Response({'http_response':'PATCH'})
 
-	
+
 #     def destroy(self,request,pk=None):
 #         return Response({'http_response':'DELETE'})
-	  
+
 class UserProfileViewSet(viewsets.ModelViewSet):
-	serializer_class = serializers.ProfileSerializer
-	queryset = models.UserProfile.objects.all()
+    serializer_class = serializers.ProfileSerializer
+    queryset = models.UserProfile.objects.all()
 
-
-	authentication_classes = (TokenAuthentication,)
-	permission_classes = (permissions.UpdateOwnProfile,)
-	#filter_class = SettingsFilter
-	#filter_backends = (filters.SearchFilter,)
-	#search_fields = ('name','email',)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    #filter_class = SettingsFilter
+    #filter_backends = (filters.SearchFilter,)
+    #search_fields = ('name','email',)
 
 
 class UserLoginApiView(ObtainAuthToken):
-	renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
 
 class ProfileAboutView(APIView):
-	def get(self,request):
-		foodie_partner = request.GET.get('foodie_partner', None)
-		#location_range = request.GET.get('location_range', None)
-		min_age = request.GET.get('min_age', None)
-		max_age = request.GET.get('max_age', None)
-		gender = request.GET.get('gender', None)
+    def get(self, request):
+        foodie_partner = request.GET.get('foodie_partner', None)
+        #location_range = request.GET.get('location_range', None)
+        min_age = request.GET.get('min_age', None)
+        max_age = request.GET.get('max_age', None)
+        gender = request.GET.get('gender', None)
 
-		query = ProfileSettings.objects.filter(foodie_partner__iexact=gender,min_age__level__lte=ProfileAboutItem.age,max_age__level_gte=ProfileAboutItem.age)
-		serializer = ProfileAboutItemSerializer(query, many=True)
-		return Response(serializer.data)
-	
+        query = ProfileSettings.objects.filter(
+            foodie_partner__iexact=gender, min_age__level__lte=ProfileAboutItem.age, max_age__level_gte=ProfileAboutItem.age)
+        serializer = ProfileAboutItemSerializer(query, many=True)
+        return Response(serializer.data)
 
-	
+
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
 
-	authentication_classes = (TokenAuthentication,)
-	serializer_class = serializers.ProfileAboutItemSerializer
-	queryset = models.ProfileAboutItem.objects.all()
-	permission_classes= (permissions.UpdateOwnAbout,IsAuthenticated)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileAboutItemSerializer
+    queryset = models.ProfileAboutItem.objects.all()
+    permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
 
-	def perform_create(self,serializer):
-		serializer.save(user_profile = self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user)
+
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
-	authentication_classes = (TokenAuthentication,)
-	serializer_class = serializers.ProfileSettingsSerializer
-	queryset = models.ProfileSettings.objects.all()
-	permission_classes= (permissions.UpdateOwnSettings,IsAuthenticated)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileSettingsSerializer
+    queryset = models.ProfileSettings.objects.all()
+    permission_classes = (permissions.UpdateOwnSettings, IsAuthenticated)
 
-	def perform_create(self,serializer):
-		serializer.save(user_about = self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user_about=self.request.user)
 
 
 class FriendViewSet(viewsets.ViewSet):
-    """
-    ViewSet for Friend model
-    """
-
+    authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
     serializer_class = config.user_serializer
 
@@ -187,7 +188,8 @@ class FriendViewSet(viewsets.ViewSet):
 
         friend_obj = Friend.objects.add_friend(
             request.user,                                                     # The sender
-            get_object_or_404(settings.AUTH_USER_MODEL, pk=request.data['id']),  # The recipient
+            get_object_or_404(get_user_model(),
+                              email=request.data['email']),  # The recipient
             message=request.data.get('message', '')
         )
 
@@ -217,30 +219,32 @@ class FriendViewSet(viewsets.ViewSet):
         )
 
 
-
 class FriendshipRequestViewSet(viewsets.ViewSet):
     """
     ViewSet for FriendshipRequest model
     """
+    authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
 
-    @action(detail=True,methods=['post'])
+    @action(detail=True, methods=['post'])
     def accept(self, request, pk=None):
-        friendship_request = get_object_or_404(FriendshipRequest, pk=pk, to_user=request.user)
+        friendship_request = get_object_or_404(
+            FriendshipRequest, pk=pk, to_user=request.user)
         friendship_request.accept()
         return Response(
             FriendshipRequestSerializer(friendship_request).data,
             status.HTTP_201_CREATED
         )
 
-    @action(detail=True,methods=['post'])
+    @action(detail=True, methods=['post'])
     def reject(self, request, pk=None):
-        friendship_request = get_object_or_404(FriendshipRequest, pk=id, to_user=request.user)
+        friendship_request = get_object_or_404(
+            FriendshipRequest, pk=pk, to_user=request.user)
         friendship_request.reject()
         return Response(
             FriendshipRequestSerializer(friendship_request).data,
             status.HTTP_201_CREATED
         )
 
-#class SettingsFilter(filters.FilterSet):
-	#settings = filters.ModelChoiceFilter(queryset=models.ProfileSettings.objects.all())
+# class SettingsFilter(filters.FilterSet):
+    #settings = filters.ModelChoiceFilter(queryset=models.ProfileSettings.objects.all())

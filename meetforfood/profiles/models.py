@@ -36,7 +36,7 @@ class UserProfileManager(BaseUserManager):
 
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     """User Model for Database"""
-
+    username = None
     email = models.EmailField(max_length=256,unique=True)
     name = models.CharField(max_length=256)
     is_active = models.BooleanField(default=True)
