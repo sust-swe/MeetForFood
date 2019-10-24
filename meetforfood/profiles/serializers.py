@@ -1,11 +1,14 @@
 from rest_framework import serializers
 
 from profiles import models
+from friendship.models import FriendshipRequest
     
 class ProfileSerializer(serializers.ModelSerializer):
+
+    profiles = serializers.StringRelatedField(many=False)
     class Meta:
         model = models.UserProfile
-        fields = ('id','name','email','password')
+        fields = ('id','name','email','password','profiles')
         extra_kwargs = {
             'password':{
                 'write_only': True,
@@ -37,7 +40,13 @@ class ProfileSettingsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.ProfileSettings
-        fields = ('id','user_profile','foodie_partner','location_range',
+        fields = ('id','profile_about','foodie_partner',
         'min_age','max_age')
-        extra_kwargs = {'user_profile':{'read_only': True}}        
+        extra_kwargs = {'profile_about':{'read_only': True}}        
         
+
+class FriendshipRequestSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FriendshipRequest
+        fields = ('id', 'from_user', 'to_user', 'message', 'created', 'rejected')        

@@ -36,6 +36,7 @@ class UserProfileManager(BaseUserManager):
 
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     """User Model for Database"""
+
     email = models.EmailField(max_length=256,unique=True)
     name = models.CharField(max_length=256)
     is_active = models.BooleanField(default=True)
@@ -58,47 +59,15 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
         return self.email
 
 
-
-class ProfileSettings(models.Model):
-    partner_CHOICES = (
-        ('A', 'Any'),
-        ('F', 'Female'),
-        ('M', 'Male'),
-         )
-
-    user_profile = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
-    location_range = models.IntegerField(blank=False,default= 10)
-    min_age = models.IntegerField(blank=False,default=18)
-    max_age = models.IntegerField(blank=False,default=23)
-
-
-    def __str__(self):
-        """return string representation of User"""
-        return self.user_profile.get_full_name
-
-
-
 class ProfileAboutItem(models.Model):
    
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
     )
-    #partner_CHOICES = (
-        #('A', 'Any'),
-        #('F', 'Female'),
-        #('M', 'Male'), )
-   # Current_City_CHOICES = (
-     #   ('D', 'Dhaka'),
-      #  ('S', 'Sylhet'),
-      #  ('C', 'Chittagong'),)
-    user_profile = models.ForeignKey(
+    user_profile = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,related_name='profiles'
     )
     phone_number = PhoneNumberField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default=GENDER_CHOICES[1][1],blank=False,null=False)
@@ -109,10 +78,36 @@ class ProfileAboutItem(models.Model):
     #one_wish = models.CharField(max_length=100,null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def age(self):
+        return int((datetime.now().date() - self.birth_date).days / 365.25)
+
     def __str__(self):
-        return self.user_profile.name
+        return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
 
 
+
+
+class ProfileSettings(models.Model):
+    partner_CHOICES = (
+        ('A', 'Any'),
+        ('F', 'Female'),
+        ('M', 'Male'),
+         )
+
+    profile_about = models.OneToOneField(
+        ProfileAboutItem,
+        on_delete=models.CASCADE
+    )
+    foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
+    #location_range = models.IntegerField(blank=False,default= 10)
+    min_age = models.IntegerField(blank=False,default=18)
+    max_age = models.IntegerField(blank=False,default=23)
+
+
+    def __str__(self):
+        """return string representation of User"""
+        return self.profile_about.name
 
 
 
