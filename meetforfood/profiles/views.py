@@ -28,80 +28,6 @@ from .serializers import FriendshipRequestSerializer
 
 config = apps.get_app_config('rest_friendship')
 
-# # class HellooApiView(APIView):
-# #     serializer_class = serializers.HelloSerializer
-
-#     # """Testing API View"""
-#     def get(self, request, format=None):
-#         an_apiview= [
-
-
-#         ]
-#         return Response({'message':'Hello!!!','an_apiview':an_apiview})
-
-#     def post(self,request):
-#         serializer = self.serializer_class(data=request.data)
-
-#         if serializer.is_valid():
-#             name = serializer.validated_data.get('name')
-#             message = f'Hello {name}'
-#             return Response({'message':message})
-
-#         else:
-#             return Response(
-#                 serializer.errors,
-#                 status = status.HTTP_400_BAD_REQUEST
-#             )
-
-#     def put(self,request,pk=None):
-#         return Response({'method':'PUT'})
-
-
-#     def patch(self,request,pk=None):
-#         return Response({'method':'PATCH'})
-
-#     def delete(self,request,pk=None):
-#         return Response({'method':'DELETE'})
-
-
-# class HelloViewset(viewsets.ViewSet):
-#     serializer_class = serializers.HelloSerializer
-
-#     def list(self,request):
-#         a_viewset =[
-
-#         ]
-#         return Response({'message':'Hello!','a_viewset':a_viewset})
-
-#     def create(self,request):
-#         serializer = self.serializer_class(data=request.data)
-
-#         if serializer.is_valid():
-#             name = serializer.validated_data.get('name')
-#             message = f'Hello {name}'
-#             return Response({'message':message})
-
-#         else:
-#             return Response(
-#                 serializer.errors,
-#                 status= status.HTTP_400_BAD_REQUEST
-
-#             )
-
-#     def retrieve(self,request,pk=None):
-#         return Response({'http_response':'GET'})
-
-
-#     def update(self,request,pk=None):
-#         return Response({'http_response':'PUT'})
-
-
-#     def partial_update(self,request,pk=None):
-#         return Response({'http_response':'PATCH'})
-
-
-#     def destroy(self,request,pk=None):
-#         return Response({'http_response':'DELETE'})
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
@@ -204,7 +130,7 @@ class FriendViewSet(viewsets.ViewSet):
         The user id specified in the URL will be removed from the current user's friends
         """
 
-        user_friend = get_object_or_404(settings.AUTH_USER_MODEL, pk=id)
+        user_friend = get_object_or_404(settings.AUTH_USER_MODEL, pk=pk)
 
         if Friend.objects.remove_friend(request.user, user_friend):
             message = 'deleted'
@@ -220,9 +146,6 @@ class FriendViewSet(viewsets.ViewSet):
 
 
 class FriendshipRequestViewSet(viewsets.ViewSet):
-    """
-    ViewSet for FriendshipRequest model
-    """
     authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
 
@@ -230,6 +153,7 @@ class FriendshipRequestViewSet(viewsets.ViewSet):
     def accept(self, request, pk=None):
         friendship_request = get_object_or_404(
             FriendshipRequest, pk=pk, to_user=request.user)
+
         friendship_request.accept()
         return Response(
             FriendshipRequestSerializer(friendship_request).data,

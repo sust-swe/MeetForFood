@@ -99,6 +99,7 @@ class ProfileSettings(models.Model):
         ProfileAboutItem,
         on_delete=models.CASCADE
     )
+    
     foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
     #location_range = models.IntegerField(blank=False,default= 10)
     min_age = models.IntegerField(blank=False,default=18)
