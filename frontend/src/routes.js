@@ -9,7 +9,7 @@ let isloggedin = false;
 
 export const BaseRouter = () => (
   <div>
-    {isloggedin ? <Redirect to="/" /> : <Redirect to="/profile" />}
+    {isloggedin ? <Redirect to="/" /> : <Redirect to="/restaurants" />}
     <Route exact path="/login" component={LoginForm} />
     <Route exact path="/signup" component={SignupLayout} />
     <Route exact path="/profile" component={Profile} />
