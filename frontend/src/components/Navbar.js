@@ -22,7 +22,7 @@ export class NavBar extends React.Component {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/login" className="menuItem" justify>
+              <Nav.Link href="/restaurants" className="menuItem" justify>
                 Explore Restaurants
               </Nav.Link>
             </Nav.Item>
@@ -32,7 +32,7 @@ export class NavBar extends React.Component {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/login" justify>
+              <Nav.Link href="/profile" justify>
                 <Image
                   src={require("../Images/photo.jpg")}
                   roundedCircle
