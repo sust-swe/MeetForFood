@@ -7,6 +7,9 @@ from django.db.models.fields import DateField
 from rest_framework.settings import api_settings
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
+
+AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
+
 class UserProfileManager(BaseUserManager):
     """Manager for User Profiles"""
     def create_user(self, email, name, password=None):
@@ -66,7 +69,7 @@ class ProfileAboutItem(models.Model):
         ('F', 'Female'),
     )
     user_profile = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        AUTH_USER_MODEL,
         on_delete=models.CASCADE,related_name='profiles'
     )
     phone_number = PhoneNumberField()

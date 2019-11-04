@@ -116,21 +116,22 @@ class FriendViewSet(viewsets.ViewSet):
             request.user,                                                     # The sender
             get_object_or_404(get_user_model(),
                               email=request.data['email']),  # The recipient
-            message=request.data.get('message', '')
+            message=request.data.get('message', 'Add Me')
         )
 
         return Response(
             FriendshipRequestSerializer(friend_obj).data,
             status.HTTP_201_CREATED
         )
-
+    
     def destroy(self, request, pk=None):
         """
         Deletes a friend relationship
         The user id specified in the URL will be removed from the current user's friends
         """
 
-        user_friend = get_object_or_404(settings.AUTH_USER_MODEL, pk=pk)
+
+        user_friend = get_object_or_404(get_user_model(),pk=pk)
 
         if Friend.objects.remove_friend(request.user, user_friend):
             message = 'deleted'
@@ -151,8 +152,8 @@ class FriendshipRequestViewSet(viewsets.ViewSet):
 
     @action(detail=True, methods=['post'])
     def accept(self, request, pk=None):
-        friendship_request = get_object_or_404(
-            FriendshipRequest, pk=pk, to_user=request.user)
+        friendship_request = get_object_or_404(FriendshipRequest,
+            pk=pk, to_user=request.user)
 
         friendship_request.accept()
         return Response(
