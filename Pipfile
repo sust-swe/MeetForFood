@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+autopep8 = "*"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+psycopg2 = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
+django-rest-friendship = "*"
+friendship = "*"
+django-friendship = "*"
+djangorestframework-filters = "*"
+
+[requires]
+python_version = "3.7"
