@@ -14,9 +14,5 @@ routers.register('friendrequests', views.FriendshipRequestViewSet,
 
 
 urlpatterns = [
-    # path('api-view/',views.HellooApiView.as_view()),
-    # path('login/',views.UserLoginApiView.as_view()),
     path('login/', views.UserLoginApiView.as_view()),
-
-
 ] + routers.urls
