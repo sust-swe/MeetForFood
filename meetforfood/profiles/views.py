@@ -32,9 +32,9 @@ config = apps.get_app_config('rest_friendship')
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     queryset = models.UserProfile.objects.all()
-
+    http_method_names = ['post']
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
+    permission_classes = (permissions.UpdateOwnProfile,IsAuthenticated)
     #filter_class = SettingsFilter
     #filter_backends = (filters.SearchFilter,)
     #search_fields = ('name','email',)

@@ -86,8 +86,8 @@ class ProfileAboutItem(models.Model):
         return int((datetime.now().date() - self.birth_date).days / 365.25)
 
     def __str__(self):
-        return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
-
+        #return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
+        return self.user_profile.email
 
 
 
@@ -111,7 +111,7 @@ class ProfileSettings(models.Model):
 
     def __str__(self):
         """return string representation of User"""
-        return self.profile_about.name
+        return self.profile_about.user_profile
 
 
 

@@ -5,10 +5,10 @@ from friendship.models import FriendshipRequest
     
 class ProfileSerializer(serializers.ModelSerializer):
 
-    profiles = serializers.StringRelatedField(many=False)
+    #profiles = serializers.StringRelatedField(many=False)
     class Meta:
         model = models.UserProfile
-        fields = ('id','name','email','password','profiles')
+        fields = ('id','name','email','password')
         extra_kwargs = {
             'password':{
                 'write_only': True,
@@ -22,16 +22,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             email = validated_data['email'],
             name = validated_data['name'],
             password = validated_data['password']
-
-
         )
         return user
 
 class ProfileAboutItemSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source = "user_profile.name")
+    email = serializers.ReadOnlyField(source = "user_profile.email")
     
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id','user_profile','phone_number','birth_date',
+        fields = ('id','name','email','phone_number','birth_date',
         'gender','what_you_crave_for','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
 
