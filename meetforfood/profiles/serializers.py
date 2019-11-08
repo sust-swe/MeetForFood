@@ -34,15 +34,24 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
         fields = ('id','name','email','phone_number','birth_date',
         'gender','what_you_crave_for','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
+        
+    def update(self, instance, validated_data):
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.age()
 
 
 class ProfileSettingsSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source = "user_profile.name")
+    #user_id = serializers.ReadOnlyField(source = "user_profile.id")
     
     class Meta:
         model = models.ProfileSettings
-        fields = ('id','profile_about','foodie_partner',
+        fields = ('id','name','profile_about','foodie_partner',
         'min_age','max_age')
-        extra_kwargs = {'profile_about':{'read_only': True}}        
+        #extra_kwargs = {'profile_about':{'read_only': True}}        
         
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
