@@ -1,6 +1,8 @@
 import React from "react";
 import "../Styles/header.css";
+import * as actions from "../redux_store/actions/authenticate";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   Card,
   CardBody,
@@ -12,21 +14,56 @@ import {
 } from "reactstrap";
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
+
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
+  };
+
+  handlePasswordChange = event => {
+    this.setState({ password: event.target.value });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.onAuth(this.state.email, this.state.password);
+  };
+
   render() {
     return (
       <div>
         <Card>
           <CardBody className="card-color">
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label className="font-weight-bold">Username</Label>
-                <Input type="text" placeholder="username" id="input" />
+                <Input
+                  type="email"
+                  placeholder="email"
+                  id="input1"
+                  value={this.state.email}
+                  name="email"
+                  onChange={this.handleEmailChange}
+                />
               </FormGroup>
               <FormGroup>
                 <Label className="font-weight-bold">Password</Label>
-                <Input type="password" placeholder="password" id="input" />
+                <Input
+                  type="password"
+                  placeholder="password"
+                  id="input2"
+                  value={this.state.password}
+                  name="password"
+                  onChange={this.handlePasswordChange}
+                />
               </FormGroup>
-              <Button className="btn-lg btn-block" id="button">
+              <Button className="btn-lg btn-block" id="button" type="submit">
                 LogIn
               </Button>
               <h6 className="text-center">Not a member?</h6>
@@ -46,4 +83,15 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (email, password) => {
+      dispatch(actions.authLogin(email, password));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

@@ -1,6 +1,5 @@
 import React from "react";
 import "../Styles/header.css";
-import { NavLink } from "react-router-dom";
 import NavBar from "./Navbar";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 

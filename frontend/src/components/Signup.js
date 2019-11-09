@@ -104,7 +104,7 @@ class Signup extends React.Component {
                 Signup
               </Button>
               <h6 className="text-center">Already have a account?</h6>
-              <NavLink to="/login" style={{ textDecoration: "none" }}>
+              <NavLink to="/" style={{ textDecoration: "none" }}>
                 <Button
                   className="btn-lg btn-block btn-dark"
                   id="inactive-button"

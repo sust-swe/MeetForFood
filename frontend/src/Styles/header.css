@@ -125,7 +125,11 @@ div.scroll {
   text-decoration: none;
 }
 
-#input {
+#input1 {
+  border-color: rgba(158, 0, 139, 1);
+  border-radius: 25px;
+}
+#input2 {
   border-color: rgba(158, 0, 139, 1);
   border-radius: 25px;
 }
