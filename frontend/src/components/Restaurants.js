@@ -2,6 +2,7 @@ import React from "react";
 import "../Styles/header.css";
 import NavBar from "./Navbar";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
+import ProfileCard from "./Profilecard";
 
 class Restaurants extends React.Component {
   render() {
@@ -10,6 +11,9 @@ class Restaurants extends React.Component {
         <NavBar />
         <Container style={{ margin: "0" }}>
           <Row>
+            <Col sm={4}>
+              <ProfileCard />
+            </Col>
             <Col sm={8}>
               <h1 style={{ textAlign: "left", marginTop: "15px" }}>
                 Restaurants
@@ -27,9 +31,6 @@ class Restaurants extends React.Component {
                   </Col>
                 </Row>
               </Card>
-            </Col>
-            <Col sm={3}>
-              <Container></Container>
             </Col>
           </Row>
         </Container>

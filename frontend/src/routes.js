@@ -7,8 +7,8 @@ import Profile from "./components/Profile";
 
 export const BaseRouter = () => (
   <div>
-    <Route exact path="/profile" component={Profile} />
-    <Route exact path="/" component={Restaurants} />
+    <Route exact path="/" component={Profile} />
+    <Route exact path="/restaurants" component={Restaurants} />
   </div>
 );
 

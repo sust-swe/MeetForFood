@@ -83,6 +83,12 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password) => {
@@ -92,6 +98,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);
