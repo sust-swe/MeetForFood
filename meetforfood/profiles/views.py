@@ -32,7 +32,7 @@ config = apps.get_app_config('rest_friendship')
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     queryset = models.UserProfile.objects.all()
-
+    http_method_names = ['post']
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     #filter_class = SettingsFilter
@@ -71,12 +71,16 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
+    http_method_names = ['post','put','get']
     serializer_class = serializers.ProfileSettingsSerializer
     queryset = models.ProfileSettings.objects.all()
     permission_classes = (permissions.UpdateOwnSettings, IsAuthenticated)
+    
+    def get_queryset(self):
+        return ProfileSettings.objects.filter(user_profile=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user_about=self.request.user)
+        serializer.save(user_profile=self.request.user)
 
 
 class FriendViewSet(viewsets.ViewSet):

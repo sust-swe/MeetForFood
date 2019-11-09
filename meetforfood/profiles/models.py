@@ -83,11 +83,12 @@ class ProfileAboutItem(models.Model):
 
     @property
     def age(self):
-        return int((datetime.now().date() - self.birth_date).days / 365.25)
+        birth_date = int((datetime.now().date() - self.birth_date).days / 365.25)
+        self.save()
 
     def __str__(self):
-        return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
-
+        #return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
+        return self.user_profile.email
 
 
 
@@ -102,6 +103,10 @@ class ProfileSettings(models.Model):
         ProfileAboutItem,
         on_delete=models.CASCADE
     )
+    user_profile = models.OneToOneField(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    ) 
     
     foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
     #location_range = models.IntegerField(blank=False,default= 10)
@@ -111,7 +116,7 @@ class ProfileSettings(models.Model):
 
     def __str__(self):
         """return string representation of User"""
-        return self.profile_about.name
+        return self.profile_about.user_profile.name
 
 
 

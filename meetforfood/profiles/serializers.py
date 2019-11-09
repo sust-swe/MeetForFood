@@ -5,10 +5,10 @@ from friendship.models import FriendshipRequest
     
 class ProfileSerializer(serializers.ModelSerializer):
 
-    profiles = serializers.StringRelatedField(many=False)
+    #profiles = serializers.StringRelatedField(many=False)
     class Meta:
         model = models.UserProfile
-        fields = ('id','name','email','password','profiles')
+        fields = ('id','name','email','password')
         extra_kwargs = {
             'password':{
                 'write_only': True,
@@ -22,27 +22,36 @@ class ProfileSerializer(serializers.ModelSerializer):
             email = validated_data['email'],
             name = validated_data['name'],
             password = validated_data['password']
-
-
         )
         return user
 
 class ProfileAboutItemSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source = "user_profile.name")
+    email = serializers.ReadOnlyField(source = "user_profile.email")
     
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id','user_profile','phone_number','birth_date',
+        fields = ('id','name','email','phone_number','birth_date',
         'gender','what_you_crave_for','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
+        
+    def update(self, instance, validated_data):
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.age()
 
 
 class ProfileSettingsSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source = "user_profile.name")
+    #user_id = serializers.ReadOnlyField(source = "user_profile.id")
     
     class Meta:
         model = models.ProfileSettings
-        fields = ('id','profile_about','foodie_partner',
+        fields = ('id','name','profile_about','foodie_partner',
         'min_age','max_age')
-        extra_kwargs = {'profile_about':{'read_only': True}}        
+        #extra_kwargs = {'profile_about':{'read_only': True}}        
         
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
