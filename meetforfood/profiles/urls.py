@@ -5,8 +5,9 @@ from profiles import views
 
 routers = DefaultRouter()
 routers.register('profile', views.UserProfileViewSet)
-routers.register('profileaboutitem', views.ProfileAboutItemViewSet)
 routers.register('profilesettings', views.ProfileSettingsViewSet)
+routers.register('profileaboutitem', views.ProfileAboutItemViewSet)
+
 
 routers.register('friends', views.FriendViewSet, base_name='friends')
 routers.register('friendrequests', views.FriendshipRequestViewSet,

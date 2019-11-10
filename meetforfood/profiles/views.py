@@ -21,10 +21,11 @@ from .models import UserProfile, ProfileAboutItem, ProfileSettings
 
 from django.conf import settings
 
-# from django_filters.rest_framework import DjangoFilterBackend
+#from django_filters.rest_framework import DjangoFilterBackend
 
 from friendship.models import Friend, FriendshipRequest
 from .serializers import FriendshipRequestSerializer
+
 
 config = apps.get_app_config('rest_friendship')
 
@@ -68,6 +69,10 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
 
+    def get_queryset(self):
+        return ProfileAboutItem.objects.filter(ProfileSettings__foodie_partner__iexact=ProfileAboutItem.gender,
+                                                ProfileSettings__min_age__lte=ProfileAboutItem.age,
+                                                 ProfileSettings__max_age__gte=ProfileAboutItem.age)
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)

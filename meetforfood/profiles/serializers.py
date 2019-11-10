@@ -29,27 +29,31 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source = "user_profile.name")
     email = serializers.ReadOnlyField(source = "user_profile.email")
     
+    min_age = serializers.ReadOnlyField(source = "user_settings.min_age")
+    max_age = serializers.ReadOnlyField(source = "user_settings.max_age")
+    foodie_partner = serializers.ReadOnlyField(source = "user_settings.foodie_partner")
+    
+    
+    
+    user_age = serializers.IntegerField(source='age',read_only=True)
+    
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id','name','email','phone_number','birth_date',
-        'gender','what_you_crave_for','created_time')
+        fields = ('id','user_settings','name','email','phone_number','birth_date','user_age',
+        'gender','what_you_crave_for','min_age','max_age','foodie_partner','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
         
-    def update(self, instance, validated_data):
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        instance.age()
+        
+   
 
 
 class ProfileSettingsSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source = "user_profile.name")
-    #user_id = serializers.ReadOnlyField(source = "user_profile.id")
+    #age = serializers.ReadOnlyField(source = "user_about.id")
     
     class Meta:
         model = models.ProfileSettings
-        fields = ('id','name','profile_about','foodie_partner',
+        fields = ('id','user_profile','name','foodie_partner',
         'min_age','max_age')
         #extra_kwargs = {'profile_about':{'read_only': True}}        
         
