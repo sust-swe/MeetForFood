@@ -38,7 +38,7 @@ export class NavBar extends React.Component {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/login" className="menuItem" justify>
+              <Nav.Link className="menuItem" justify>
                 Find Companion
               </Nav.Link>
             </Nav.Item>
@@ -48,7 +48,7 @@ export class NavBar extends React.Component {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/login" className="menuItem" justify>
+              <Nav.Link className="menuItem" justify>
                 Friends
               </Nav.Link>
             </Nav.Item>

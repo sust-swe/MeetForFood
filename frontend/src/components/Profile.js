@@ -3,10 +3,13 @@ import {} from "react-router-dom";
 import { Container, Row, Col, Image, Card } from "react-bootstrap";
 import NavBar from "./Navbar";
 import ProfileCard from "./Profilecard";
+import { connect } from "react-redux";
+import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class Profile extends React.Component {
   render() {
+    console.log(this.props.getUser());
     return (
       <div>
         <NavBar />
@@ -56,4 +59,13 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+const mapDispatchToProps = dispatch => {
+  return {
+    getUser: () => dispatch(actions.getUser())
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Profile);
