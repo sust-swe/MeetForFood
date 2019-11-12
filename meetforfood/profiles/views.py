@@ -1,3 +1,5 @@
+
+from django.db.models import Subquery
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -60,7 +62,6 @@ class ProfileAboutView(APIView):
 
 
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
-
     authentication_classes = (TokenAuthentication,)
     serializer_class = serializers.ProfileAboutItemSerializer
     queryset = models.ProfileAboutItem.objects.all()
@@ -70,17 +71,23 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
         serializer.save(user_profile=self.request.user)
 
     def get_queryset(self):
-        return ProfileAboutItem.objects.filter(ProfileSettings__foodie_partner__iexact=ProfileAboutItem.gender,
-                                                ProfileSettings__min_age__lte=ProfileAboutItem.age,
-                                                 ProfileSettings__max_age__gte=ProfileAboutItem.age)
+        profile_settings = models.ProfileSettings.objects.all()
+        ps = models.ProfileAboutItem.objects.all()
+        print(ps[0].age)
+        return ProfileAboutItem.objects.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
+                                               user_settings__min_age__lte=ps.get(
+                                                   id=self.request.user.id).age,
+                                               user_settings__max_age__gte=ps.get(
+                                                   id=self.request.user.id).age)
+
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
-    http_method_names = ['post','put','get']
+    http_method_names = ['post', 'put', 'get']
     serializer_class = serializers.ProfileSettingsSerializer
     queryset = models.ProfileSettings.objects.all()
     permission_classes = (permissions.UpdateOwnSettings, IsAuthenticated)
-    
+
     def get_queryset(self):
         return ProfileSettings.objects.filter(user_profile=self.request.user)
 
@@ -132,15 +139,14 @@ class FriendViewSet(viewsets.ViewSet):
             FriendshipRequestSerializer(friend_obj).data,
             status.HTTP_201_CREATED
         )
-    
+
     def destroy(self, request, pk=None):
         """
         Deletes a friend relationship
         The user id specified in the URL will be removed from the current user's friends
         """
 
-
-        user_friend = get_object_or_404(get_user_model(),pk=pk)
+        user_friend = get_object_or_404(get_user_model(), pk=pk)
 
         if Friend.objects.remove_friend(request.user, user_friend):
             message = 'deleted'
@@ -162,7 +168,7 @@ class FriendshipRequestViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['post'])
     def accept(self, request, pk=None):
         friendship_request = get_object_or_404(FriendshipRequest,
-            pk=pk, to_user=request.user)
+                                               pk=pk, to_user=request.user)
 
         friendship_request.accept()
         return Response(
