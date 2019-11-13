@@ -6,6 +6,8 @@ import thunk from "redux-thunk";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-phone-number-input/style.css";
 import reducer from "./redux_store/reducers/authenticate";
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

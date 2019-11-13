@@ -63,7 +63,7 @@ class Signup extends React.Component {
   render() {
     return (
       <div>
-        {this.state.redirect === true ? <Redirect to="/" /> : null}
+        {this.state.redirect ? <Redirect to="/profileinfo" /> : null}
         <Card>
           <CardBody className="card-color">
             <Form onSubmit={this.handleSignUp}>
@@ -122,7 +122,7 @@ class Signup extends React.Component {
               </Row>
               <FormGroup></FormGroup>
               <Button className="btn-lg btn-block" id="button" type="submit">
-                Signup
+                Next
               </Button>
               <h6 className="text-center">Already have a account?</h6>
               <NavLink to="/" style={{ textDecoration: "none" }}>
@@ -157,7 +157,4 @@ const mapDipatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDipatchToProps
-)(Signup);
+export default connect(mapStateToProps, mapDipatchToProps)(Signup);
