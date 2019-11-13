@@ -1,0 +1,158 @@
+body {
+  margin: 0%;
+}
+
+.wrapper {
+  background-image: url("../Images/back.jpg");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+div.scroll {
+  margin: 4px, 4px;
+  padding: 4px;
+  height: 500px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-x: auto;
+  text-align: justify;
+}
+
+.divider {
+  display: block;
+  height: 3px;
+  border: 0;
+  border-top: 3px solid rgba(158, 0, 139, 1);
+  margin: 1em 0;
+}
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(158, 0, 139, 1) 30%,
+    rgba(249, 145, 22, 1) 100%
+  );
+  opacity: 0.5;
+  position: absolute;
+}
+
+.menuItem {
+  color: white !important;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  font-style: italic;
+  font-weight: bold;
+}
+.menuItem::after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.8s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+.menuItem:hover {
+  color: rgba(249, 145, 22, 1) !important;
+  background: rgba(158, 0, 139, 1);
+  opacity: 0.8;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-decoration: none;
+  margin: 0;
+}
+
+#navtheme {
+  overflow: hidden;
+  min-height: 60px;
+  background: linear-gradient(
+    90deg,
+    rgba(158, 0, 139, 1) 0%,
+    rgba(249, 145, 22, 1) 100%
+  );
+  position: relative;
+  align-items: center;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  padding: 0;
+  margin: 0;
+}
+
+#form-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  position: relative;
+}
+
+.profile-dashboard {
+  margin-top: 20px;
+  align-content: center;
+  display: flex;
+  position: absolute;
+  justify-items: center;
+  justify-content: center;
+  align-content: center;
+  padding-top: 15px;
+}
+
+#button {
+  background: linear-gradient(
+    90deg,
+    rgba(158, 0, 139, 1) 0%,
+    rgba(249, 145, 22, 1) 100%
+  );
+  border: 0;
+  border-radius: 25px;
+}
+
+#button:hover {
+  background: rgba(158, 0, 139, 1);
+  border: 0;
+  border-radius: 25px;
+  text-decoration: none;
+}
+
+#input1 {
+  border-color: rgba(158, 0, 139, 1);
+  border-radius: 25px;
+}
+#input2 {
+  border-color: rgba(158, 0, 139, 1);
+  border-radius: 25px;
+}
+
+#normal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .header-right {
+    float: none;
+  }
+  .form-container {
+    float: none;
+    display: block;
+    align-content: center;
+  }
+}

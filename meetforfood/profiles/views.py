@@ -12,7 +12,7 @@ from django.apps import apps
 from rest_framework.decorators import action
 
 from django.contrib.auth import get_user_model
-
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from profiles import serializers
 from profiles import models
@@ -69,16 +69,21 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
 
     def perform_create(self, serializer):
-        serializer.save(user_profile=self.request.user)
+                serializer.save(user_profile=self.request.user)
 
-    def get_queryset(self):
-        profile_settings = ProfileSettings.objects.all()
-        ps = ProfileAboutItem.objects.all()
-        return ProfileAboutItem.objects.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
-                                               user_settings__min_age__lte=ps.get(
-                                                   id=self.request.user.id).age,
-                                               user_settings__max_age__gte=ps.get(
-                                                   id=self.request.user.id).age)
+    # def get_queryset(self):
+    #     profile_settings = models.ProfileSettings.objects.all()
+    #     ps = models.ProfileAboutItem.objects.all()
+    #     print(ps)
+    #     print(self.request.user.id)
+    #     return ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
+    #                                            user_settings__min_age__lte=ps.get(
+    #                                                id=self.request.user.id).age,
+    #                                            user_settings__max_age__gte=ps.get(
+    #                                                id=self.request.user.id).age)
+        
+            
+            
 
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
