@@ -64,16 +64,16 @@ class ProfileAboutView(APIView):
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     serializer_class = serializers.ProfileAboutItemSerializer
-    queryset = models.ProfileAboutItem.objects.all()
+    http_method_names = ['post', 'put', 'get']
+    queryset = ProfileAboutItem.objects.all()
     permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
 
     def get_queryset(self):
-        profile_settings = models.ProfileSettings.objects.all()
-        ps = models.ProfileAboutItem.objects.all()
-        print(ps[0].age)
+        profile_settings = ProfileSettings.objects.all()
+        ps = ProfileAboutItem.objects.all()
         return ProfileAboutItem.objects.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
                                                user_settings__min_age__lte=ps.get(
                                                    id=self.request.user.id).age,
