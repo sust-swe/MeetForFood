@@ -1,23 +1,29 @@
 import axios from "axios";
 import * as actionType from "./actionType";
 
-export const authStart = () => {
+export const getDataSuccess = () => {
   return {
-    type: actionType.AUTH_START
+    type: actionType.GET_DATA_SUCCESS
   };
 };
 
-export const authSuccess = token => {
+export const getDataStart = () => {
   return {
-    type: actionType.AUTH_SUCCESS,
-    token: token
+    type: actionType.GET_DATA_START
   };
 };
 
-export const authFail = error => {
+export const getDataFail = error => {
   return {
-    type: actionType.AUTH_FAIL,
-    error: error
+    type: actionType.GET_DATA_FAIL,
+    dataError: error
+  };
+};
+
+export const getData = data => {
+  return {
+    type: actionType.GET_DATA,
+    data: { data }
   };
 };
 
@@ -28,7 +34,7 @@ export const completeProfile = (
   what_you_crave_for
 ) => {
   return dispatch => {
-    dispatch(authStart());
+    dispatch(getDataStart());
     const token = localStorage.getItem("token");
     axios
       .post(
@@ -47,12 +53,12 @@ export const completeProfile = (
       )
       .then(response => {
         if (response.data != null) {
-          dispatch(authSuccess(token));
+          dispatch(getDataSuccess());
         }
         console.log(response.data);
       })
       .catch(err => {
-        dispatch(authFail(err));
+        dispatch(getDataFail(err));
       });
     console.log(token);
   };
@@ -60,7 +66,7 @@ export const completeProfile = (
 
 export const getUser = () => {
   return dispatch => {
-    dispatch(authStart());
+    dispatch(getDataStart());
     const token = localStorage.getItem("token");
     axios
       .get("http://127.0.0.1:8000/api/profileaboutitem/", {
@@ -68,11 +74,13 @@ export const getUser = () => {
           authorization: `token ${token}`
         }
       })
-      .then(response => {
-        console.log(response.data);
+      .then(response => response.data)
+      .then(data => {
+        dispatch(getData(data));
+        dispatch(getDataSuccess());
       })
       .catch(err => {
-        dispatch(authFail(err));
+        dispatch(getDataFail(err));
       });
   };
 };

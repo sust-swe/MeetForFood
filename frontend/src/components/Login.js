@@ -85,8 +85,8 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null,
-    error: state.error
+    isAuthenticated: state.authenticate.token !== null,
+    error: state.authenticate.error
   };
 };
 
@@ -98,7 +98,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

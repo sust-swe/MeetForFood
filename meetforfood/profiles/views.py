@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
@@ -42,7 +43,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
 
 class ProfileAboutView(APIView):
     def get(self, request):

@@ -16,55 +16,59 @@ export class NavBar extends React.Component {
 
   render() {
     return (
-      <div>
-        <Navbar id="navtheme" fixed="top">
-          <NavbarBrand>
-            <Image
-              src={require("../Images/logo.png")}
-              height="39px"
-              width="150px"
-              style={{ paddingLeft: "15px" }}
-            />
-          </NavbarBrand>
-          <Nav className="ml-auto">
-            <Nav.Item>
-              <Nav.Link onClick={this.handleLogout} justify>
-                <Image
-                  src={require("../Images/logout.png")}
-                  roundedCircle
-                  height="25px"
-                  width="25px"
-                />
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="menuItem" justify>
-                Find Companion
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link href="/restaurants" className="menuItem" justify>
-                Explore Restaurants
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="menuItem" justify>
-                Friends
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link href="/" justify>
-                <Image
-                  src={require("../Images/photo.jpg")}
-                  roundedCircle
-                  height="45px"
-                  width="45px"
-                />
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </Navbar>
-      </div>
+      <Navbar
+        id="navtheme"
+        fixed="top"
+        sticky="top"
+        inverse
+        style={{ zIndex: "9999" }}
+      >
+        <NavbarBrand href="/">
+          <Image
+            src={require("../Images/logo.png")}
+            height="39px"
+            width="150px"
+            style={{ paddingLeft: "15px" }}
+          />
+        </NavbarBrand>
+        <Nav className="ml-auto">
+          <Nav.Item>
+            <Nav.Link onClick={this.handleLogout} justify>
+              <Image
+                src={require("../Images/logout.png")}
+                roundedCircle
+                height="25px"
+                width="25px"
+              />
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="/restaurants" className="menuItem" justify>
+              Explore Restaurants
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link className="menuItem" justify>
+              Inbox
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link className="menuItem" justify>
+              Friend request
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="/" justify>
+              <Image
+                src={require("../Images/photo.jpg")}
+                roundedCircle
+                height="45px"
+                width="45px"
+              />
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </Navbar>
     );
   }
 }
@@ -75,7 +79,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(NavBar);
+export default connect(null, mapDispatchToProps)(NavBar);

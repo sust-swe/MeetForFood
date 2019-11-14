@@ -2,7 +2,8 @@ import React from "react";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import { DatePicker } from "antd";
 import PhoneInput from "react-phone-number-input";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
@@ -89,6 +90,8 @@ class Info extends React.Component {
     }
   }
 
+  const;
+
   render() {
     return (
       <div className="wrapper">
@@ -124,9 +127,7 @@ class Info extends React.Component {
                     <FormGroup>
                       <Label className="font-weight-bold">Birth date</Label>
                       <DatePicker
-                        customInput={<Input />}
-                        dateFormat="yyyy-MM-dd"
-                        selected={this.state.birthDate}
+                        defaultValue={moment(this.state.birthDate)}
                         onChange={this.handleChangeBirthDate}
                       />
                     </FormGroup>
@@ -184,9 +185,9 @@ class Info extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    err: state.err,
-    loading: state.loading,
-    token: state.token
+    err: state.authenticate.err,
+    loading: state.authenticate.loading,
+    token: state.authenticate.token
   };
 };
 

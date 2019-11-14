@@ -13,6 +13,7 @@ const login = (email, password, dispatch) => {
     .then(response => {
       const token = response.data.token;
       localStorage.setItem("token", token);
+      console.log(token);
       dispatch(authSuccess(token));
     })
     .catch(err => {

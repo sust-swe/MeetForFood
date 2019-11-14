@@ -1,56 +1,71 @@
 import React from "react";
 import {} from "react-router-dom";
-import { Container, Row, Col, Image, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  Navbar,
+  Card,
+  Image,
+  Button
+} from "react-bootstrap";
 import NavBar from "./Navbar";
 import ProfileCard from "./Profilecard";
 import { connect } from "react-redux";
+import { Affix } from "antd";
+
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
+import FriendSuggestion from "./FrindSuggestion";
 
 class Profile extends React.Component {
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
   render() {
-    console.log(this.props.getUser());
+    const suggestionList = this.props.users.map(data => (
+      <list key={data.id}>
+        <Card style={{ margin: "15px" }}>
+          <Card.Header id="suggested-profile-header">
+            <Image
+              src={require("../Images/photo.jpg")}
+              height="60px"
+              width="60px"
+              roundedCircle
+            />
+            <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
+              {data.name}
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <Card.Text>{data.email}</Card.Text>
+            <Card.Body style={{ display: "flex" }}>
+              <Button>Send Request</Button>
+              <Button>Send Request</Button>
+            </Card.Body>
+          </Card.Body>
+        </Card>
+      </list>
+    ));
     return (
       <div>
-        <NavBar />
-        <Container fluid>
+        <Affix offsetTop={0}>
+          <NavBar />
+        </Affix>
+        <Container style={{ margin: "0px" }}>
           <Row>
             <Col sm={3}>
-              <ProfileCard />
+              <Affix offsetTop={90}>
+                <ProfileCard />
+              </Affix>
             </Col>
             <Col sm={8} id="profile-history">
               <h1 style={{ textAlign: "left", marginTop: "15px" }}>
-                Visited Restaurants
+                Suggested friends
               </h1>
               <div className="divider"></div>
-              <div className="scroll">
-                <Card style={{ margin: "10px" }}>
-                  <Row>
-                    <Col md={3}>
-                      <Image
-                        src={require("../Images/restaurants.jpg")}
-                        height="200px"
-                        width="200px"
-                        rounded
-                      />
-                    </Col>
-                    <Col md={8}>
-                      <Card.Title
-                        style={{ fontWeight: "bold", fontSize: "40px" }}
-                      >
-                        Moon House
-                      </Card.Title>
-                      <Card.Text
-                        style={{ fontSize: "22px", fontStyle: "italic" }}
-                      >
-                        mid range restaurants
-                        <br />
-                        Visited 2 times
-                      </Card.Text>
-                    </Col>
-                  </Row>
-                </Card>
-              </div>
+              <Container className="inner-scroll">{suggestionList}</Container>
             </Col>
           </Row>
         </Container>
@@ -59,13 +74,16 @@ class Profile extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    getUser: () => dispatch(actions.getUser())
+    users: state.dataReducer.data
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Profile);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchUsers: () => dispatch(actions.getUser())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
