@@ -86,8 +86,8 @@ class ProfileSettings(models.Model):
         """return string representation of User"""
         return self.user_profile.name
 
-def nameFile(self):
-    return '/'.join(['images', self.file.name])
+def nameFile(instance,filename):
+    return '/'.join(['images', instance.user_profile.name,filename])
 
 class Image(models.Model):
     user_profile = models.OneToOneField(
@@ -99,7 +99,7 @@ class Image(models.Model):
 
     def __str__(self):
         """return string representation of User Profile"""
-        return self.user_profile
+        return self.user_profile.email
     
 class Bio(models.Model):
     user_profile = models.OneToOneField(
@@ -110,7 +110,7 @@ class Bio(models.Model):
 
     def __str__(self):
         """return string representation of User Profile"""
-        return self.user_profile
+        return self.user_profile.email
 
 
 class ProfileAboutItem(models.Model):
