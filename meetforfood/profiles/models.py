@@ -74,6 +74,7 @@ class ProfileSettings(models.Model):
         AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    
 
     foodie_partner = models.CharField(
         max_length=1, choices=partner_CHOICES, default=partner_CHOICES[0][0], blank=False, null=False)
@@ -84,6 +85,32 @@ class ProfileSettings(models.Model):
     def __str__(self):
         """return string representation of User"""
         return self.user_profile.name
+
+def nameFile(self):
+    return '/'.join(['images', self.file.name])
+
+class Image(models.Model):
+    user_profile = models.OneToOneField(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to=nameFile, max_length=254, blank=True, null=True,default=None)
+    
+
+    def __str__(self):
+        """return string representation of User Profile"""
+        return self.user_profile
+    
+class Bio(models.Model):
+    user_profile = models.OneToOneField(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    bio = models.TextField()
+
+    def __str__(self):
+        """return string representation of User Profile"""
+        return self.user_profile
 
 
 class ProfileAboutItem(models.Model):
@@ -101,7 +128,17 @@ class ProfileAboutItem(models.Model):
         ProfileSettings,
         on_delete=models.CASCADE, related_name='settings'
     )
+    
+    user_image = models.OneToOneField(
+        Image,
+        on_delete=models.CASCADE
+    )
 
+    user_bio = models.OneToOneField(
+        Bio,
+        on_delete=models.CASCADE
+    )
+    
     phone_number = PhoneNumberField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
                               default=GENDER_CHOICES[1][1], blank=False, null=False)

@@ -29,6 +29,9 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source = "user_profile.name")
     email = serializers.ReadOnlyField(source = "user_profile.email")
     
+    image = serializers.ReadOnlyField(source = "user_image.image")
+    bio = serializers.ReadOnlyField(source = "user_bio.bio")
+    
     min_age = serializers.ReadOnlyField(source = "user_settings.min_age")
     max_age = serializers.ReadOnlyField(source = "user_settings.max_age")
     foodie_partner = serializers.ReadOnlyField(source = "user_settings.foodie_partner")
@@ -39,11 +42,20 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id','user_settings','name','email','phone_number','birth_date','user_age',
+        fields = ('id','name','user_settings','email','image','bio','phone_number','birth_date','user_age',
         'gender','what_you_crave_for','min_age','max_age','foodie_partner','created_time')
         extra_kwargs = {'user_profile':{'read_only': True}}
         
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Image
+        fields = "__all__"
         
+class BioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Bio
+        fields = "__all__"
    
 
 

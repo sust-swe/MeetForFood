@@ -1,4 +1,3 @@
-
 from django.db.models import Subquery
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,10 +5,13 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
 from rest_framework.decorators import action
+from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
@@ -18,7 +20,7 @@ from profiles import serializers
 from profiles import models
 from profiles import permissions
 from django.shortcuts import get_object_or_404
-
+from rest_framework.parsers import FileUploadParser
 from .models import UserProfile, ProfileAboutItem, ProfileSettings
 
 from django.conf import settings
@@ -35,7 +37,7 @@ config = apps.get_app_config('rest_friendship')
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     queryset = models.UserProfile.objects.all()
-    http_method_names = ['post']
+    http_method_names = ['post','get']
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     #filter_class = SettingsFilter
@@ -46,6 +48,19 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
+# class CustomObtainAuthToken(ObtainAuthToken):
+
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data,
+#                                            context={'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['id']
+#         token, created = Token.objects.get_or_create(user=user)
+#         return Response({
+#             'token': token.key,
+#             'user_id': user.id,
+#             'email': user.email
+#         })
 
 class ProfileAboutView(APIView):
     def get(self, request):
@@ -59,17 +74,42 @@ class ProfileAboutView(APIView):
             foodie_partner__iexact=gender, min_age__level__lte=ProfileAboutItem.age, max_age__level_gte=ProfileAboutItem.age)
         serializer = ProfileAboutItemSerializer(query, many=True)
         return Response(serializer.data)
+    
+    
+# class FileUploadView(APIView):
+#     parser_class = (FileUploadParser,)
+
+#     def post(self, request, *args, **kwargs):
+
+#       file_serializer = ProfileAboutItemSerializer(data=request.data)
+
+#       if file_serializer.is_valid():
+#           file_serializer.save()
+#           return Response(status=status.HTTP_201_CREATED)
+#       else:
+#           return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
+    parser_class = (FileUploadParser,)
     serializer_class = serializers.ProfileAboutItemSerializer
     http_method_names = ['post', 'put', 'get']
     queryset = ProfileAboutItem.objects.all()
     permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
+    
+    
+#     # @action(detail=True, methods=['post','put'])
+#     # def upload_docs(request,pk=None):
+#     #     try:
+#     #         file = request.data['file']
+#     #     except KeyError:
+#     #         raise ParseError('Request has no resource file attached')
+#     #     profile_image = ProfileAboutItem.objects.create(image=file)
+#     #     return HttpResponse(json.dumps({'message': "Uploaded"}), status=200)
 
     def perform_create(self, serializer):
-                serializer.save(user_profile=self.request.user)
+        serializer.save(user_profile=self.request.user)
 
     # def get_queryset(self):
     #     profile_settings = models.ProfileSettings.objects.all()
@@ -98,8 +138,29 @@ class ProfileSettingsViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
+        
+        
+class ImageViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    http_method_names = ['post', 'put', 'get','delete']
+    serializer_class = serializers.ImageSerializer
+    queryset = models.Image.objects.all()
+    permission_classes = (IsAuthenticated,)
 
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user)
+        
+class BioViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    http_method_names = ['post', 'put', 'get','delete']
+    serializer_class = serializers.BioSerializer
+    queryset = models.Bio.objects.all()
+    permission_classes = (IsAuthenticated,)
 
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user)
+        
+        
 class FriendViewSet(viewsets.ViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
