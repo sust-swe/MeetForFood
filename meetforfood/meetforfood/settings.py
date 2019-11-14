@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'meetforfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend9',
+        'NAME': 'backend10',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',

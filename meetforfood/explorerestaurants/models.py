@@ -5,6 +5,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 
 # Create your models here.
+def nameFileRestaurant(instance,filename):
+    return '/'.join(['restaurants', instance.name,filename])
 class RestaurantInfo(models.Model):
 
     reservation_CHOICES = (
@@ -16,6 +18,7 @@ class RestaurantInfo(models.Model):
         ('N', 'No'),
     )
     name = models.CharField(max_length=120)
+    restaurant_image = models.ImageField(upload_to=nameFileRestaurant, max_length=254, blank=True, null=True,default=None)
     location = models.CharField(max_length=460)
     email = models.EmailField(max_length=256,unique=True)
     phone_no = PhoneNumberField()
@@ -25,11 +28,13 @@ class RestaurantInfo(models.Model):
     def __str__(self):
         return self.name
 
-
+def nameFileMenu(instance,filename):
+    return '/'.join(['menu', instance.item_name,filename])
 class MenuInfo(models.Model):
        
-    restaurant_id = models.ForeignKey('RestaurantInfo', on_delete=models.CASCADE)   
+    restaurant_id = models.ForeignKey(RestaurantInfo, on_delete=models.CASCADE)   
     item_name = models.CharField(max_length=120)
+    item_image = models.ImageField(upload_to=nameFileMenu, max_length=254, blank=True, null=True,default=None)
     serving = models.IntegerField()
     price = models.CharField(max_length=10)
 
