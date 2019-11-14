@@ -148,7 +148,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(user_profile=self.request.user)
+        serializer.save()
         
 class BioViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
@@ -158,7 +158,7 @@ class BioViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(user_profile=self.request.user)
+        serializer.save()
         
         
 class FriendViewSet(viewsets.ViewSet):
