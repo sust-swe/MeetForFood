@@ -26,6 +26,9 @@ ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': ['iso-8601', '%Y-%m-%dT%H:%M:%S.%fZ'],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 # Application definition
 
@@ -87,7 +90,7 @@ WSGI_APPLICATION = 'meetforfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend7',
+        'NAME': 'backend9',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -136,3 +139,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'profiles.UserProfile'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

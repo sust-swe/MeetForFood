@@ -15,6 +15,7 @@ phonenumbers = "*"
 django-rest-friendship = "*"
 django-friendship = "*"
 djangorestframework-filters = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
