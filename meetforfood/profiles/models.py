@@ -46,6 +46,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=256)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    first_name = None
+    last_name = None
+    
 
     objects = UserProfileManager()
 
@@ -131,12 +134,12 @@ class ProfileAboutItem(models.Model):
     
     user_image = models.OneToOneField(
         Image,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,blank=True,null=True
     )
 
     user_bio = models.OneToOneField(
         Bio,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,blank=True,null=True
     )
     
     phone_number = PhoneNumberField()

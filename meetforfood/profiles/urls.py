@@ -4,6 +4,9 @@ from rest_framework.routers import DefaultRouter
 from profiles import views
 from django.views.decorators.csrf import csrf_exempt
 
+
+from rest_framework_simplejwt import views as jwt_view
+
 routers = DefaultRouter()
 routers.register('profile', views.UserProfileViewSet)
 routers.register('profilesettings', views.ProfileSettingsViewSet)
@@ -18,6 +21,9 @@ routers.register('friendrequests', views.FriendshipRequestViewSet,
 
 
 urlpatterns = [
-    path('login/', views.UserLoginApiView.as_view()),
+    path('token/', jwt_view.TokenObtainPairView.as_view(), name='token_obtain'),
+    path('token/refresh/', jwt_view.TokenRefreshView.as_view(), name='token_refresh'),
+    # path('api-token-auth/',obtain_jwt_token),
+    # path('login/', views.UserLoginApiView.as_view()),
     #path('authenticate/',csrf_exempt(CustomObtainAuthToken.as_view())),
 ] + routers.urls

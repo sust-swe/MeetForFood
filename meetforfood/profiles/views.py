@@ -38,15 +38,15 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     queryset = models.UserProfile.objects.all()
     http_method_names = ['post','get']
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
+    # authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,IsAuthenticated)
     #filter_class = SettingsFilter
     #filter_backends = (filters.SearchFilter,)
     #search_fields = ('name','email',)
 
 
-class UserLoginApiView(ObtainAuthToken):
-    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+# class UserLoginApiView(ObtainAuthToken):
+#     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 <<<<<<< HEAD
 =======
@@ -94,7 +94,7 @@ class ProfileAboutView(APIView):
 
 
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     parser_class = (FileUploadParser,)
     serializer_class = serializers.ProfileAboutItemSerializer
     http_method_names = ['post', 'put', 'get']
@@ -114,23 +114,25 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
 
-    # def get_queryset(self):
-    #     profile_settings = models.ProfileSettings.objects.all()
-    #     ps = models.ProfileAboutItem.objects.all()
-    #     print(ps)
-    #     print(self.request.user.id)
-    #     return ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
-    #                                            user_settings__min_age__lte=ps.get(
-    #                                                id=self.request.user.id).age,
-    #                                            user_settings__max_age__gte=ps.get(
-    #                                                id=self.request.user.id).age)
+    def get_queryset(self):
+        profile_settings = models.ProfileSettings.objects.all()
+        ps = models.ProfileAboutItem.objects.all()
+        print(ps)
+        print(self.request.user.id)
+        ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
+                                               user_settings__min_age__lte=ps.get(
+                                                   id=self.request.user.id).age,
+                                               user_settings__max_age__gte=ps.get(
+                                                   id=self.request.user.id).age)
+        print(ps)
+        return ps
         
             
             
 
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     http_method_names = ['post', 'put', 'get']
     serializer_class = serializers.ProfileSettingsSerializer
     queryset = models.ProfileSettings.objects.all()
@@ -144,7 +146,7 @@ class ProfileSettingsViewSet(viewsets.ModelViewSet):
         
         
 class ImageViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     http_method_names = ['post', 'put', 'get','delete']
     serializer_class = serializers.ImageSerializer
     queryset = models.Image.objects.all()
@@ -154,7 +156,7 @@ class ImageViewSet(viewsets.ModelViewSet):
         serializer.save()
         
 class BioViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     http_method_names = ['post', 'put', 'get','delete']
     serializer_class = serializers.BioSerializer
     queryset = models.Bio.objects.all()
@@ -165,7 +167,7 @@ class BioViewSet(viewsets.ModelViewSet):
         
         
 class FriendViewSet(viewsets.ViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
     serializer_class = config.user_serializer
 
@@ -231,7 +233,7 @@ class FriendViewSet(viewsets.ViewSet):
 
 
 class FriendshipRequestViewSet(viewsets.ViewSet):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     permission_classes = config.permission_classes
 
     @action(detail=True, methods=['post'])
