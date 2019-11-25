@@ -16,6 +16,10 @@ django-rest-friendship = "*"
 django-friendship = "*"
 djangorestframework-filters = "*"
 pillow = "*"
+django-rest-auth = "*"
+djangorestframework-jwt = "*"
+drf-jwt = "*"
+djangorestframework-simplejwt = "*"
 
 [requires]
 python_version = "3.7"

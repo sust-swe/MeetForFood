@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "da2bddd89cfa3daddfa28ea4e0bec6bec757721825815c9dacf759a4d5476665"
+            "sha256": "f7938912724e4d96b46fa95fd0ea51dbef56ae3ceafeb54fef99e3bcded0a91c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,6 +53,13 @@
             "index": "pypi",
             "version": "==3.0.1"
         },
+        "django-rest-auth": {
+            "hashes": [
+                "sha256:f11e12175dafeed772f50d740d22caeab27e99a3caca24ec65e66a8d6de16571"
+            ],
+            "index": "pypi",
+            "version": "==0.9.5"
+        },
         "django-rest-friendship": {
             "hashes": [
                 "sha256:2c3a4a2ca13ca7e5df2633a6d43554385b133a8787cc6c088e6ecb3857f6c474",
@@ -77,13 +84,37 @@
             "index": "pypi",
             "version": "==0.11.1"
         },
-        "phonenumbers": {
+        "djangorestframework-jwt": {
             "hashes": [
-                "sha256:2430c95b35e330efe3483021955ed98d0c245bd07cdaff41fff4cc3630350de9",
-                "sha256:705dc7bbaa0d5932e9c010437c718bb3c0d7c93ab25b9710b4d9ae7370cc0121"
+                "sha256:5efe33032f3a4518a300dc51a51c92145ad95fb6f4b272e5aa24701db67936a7",
+                "sha256:ab15dfbbe535eede8e2e53adaf52ef0cf018ee27dbfad10cbc4cbec2ab63d38c"
             ],
             "index": "pypi",
-            "version": "==8.10.22"
+            "version": "==1.11.0"
+        },
+        "djangorestframework-simplejwt": {
+            "hashes": [
+                "sha256:4cb1a51bf9b098b983e1326a1cfc65fb0b3c5a2aa0fa43effdbf05dd6da5e8cb",
+                "sha256:d025211806622c53020aa4f66029f1f7305e38de6439116b4a842661fc02cf36"
+            ],
+            "index": "pypi",
+            "version": "==4.3.0"
+        },
+        "drf-jwt": {
+            "hashes": [
+                "sha256:5db687927968ca11d79bb879527e76d4f0e3e69b1cdf531b564bded901355fb3",
+                "sha256:82bb46ac82fc9b3702df3a374d196a9f6ab3f6b4ce4c619ae1ee7c98a9439a1e"
+            ],
+            "index": "pypi",
+            "version": "==1.13.3"
+        },
+        "phonenumbers": {
+            "hashes": [
+                "sha256:32bfda8a0d33a5de47d6426ef1e2ec59baa574102a01708bdee0a78079392f42",
+                "sha256:b31916281b0819c1e24ee3c21561ecd8be5af9381088557a986af85051a243bf"
+            ],
+            "index": "pypi",
+            "version": "==8.10.23"
         },
         "pillow": {
             "hashes": [
@@ -140,12 +171,26 @@
             "index": "pypi",
             "version": "==2.8.4"
         },
+        "pyjwt": {
+            "hashes": [
+                "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e",
+                "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
+            ],
+            "version": "==1.7.1"
+        },
         "pytz": {
             "hashes": [
                 "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d",
                 "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"
             ],
             "version": "==2019.3"
+        },
+        "six": {
+            "hashes": [
+                "sha256:1f1b7d42e254082a9db6279deae68afb421ceba6158efa6131de7b3003ee93fd",
+                "sha256:30f610279e8b2578cab6db20741130331735c781b56053c59c4076da27f06b66"
+            ],
+            "version": "==1.13.0"
         },
         "sqlparse": {
             "hashes": [
