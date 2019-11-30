@@ -25,6 +25,8 @@ from .models import UserProfile, ProfileAboutItem, ProfileSettings
 
 from django.conf import settings
 
+from django.db.models import Q
+
 #from django_filters.rest_framework import DjangoFilterBackend
 
 from friendship.models import Friend, FriendshipRequest
@@ -39,7 +41,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     http_method_names = ['post','get']
     # authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,IsAuthenticated)
+    permission_classes = (permissions.UpdateOwnProfile,)
     #filter_class = SettingsFilter
     #filter_backends = (filters.SearchFilter,)
     #search_fields = ('name','email',)
@@ -48,84 +50,110 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-<<<<<<< HEAD
-=======
-# class CustomObtainAuthToken(ObtainAuthToken):
+class ProfileAboutItemPostView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, format=None):
+        serializer = ProfileAboutItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ProfileAboutItemView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request,format = None):
+        
+        profile_settings = models.ProfileSettings.objects.all()
+        user_id = self.request.user.id
+        print(profile_settings)
+        ps = models.ProfileAboutItem.objects.all()
+        print(ps)
+        
+        print(user_id)        
+        print(profile_settings.values('foodie_partner'))
+        age_list = [obj.age for obj in ps]
+        print(age_list)
+        print(ps.get(user_profile__id=user_id).age)
+        for age in age_list: 
+            pss= ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
+                                               user_settings__min_age__lte=age,
+                                               user_settings__max_age__gte=age).exclude(user_profile__id=user_id)
+        print(pss)
+        # pss.exclude(user_profile__id=user_id)
+        # print(pss)
+        # return ps
 
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data,
-#                                            context={'request': request})
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['id']
-#         token, created = Token.objects.get_or_create(user=user)
-#         return Response({
-#             'token': token.key,
-#             'user_id': user.id,
-#             'email': user.email
-#         })
-
->>>>>>> 1ec8d68395c6eb5eb5019654baef117eacc15e7b
-class ProfileAboutView(APIView):
-    def get(self, request):
-        foodie_partner = request.GET.get('foodie_partner', None)
-        #location_range = request.GET.get('location_range', None)
-        min_age = request.GET.get('min_age', None)
-        max_age = request.GET.get('max_age', None)
-        gender = request.GET.get('gender', None)
-
-        query = ProfileSettings.objects.filter(
-            foodie_partner__iexact=gender, min_age__level__lte=ProfileAboutItem.age, max_age__level_gte=ProfileAboutItem.age)
-        serializer = ProfileAboutItemSerializer(query, many=True)
+        serializer = serializers.ProfileAboutItemSerializer(pss, many=True)
         return Response(serializer.data)
     
     
-# class FileUploadView(APIView):
-#     parser_class = (FileUploadParser,)
+    
+    # def put(self, request, pk, format=None):
+    #     query = self.get_object(pk)
+    #     serializer = ProfileAboutItemSerializer(query, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # def delete(self, request, pk, format=None):
+    #     query = self.get_object(pk)
+    #     query.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+class ProfileAboutItemDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    """
+    """
+    def get_object(self, pk):
+        try:
+            if ProfileAboutItem.user_profile==request.user.id:
+                return ProfileAboutItem.objects.get(pk=pk)
 
-#     def post(self, request, *args, **kwargs):
+        except ProfileAboutItem.DoesNotExist:
+            raise Http404
 
-#       file_serializer = ProfileAboutItemSerializer(data=request.data)
+    def put(self, request, pk, format=None):
+        query = self.get_object(pk)
+        serializer = ProfileAboutItemSerializer(query, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#       if file_serializer.is_valid():
-#           file_serializer.save()
-#           return Response(status=status.HTTP_201_CREATED)
-#       else:
-#           return Response(status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk, format=None):
+        query = self.get_object(pk)
+        query.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     parser_class = (FileUploadParser,)
     serializer_class = serializers.ProfileAboutItemSerializer
-    http_method_names = ['post', 'put', 'get']
+    http_method_names = ['post','put','delete']
     queryset = ProfileAboutItem.objects.all()
     permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
     
-    
-#     # @action(detail=True, methods=['post','put'])
-#     # def upload_docs(request,pk=None):
-#     #     try:
-#     #         file = request.data['file']
-#     #     except KeyError:
-#     #         raise ParseError('Request has no resource file attached')
-#     #     profile_image = ProfileAboutItem.objects.create(image=file)
-#     #     return HttpResponse(json.dumps({'message': "Uploaded"}), status=200)
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
 
-    def get_queryset(self):
-        profile_settings = models.ProfileSettings.objects.all()
-        ps = models.ProfileAboutItem.objects.all()
-        print(ps)
-        print(self.request.user.id)
-        ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
-                                               user_settings__min_age__lte=ps.get(
-                                                   id=self.request.user.id).age,
-                                               user_settings__max_age__gte=ps.get(
-                                                   id=self.request.user.id).age)
-        print(ps)
-        return ps
+    # def get_queryset(self):
+    #     profile_settings = models.ProfileSettings.objects.all()
+    #     ps = models.ProfileAboutItem.objects.all()
+    #     print(ps)
+    #     print(self.request.user.id)
+    #     ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
+    #                                            user_settings__min_age__lte=ps.get(
+    #                                                id=self.request.user.id).age,
+    #                                            user_settings__max_age__gte=ps.get(
+    #                                                id=self.request.user.id).age)
+    #     print(ps)
+    #     return ps
         
             
             
@@ -133,7 +161,7 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
-    http_method_names = ['post', 'put', 'get']
+    http_method_names = ['post', 'put', 'delete','get']
     serializer_class = serializers.ProfileSettingsSerializer
     queryset = models.ProfileSettings.objects.all()
     permission_classes = (permissions.UpdateOwnSettings, IsAuthenticated)
