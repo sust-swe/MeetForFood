@@ -20,6 +20,8 @@ django-rest-auth = "*"
 djangorestframework-jwt = "*"
 drf-jwt = "*"
 djangorestframework-simplejwt = "*"
+corsheaders = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"

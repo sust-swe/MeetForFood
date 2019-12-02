@@ -39,7 +39,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     http_method_names = ['post','get']
     # authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,IsAuthenticated)
+    permission_classes = (permissions.UpdateOwnProfile,)
     #filter_class = SettingsFilter
     #filter_backends = (filters.SearchFilter,)
     #search_fields = ('name','email',)
@@ -48,8 +48,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-<<<<<<< HEAD
-=======
 # class CustomObtainAuthToken(ObtainAuthToken):
 
 #     def post(self, request, *args, **kwargs):
@@ -64,7 +62,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 #             'email': user.email
 #         })
 
->>>>>>> 1ec8d68395c6eb5eb5019654baef117eacc15e7b
 class ProfileAboutView(APIView):
     def get(self, request):
         foodie_partner = request.GET.get('foodie_partner', None)
