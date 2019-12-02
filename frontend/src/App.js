@@ -1,4 +1,4 @@
-import Reacts from "react";
+import React from "react";
 import { BaseRouter, AuthRouter } from "./routes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";

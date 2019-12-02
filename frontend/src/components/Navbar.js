@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar, NavbarBrand, Image, Nav } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import * as actions from "../redux_store/actions/authenticate";
 import { connect } from "react-redux";
 import "../Styles/header.css";
@@ -32,41 +33,36 @@ export class NavBar extends React.Component {
           />
         </NavbarBrand>
         <Nav className="ml-auto">
-          <Nav.Item>
-            <Nav.Link onClick={this.handleLogout} justify>
+          <Nav.Item style={{ padding: "10px" }}>
+            <NavLink to="/" onClick={this.handleLogout} justify>
               <Image
                 src={require("../Images/logout.png")}
                 roundedCircle
                 height="25px"
                 width="25px"
               />
-            </Nav.Link>
+            </NavLink>
           </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/restaurants" className="menuItem" justify>
-              Explore Restaurants
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link className="menuItem" justify>
-              Inbox
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link className="menuItem" justify>
-              Friend request
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/" justify>
+          <NavLink to="/restaurants" style={{ textDecoration: "none" }}>
+            <Nav.Item className="menuItem">Explore Restaurants</Nav.Item>
+          </NavLink>
+          <NavLink to="/inbox" style={{ textDecoration: "none" }}>
+            <Nav.Item className="menuItem">Inbox</Nav.Item>
+          </NavLink>
+          <NavLink to="/friendrequest" style={{ textDecoration: "none" }}>
+            <Nav.Item className="menuItem">Friend request</Nav.Item>
+          </NavLink>
+
+          <NavLink to="/" justify>
+            <Nav.Item>
               <Image
                 src={require("../Images/photo.jpg")}
                 roundedCircle
                 height="45px"
                 width="45px"
               />
-            </Nav.Link>
-          </Nav.Item>
+            </Nav.Item>
+          </NavLink>
         </Nav>
       </Navbar>
     );
@@ -79,4 +75,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(NavBar);
+export default connect(
+  null,
+  mapDispatchToProps
+)(NavBar);
