@@ -6,3 +6,6 @@ Pipfile.lock
 media
 
 
+=======
+node_modules
+>>>>>>> gui

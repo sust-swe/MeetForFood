@@ -90,9 +90,14 @@ class Info extends React.Component {
     }
   }
 
+<<<<<<< HEAD
   const;
 
   render() {
+=======
+  render() {
+    const dateFormate = "YYYY-MM-DD";
+>>>>>>> gui
     return (
       <div className="wrapper">
         {this.state.redirect ? <Redirect to="/" /> : null}
@@ -127,7 +132,11 @@ class Info extends React.Component {
                     <FormGroup>
                       <Label className="font-weight-bold">Birth date</Label>
                       <DatePicker
+<<<<<<< HEAD
                         defaultValue={moment(this.state.birthDate)}
+=======
+                        defaultValue={moment(this.state.birthDate, dateFormate)}
+>>>>>>> gui
                         onChange={this.handleChangeBirthDate}
                       />
                     </FormGroup>
