@@ -50,62 +50,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-<<<<<<< HEAD
-# class CustomObtainAuthToken(ObtainAuthToken):
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data,
-#                                            context={'request': request})
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['id']
-#         token, created = Token.objects.get_or_create(user=user)
-#         return Response({
-#             'token': token.key,
-#             'user_id': user.id,
-#             'email': user.email
-#         })
-
-class ProfileAboutView(APIView):
-    def get(self, request):
-        foodie_partner = request.GET.get('foodie_partner', None)
-        #location_range = request.GET.get('location_range', None)
-        min_age = request.GET.get('min_age', None)
-        max_age = request.GET.get('max_age', None)
-        gender = request.GET.get('gender', None)
-
-        query = ProfileSettings.objects.filter(
-            foodie_partner__iexact=gender, min_age__level__lte=ProfileAboutItem.age, max_age__level_gte=ProfileAboutItem.age)
-        serializer = ProfileAboutItemSerializer(query, many=True)
-||||||| merged common ancestors
-<<<<<<< HEAD
-=======
-# class CustomObtainAuthToken(ObtainAuthToken):
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data,
-#                                            context={'request': request})
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['id']
-#         token, created = Token.objects.get_or_create(user=user)
-#         return Response({
-#             'token': token.key,
-#             'user_id': user.id,
-#             'email': user.email
-#         })
-
->>>>>>> 1ec8d68395c6eb5eb5019654baef117eacc15e7b
-class ProfileAboutView(APIView):
-    def get(self, request):
-        foodie_partner = request.GET.get('foodie_partner', None)
-        #location_range = request.GET.get('location_range', None)
-        min_age = request.GET.get('min_age', None)
-        max_age = request.GET.get('max_age', None)
-        gender = request.GET.get('gender', None)
-
-        query = ProfileSettings.objects.filter(
-            foodie_partner__iexact=gender, min_age__level__lte=ProfileAboutItem.age, max_age__level_gte=ProfileAboutItem.age)
-        serializer = ProfileAboutItemSerializer(query, many=True)
-=======
 class ProfileAboutItemPostView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -142,7 +86,6 @@ class ProfileAboutItemView(APIView):
         # return ps
 
         serializer = serializers.ProfileAboutItemSerializer(pss, many=True)
->>>>>>> dev2
         return Response(serializer.data)
     
     

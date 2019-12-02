@@ -57,10 +57,7 @@ div.scroll {
 .menuItem {
   color: white !important;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-<<<<<<< HEAD
-=======
   padding: 10px;
->>>>>>> gui
   font-size: 16px;
   text-decoration: none;
   font-style: italic;
