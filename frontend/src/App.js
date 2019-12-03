@@ -35,11 +35,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-<<<<<<< HEAD
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-=======
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App);
->>>>>>> gui
