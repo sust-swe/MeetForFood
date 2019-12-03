@@ -76,16 +76,25 @@ class ProfileAboutItemView(APIView):
         age_list = [obj.age for obj in ps]
         print(age_list)
         print(ps.get(user_profile__id=user_id).age)
-        for age in age_list: 
-            pss= ps.filter(gender__in=Subquery(profile_settings.values('foodie_partner')),
-                                               user_settings__min_age__lte=age,
-                                               user_settings__max_age__gte=age).exclude(user_profile__id=user_id)
-        print(pss)
-        # pss.exclude(user_profile__id=user_id)
-        # print(pss)
-        # return ps
+        
+        foodie_partner = profile_settings.get(user_profile__id=user_id).foodie_partner
+        min_age = profile_settings.get(user_profile__id=user_id).min_age
+        max_age = profile_settings.get(user_profile__id=user_id).max_age
+        
+        print(profile_settings.get(user_profile__id=user_id).foodie_partner)
+        print(profile_settings.get(user_profile__id=user_id).min_age)
+        print(profile_settings.get(user_profile__id=user_id).max_age)
+        
+        
+        result_list = []
 
-        serializer = serializers.ProfileAboutItemSerializer(pss, many=True)
+        for item in ps :
+            if (item.age >= min_age) and (item.age <= max_age) and (item.gender == foodie_partner):
+                result_list.append(item)
+
+        print (result_list)
+
+        serializer = serializers.ProfileAboutItemSerializer(result_list, many=True)
         return Response(serializer.data)
     
     
