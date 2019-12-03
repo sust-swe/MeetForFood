@@ -3,21 +3,40 @@ import * as actionType from "./actionType";
 
 const existed = "user profile with this email already exists.";
 
-const login = (email, password, dispatch) => {
+const login = (email, password, dispatch, id) => {
   dispatch(authStart());
   axios
-    .post("http://127.0.0.1:8000/api/login/", {
-      username: email,
+    .post("http://127.0.0.1:8000/api/token/", {
+      email: email,
       password: password
     })
     .then(response => {
-      const token = response.data.token;
+      const token = response.data.access;
       localStorage.setItem("token", token);
       console.log(token);
+      setDefaultFilter(id, token);
       dispatch(authSuccess(token));
     })
     .catch(err => {
       dispatch(authFail(err));
+    });
+};
+
+const setDefaultFilter = (id, token) => {
+  axios
+    .post(
+      "http://127.0.0.1:8000/api/profilesettings/",
+      {
+        user_profile: id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    .then(response => {
+      console.log(response.data);
     });
 };
 
@@ -67,7 +86,9 @@ export const authSignUp = (fullName, email, password) => {
         if (response === existed) {
           dispatch(authFail(existed));
         } else {
-          login(email, password, dispatch);
+          console.log(response.data.id);
+          const id = response.data.id;
+          login(email, password, dispatch, id);
         }
       })
       .catch(err => {
