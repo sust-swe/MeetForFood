@@ -68,9 +68,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 class ProfileSettings(models.Model):
     partner_CHOICES = (
-        ('A', 'Any'),
-        ('F', 'Female'),
+        
         ('M', 'Male'),
+        ('F', 'Female'),
     )
 
     user_profile = models.OneToOneField(
@@ -129,7 +129,7 @@ class ProfileAboutItem(models.Model):
 
     user_settings = models.OneToOneField(
         ProfileSettings,
-        on_delete=models.CASCADE, related_name='settings'
+        on_delete=models.CASCADE, related_name='settings',
     )
     
     user_image = models.OneToOneField(
@@ -146,7 +146,7 @@ class ProfileAboutItem(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
                               default=GENDER_CHOICES[1][1], blank=False, null=False)
     birth_date = models.DateField(default=date.today, blank=False, null=True)
-    what_you_crave_for = models.CharField(max_length=320)
+    what_you_crave_for = models.CharField(max_length=320,blank=True,null=True)
     #current_city = models.CharField(max_length=1, choices=Current_City_CHOICES,default=Current_City_CHOICES[1][1],blank=False,null=False)
     #foodie_partner = models.CharField(max_length=1, choices=partner_CHOICES,default=partner_CHOICES[0][0],blank=False,null=False)
     #one_wish = models.CharField(max_length=100,null=True)

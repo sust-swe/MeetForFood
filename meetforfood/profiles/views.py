@@ -143,13 +143,16 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     parser_class = (FileUploadParser,)
     serializer_class = serializers.ProfileAboutItemSerializer
-    http_method_names = ['post','put','delete']
+    http_method_names = ['post','put','delete','get']
     queryset = ProfileAboutItem.objects.all()
     permission_classes = (permissions.UpdateOwnAbout, IsAuthenticated)
     
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
+        
+    def get_queryset(self):
+        return ProfileAboutItem.objects.filter(user_profile=self.request.user)
 
     # def get_queryset(self):
     #     profile_settings = models.ProfileSettings.objects.all()
@@ -190,7 +193,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(user_profile=self.request.user)
         
 class BioViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
@@ -200,7 +203,7 @@ class BioViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(user_profile=self.request.user)
         
         
 class FriendViewSet(viewsets.ViewSet):
