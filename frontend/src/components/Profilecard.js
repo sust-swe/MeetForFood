@@ -6,8 +6,11 @@ import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class ProfileCard extends React.Component {
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
   render() {
-    console.log(this.props.users.name);
+    console.log(this.props.users);
     return (
       <Card className="profile-dashboard " style={{ alignItems: "center" }}>
         <Image

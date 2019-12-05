@@ -3,7 +3,6 @@ import { updateObject } from "../utility";
 
 const initialState = {
   data: [],
-  suggestion: [],
   dataError: null,
   dataLoading: false
 };

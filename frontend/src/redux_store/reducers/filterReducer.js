@@ -2,44 +2,39 @@ import * as actionType from "../actions/actionType";
 import { updateObject } from "../utility";
 
 const initialState = {
-  suggestion: {},
-  dataError: null,
-  dataLoading: false
+  suggestion: [],
+  filterInfo: {},
+  filterError: null,
+  filterLoading: false
 };
 
 const getFilteredStart = (state, action) => {
   return updateObject(state, {
-    dataError: null,
-    dataLoading: true
+    filterError: null,
+    filterLoading: true
   });
 };
 
-const getDataSuccess = (state, action) => {
+const getFilterSuccess = (state, action) => {
   return updateObject(state, {
     suggestion: action.suggestion.data,
-    dataError: null,
-    dataLoading: false
+    filterError: null,
+    filterLoading: false
   });
 };
 
 const setFilterSuccess = (state, action) => {
   return updateObject(state, {
-    dataError: null,
-    dataLoading: false
+    filterInfo: action.filterInfo.data,
+    filterError: null,
+    filterLoading: false
   });
 };
 
-const getDataFail = (state, action) => {
+const filterFail = (state, action) => {
   return updateObject(state, {
-    dataError: action.error,
-    dataLoading: false
-  });
-};
-
-const getSuggestedFriends = (state, action) => {
-  return updateObject(state, {
-    suggestion: action.data.data,
-    dataLoading: true
+    filterError: action.error,
+    filterLoading: false
   });
 };
 
@@ -48,13 +43,11 @@ const filterReducer = (state = initialState, action) => {
     case actionType.GET_FILTER_START:
       return getFilteredStart(state, action);
     case actionType.GET_FILTER_SUCCESS:
-      return getDataSuccess(state, action);
+      return getFilterSuccess(state, action);
     case actionType.SET_FILTER_SUCCESS:
       return setFilterSuccess(state, action);
     case actionType.GET_FILTER_FAIL:
-      return getDataFail(state, action);
-    case actionType.GET_FILTER:
-      return getSuggestedFriends(state, action);
+      return filterFail(state, action);
     default:
       return state;
   }

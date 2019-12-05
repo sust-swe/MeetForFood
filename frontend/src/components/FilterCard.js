@@ -15,7 +15,7 @@ class FilterCard extends React.Component {
     this.state = {
       dropDownOpen: false,
       gender: "Select Gender",
-      ageRange: { min: 25, max: 30 }
+      ageRange: { min: 20, max: 45 }
     };
   }
 
@@ -106,6 +106,12 @@ class FilterCard extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    filterCriteria: state.filterReducer.filterInfo
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     setFilter: (gender, min_age, max_age) => {
@@ -114,4 +120,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(FilterCard);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterCard);

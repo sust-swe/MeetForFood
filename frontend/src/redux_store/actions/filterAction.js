@@ -1,19 +1,27 @@
 import axios from "axios";
 import * as actionType from "./actionType";
 
-export const setFilterSuccess = () => {
+export const setFilterSuccess = data => {
   return {
-    type: actionType.SET_FILTER_SUCCESS
+    type: actionType.SET_FILTER_SUCCESS,
+    filterInfo: { data }
   };
 };
 
-export const getFilterStart = () => {
+export const getFilterSuccess = data => {
+  return {
+    type: actionType.GET_FILTER_SUCCESS,
+    suggestion: { data }
+  };
+};
+
+export const filterStart = () => {
   return {
     type: actionType.GET_FILTER_START
   };
 };
 
-export const getFilterFail = error => {
+export const filterFail = error => {
   return {
     type: actionType.GET_FILTER_FAIL,
     dataError: error
@@ -22,10 +30,10 @@ export const getFilterFail = error => {
 
 export const initFilter = (gender, min_age, max_age) => {
   return dispatch => {
-    dispatch(getFilterStart());
+    dispatch(filterStart());
     const token = localStorage.getItem("token");
     axios
-      .get("http://127.0.0.1:8000/api/profilesettings/", {
+      .post("http://127.0.0.1:8000/api/profilesettings/", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -64,6 +72,25 @@ const submitFilter = (
     )
     .then(response => {
       console.log(response.data);
-      dispatch(setFilterSuccess());
+      dispatch(setFilterSuccess(response.data));
     });
+};
+
+export const getFriendSuggestion = () => {
+  return dispatch => {
+    dispatch(filterStart());
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://127.0.0.1:8000/api/profilecard/", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        dispatch(getFilterSuccess(response.data));
+      })
+      .catch(err => {
+        dispatch(filterFail());
+      });
+  };
 };

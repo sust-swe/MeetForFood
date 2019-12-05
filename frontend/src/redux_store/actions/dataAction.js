@@ -27,13 +27,6 @@ export const getData = data => {
   };
 };
 
-export const getFriendSuggestion = data => {
-  return {
-    type: actionType.GET_DATA,
-    suggestion: { data }
-  };
-};
-
 export const completeProfile = (
   phone_number,
   birth_date,
@@ -142,31 +135,8 @@ export const getUser = () => {
           authorization: `Bearer ${token}`
         }
       })
-      .then(response => response.data)
-      .then(data => {
-        dispatch(getData(data[0]));
-        dispatch(getDataSuccess());
-      })
-      .catch(err => {
-        dispatch(getDataFail(err));
-      });
-  };
-};
-
-export const getSuggestion = () => {
-  return dispatch => {
-    dispatch(getDataStart());
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://127.0.0.1:8000/api/profilecard/", {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => response.data)
-      .then(data => {
-        dispatch(getFriendSuggestion(data));
-        dispatch(getDataSuccess());
+      .then(response => {
+        dispatch(getData(response.data[0]));
       })
       .catch(err => {
         dispatch(getDataFail(err));

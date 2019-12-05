@@ -7,16 +7,15 @@ import FilterCard from "./FilterCard.js";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 
-import * as actions from "../redux_store/actions/dataAction";
 import * as filterActions from "../redux_store/actions/filterAction";
 import "../Styles/header.css";
 
 class Profile extends React.Component {
   componentDidMount() {
-    this.props.fetchUsers();
+    this.props.getSuggestion();
   }
   render() {
-    const suggestionList = this.props.suggestedFriend.map(data => (
+    const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>
           <Card.Header id="suggested-profile-header">
@@ -39,6 +38,7 @@ class Profile extends React.Component {
         </Card>
       </list>
     ));
+    console.log(this.props.userSuggestion);
     return (
       <div>
         <Affix offsetTop={0}>
@@ -70,14 +70,13 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.dataReducer.data,
-    suggestedFriend: state.dataReducer.suggestion
+    userSuggestion: state.filterReducer.suggestion
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers: () => dispatch(actions.getUser())
+    getSuggestion: () => dispatch(filterActions.getFriendSuggestion())
   };
 };
 
