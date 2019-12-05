@@ -1,30 +1,22 @@
 import React from "react";
 import {} from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Nav,
-  Navbar,
-  Card,
-  Image,
-  Button
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
 import NavBar from "./Navbar";
 import ProfileCard from "./Profilecard";
+import FilterCard from "./FilterCard.js";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 
 import * as actions from "../redux_store/actions/dataAction";
+import * as filterActions from "../redux_store/actions/filterAction";
 import "../Styles/header.css";
-import FriendSuggestion from "./FrindSuggestion";
 
 class Profile extends React.Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
   render() {
-    const suggestionList = this.props.users.map(data => (
+    const suggestionList = this.props.suggestedFriend.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>
           <Card.Header id="suggested-profile-header">
@@ -42,7 +34,6 @@ class Profile extends React.Component {
             <Card.Text>{data.email}</Card.Text>
             <Card.Body style={{ display: "flex" }}>
               <Button>Send Request</Button>
-              <Button>Send Request</Button>
             </Card.Body>
           </Card.Body>
         </Card>
@@ -53,22 +44,25 @@ class Profile extends React.Component {
         <Affix offsetTop={0}>
           <NavBar />
         </Affix>
-        <Container style={{ margin: "0px" }}>
+        <div style={{ margin: "5px" }}>
           <Row>
-            <Col sm={3}>
+            <Col xs={3}>
               <Affix offsetTop={90}>
                 <ProfileCard />
               </Affix>
             </Col>
-            <Col sm={8} id="profile-history">
-              <h1 style={{ textAlign: "left", marginTop: "15px" }}>
+            <Col xs={6} id="profile-history">
+              <h2 style={{ textAlign: "left", marginTop: "15px" }}>
                 Suggested friends
-              </h1>
+              </h2>
               <div className="divider"></div>
               <Container className="inner-scroll">{suggestionList}</Container>
             </Col>
+            <Col id="profile-history">
+              <FilterCard />
+            </Col>
           </Row>
-        </Container>
+        </div>
       </div>
     );
   }
@@ -76,7 +70,8 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.dataReducer.data
+    users: state.dataReducer.data,
+    suggestedFriend: state.dataReducer.suggestion
   };
 };
 

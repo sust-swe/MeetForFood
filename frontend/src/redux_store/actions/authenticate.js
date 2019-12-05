@@ -13,7 +13,6 @@ const login = (email, password, dispatch, id) => {
     .then(response => {
       const token = response.data.access;
       localStorage.setItem("token", token);
-      console.log(token);
       setDefaultFilter(id, token);
       dispatch(authSuccess(token));
     })
@@ -86,7 +85,6 @@ export const authSignUp = (fullName, email, password) => {
         if (response === existed) {
           dispatch(authFail(existed));
         } else {
-          console.log(response.data.id);
           const id = response.data.id;
           login(email, password, dispatch, id);
         }

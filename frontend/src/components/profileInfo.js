@@ -2,8 +2,8 @@ import React from "react";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-// import DatePicker from "react-datepicker";
-import { DatePicker } from "antd";
+import DatePicker from "react-datepicker";
+//import { DatePicker } from "antd";
 import PhoneInput from "react-phone-number-input";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
@@ -31,12 +31,14 @@ class Info extends React.Component {
     this.select = this.select.bind(this);
     this.handleRedirect = this.handleRedirect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeImage = this.handleChangeImage.bind(this);
     this.state = {
       dropDownOpen: false,
       gender: "Select Gender",
       phoneNumber: "",
       foodChoice: "",
       redirect: false,
+      image: "",
       birthDate: new Date()
     };
   }
@@ -49,6 +51,10 @@ class Info extends React.Component {
   };
   handleChangeFoodChoice = event => {
     this.setState({ foodChoice: event.target.value });
+  };
+  handleChangeImage = event => {
+    const file = event.target.files[0];
+    this.setState({ image: file });
   };
 
   toggle = () => {
@@ -79,7 +85,8 @@ class Info extends React.Component {
       this.state.phoneNumber,
       customDate,
       userGender,
-      this.state.foodChoice
+      this.state.foodChoice,
+      this.state.image
     );
     this.handleRedirect();
   };
@@ -91,7 +98,6 @@ class Info extends React.Component {
   }
 
   render() {
-    const dateFormate = "YYYY-MM-DD";
     return (
       <div className="wrapper">
         {this.state.redirect ? <Redirect to="/" /> : null}
@@ -126,7 +132,9 @@ class Info extends React.Component {
                     <FormGroup>
                       <Label className="font-weight-bold">Birth date</Label>
                       <DatePicker
-                        defaultValue={moment(this.state.birthDate, dateFormate)}
+                        customInput={<Input />}
+                        dateFormat="yyyy-MM-dd"
+                        selected={this.state.birthDate}
                         onChange={this.handleChangeBirthDate}
                       />
                     </FormGroup>
@@ -169,6 +177,18 @@ class Info extends React.Component {
                     </FormGroup>
                   </Col>
                 </Row>
+                <Row form>
+                  <Col md={12}>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={event => {
+                        this.handleChangeImage(event);
+                      }}
+                      required
+                    />
+                  </Col>
+                </Row>
                 <FormGroup></FormGroup>
                 <Button className="btn-lg btn-block" id="button" type="submit">
                   Create
@@ -192,9 +212,15 @@ const mapStateToProps = state => {
 
 const mapDipatchToProps = dispatch => {
   return {
-    onComplete: (phoneNumber, birthDate, gender, foodChoice) => {
+    onComplete: (phoneNumber, birthDate, gender, foodChoice, userImage) => {
       dispatch(
-        actions.completeProfile(phoneNumber, birthDate, gender, foodChoice)
+        actions.completeProfile(
+          phoneNumber,
+          birthDate,
+          gender,
+          foodChoice,
+          userImage
+        )
       );
     }
   };

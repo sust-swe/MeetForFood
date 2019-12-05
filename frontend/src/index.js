@@ -12,10 +12,12 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 
 import reducer from "./redux_store/reducers/authenticate";
 import dataReducer from "./redux_store/reducers/dataReducer";
+import filterReducer from "./redux_store/reducers/filterReducer";
 
 const masterReducer = combineReducers({
   authenticate: reducer,
-  dataReducer: dataReducer
+  dataReducer: dataReducer,
+  filterReducer: filterReducer
 });
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

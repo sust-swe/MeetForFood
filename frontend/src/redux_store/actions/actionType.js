@@ -7,3 +7,9 @@ export const GET_DATA_START = "GET_DATA_START";
 export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
 export const GET_DATA_FAIL = "GET_DATA_FAIL";
 export const GET_DATA = "GET_DATA";
+
+export const GET_FILTER_START = " GET_FILTER_START";
+export const GET_FILTER_SUCCESS = "GET_FILTER_SUCCESS";
+export const SET_FILTER_SUCCESS = "SET_FILTER_SUCCESS";
+export const GET_FILTER_FAIL = "GET_FILTER_FAIL";
+export const GET_FILTER = "GET_FILTER";
