@@ -33,7 +33,7 @@ export const initFilter = (gender, min_age, max_age) => {
     dispatch(filterStart());
     const token = localStorage.getItem("token");
     axios
-      .post("http://127.0.0.1:8000/api/profilesettings/", {
+      .get("http://127.0.0.1:8000/api/profilesettings/", {
         headers: {
           Authorization: `Bearer ${token}`
         }
