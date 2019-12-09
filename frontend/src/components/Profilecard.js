@@ -7,22 +7,11 @@ import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class ProfileCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      image: ""
-    };
-  }
-
   componentWillMount() {
     this.props.fetchUsers();
     this.props.getImage();
+    console.log("props called");
   }
-
-  componentDidMount() {
-    this.setState({ image: this.props.image });
-  }
-
   render() {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -30,7 +19,7 @@ class ProfileCard extends React.Component {
     return (
       <Card className="profile-dashboard " style={{ alignItems: "center" }}>
         <Image
-          src={this.state.image}
+          src={this.props.image.image}
           height="150px"
           width="150px"
           roundedCircle
@@ -65,7 +54,7 @@ class ProfileCard extends React.Component {
 const mapStateToProps = state => {
   return {
     users: state.dataReducer.data,
-    image: state.dataReducer.image.image
+    image: state.dataReducer.image
   };
 };
 
