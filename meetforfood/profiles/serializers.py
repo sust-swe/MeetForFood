@@ -75,8 +75,8 @@ class ProfileSettingsSerializer(serializers.ModelSerializer):
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     
-    name1 = serializers.ReadOnlyField(source = "from_user__name")
-    name2 = serializers.ReadOnlyField(source = "to_user__name" )
+    name1 = serializers.ReadOnlyField(source = "from_user.name")
+    name2 = serializers.ReadOnlyField(source = "to_user.name")
 
     class Meta:
         model = FriendshipRequest

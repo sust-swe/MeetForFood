@@ -50,15 +50,15 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-class ProfileAboutItemPostView(APIView):
-    permission_classes = [IsAuthenticated]
+# class ProfileAboutItemPostView(APIView):
+#     permission_classes = [IsAuthenticated]
     
-    def post(self, request, format=None):
-        serializer = ProfileAboutItemSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request, format=None):
+#         serializer = ProfileAboutItemSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ProfileAboutItemView(APIView):
     permission_classes = [IsAuthenticated]
@@ -216,7 +216,7 @@ class FriendViewSet(viewsets.ViewSet):
 
     def list(self, request):
         friends = Friend.objects.friends(request.user)
-        serializer = self.serializer_class(friends, many=True)
+        serializer = serializers.ProfileSerializer(friends, many=True)
         return Response(serializer.data)
 
     @action(detail=False)
