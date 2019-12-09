@@ -31,12 +31,12 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-    #    'rest_framework.authentication.TokenAuthentication',
-    
-    # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    #     'rest_framework.authentication.SessionAuthentication',
-    #     'rest_framework.authentication.BasicAuthentication',
-    'rest_framework_simplejwt.authentication.JWTAuthentication',
+        #    'rest_framework.authentication.TokenAuthentication',
+
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        #     'rest_framework.authentication.SessionAuthentication',
+        #     'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
@@ -68,9 +68,9 @@ INSTALLED_APPS = [
     'profiles',
     'explorerestaurants',
     'friendship',  # Django friendship
-  # Django REST Framework
-    'rest_friendship', 
-     # Django REST Friendship
+    # Django REST Framework
+    'rest_friendship',
+    # Django REST Friendship
 
 ]
 

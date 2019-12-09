@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 //import { DatePicker } from "antd";
+import ImageUploader from "react-images-upload";
 import PhoneInput from "react-phone-number-input";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
@@ -38,7 +39,7 @@ class Info extends React.Component {
       phoneNumber: "",
       foodChoice: "",
       redirect: false,
-      image: "",
+      image: [],
       birthDate: new Date()
     };
   }
@@ -46,15 +47,19 @@ class Info extends React.Component {
   handleChangePhoneNumber = event => {
     this.setState({ phoneNumber: event });
   };
+
   handleChangeBirthDate = date => {
     this.setState({ birthDate: date });
   };
+
   handleChangeFoodChoice = event => {
     this.setState({ foodChoice: event.target.value });
   };
-  handleChangeImage = event => {
-    const file = event.target.files[0];
-    this.setState({ image: file });
+
+  handleChangeImage = picture => {
+    this.setState({
+      image: this.state.image.concat(picture)
+    });
   };
 
   toggle = () => {
@@ -86,7 +91,7 @@ class Info extends React.Component {
       customDate,
       userGender,
       this.state.foodChoice,
-      this.state.image
+      this.state.image[0]
     );
     this.handleRedirect();
   };
@@ -98,9 +103,10 @@ class Info extends React.Component {
   }
 
   render() {
+    console.log(this.state.image[0]);
     return (
       <div className="wrapper">
-        {this.state.redirect ? <Redirect to="/" /> : null}
+        {this.state.redirect ? <Redirect to="/setimage" /> : null}
         <Navbar id="navtheme" fixed="top">
           <NavbarBrand>
             <Image
@@ -178,16 +184,21 @@ class Info extends React.Component {
                   </Col>
                 </Row>
                 <Row form>
-                  <Col md={12}>
-                    <input
-                      type="file"
-                      name="image"
-                      onChange={event => {
-                        this.handleChangeImage(event);
+                  {/* <Col md={12}>
+                    <ImageUploader
+                      withIcon={false}
+                      buttonText="Choose Image"
+                      onChange={this.handleChangeImage}
+                      imgExtension={[".jpg", ".png"]}
+                      maxFileSize={5242880}
+                      singleImage={true}
+                      withLabel={false}
+                      withPreview={true}
+                      fileContainerStyle={{
+                        padding: "0px"
                       }}
-                      required
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
                 <FormGroup></FormGroup>
                 <Button className="btn-lg btn-block" id="button" type="submit">
