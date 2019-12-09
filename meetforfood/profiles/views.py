@@ -21,7 +21,7 @@ from profiles import models
 from profiles import permissions
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import FileUploadParser
-from .models import UserProfile, ProfileAboutItem, ProfileSettings
+from .models import UserProfile, ProfileAboutItem, ProfileSettings,Image
 
 from django.conf import settings
 
