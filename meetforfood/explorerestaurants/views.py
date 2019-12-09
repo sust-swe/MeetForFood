@@ -10,13 +10,14 @@ class RestaurantInfoViewSet(viewsets.ModelViewSet):
     serializer_class = RestaurantInfoSerializer
     parser_class = (FileUploadParser,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name','location',)
+    search_fields = ('name','address','menuinfo__category_name','menuinfo__item_name')
     http_method_names = ['get']
 
 class MenuInfoViewSet(viewsets.ModelViewSet):
-    queryset = MenuInfo.objects.all().order_by('item_name')
+    queryset = MenuInfo.objects.all().order_by('category_name','item_name','price')
     serializer_class = MenuInfoSerializer
-    parser_class = (FileUploadParser,)
+    # parser_class = (FileUploadParser,)
+    # search_fields = ('item_name','category_name', 'price',) 
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('item_name', 'price',) 
+    search_fields = ('category_name','item_name', 'price') 
     http_method_names = ['get']   

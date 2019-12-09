@@ -31,12 +31,12 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #    'rest_framework.authentication.TokenAuthentication',
-
-        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        #     'rest_framework.authentication.SessionAuthentication',
-        #     'rest_framework.authentication.BasicAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #    'rest_framework.authentication.TokenAuthentication',
+    
+    # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    #     'rest_framework.authentication.BasicAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     'friendship',  # Django friendship
   # Django REST Framework
     'rest_friendship', 
-    'multiselectfield',
      # Django REST Friendship
 
 ]
@@ -113,11 +112,11 @@ WSGI_APPLICATION = 'meetforfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend13',
+        'NAME': 'backend11',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
-        'PASSWORD': '1234'
+        'PASSWORD': '12345'
     }
 }
 
