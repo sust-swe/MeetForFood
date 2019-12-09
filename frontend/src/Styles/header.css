@@ -83,6 +83,12 @@ div.scroll {
   margin: 0;
 }
 
+#normal_button {
+  background: #9e008b;
+  border: 0;
+  border-radius: 25px;
+}
+
 #navtheme {
   overflow: hidden;
   min-height: 60px;
@@ -105,7 +111,7 @@ div.scroll {
 #form-container {
   display: flex;
   justify-content: center;
-  padding-top: 5%;
+  padding-top: 2%;
   padding-bottom: 5%;
   position: relative;
 }
@@ -177,7 +183,12 @@ div.scroll {
   .header-right {
     float: none;
   }
-  .form-container {
+  #form-container {
+    float: none;
+    display: block;
+    align-content: center;
+  }
+  .wrapper {
     float: none;
     display: block;
     align-content: center;

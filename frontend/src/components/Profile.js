@@ -1,9 +1,17 @@
 import React from "react";
 import {} from "react-router-dom";
-import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Image,
+  Button,
+  Dropdown
+} from "react-bootstrap";
 import NavBar from "./Navbar";
 import ProfileCard from "./Profilecard";
-import FilterCard from "./FilterCard.js";
+import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 
@@ -11,6 +19,54 @@ import * as filterActions from "../redux_store/actions/filterAction";
 import "../Styles/header.css";
 
 class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toggle = this.toggle.bind(this);
+    this.select = this.select.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
+    this.state = {
+      dropDownOpen: false,
+      gender: "Select Gender",
+      ageRange: { min: 20, max: 45 },
+      redirect: false
+    };
+  }
+
+  handleFilter = event => {
+    event.preventDefault();
+    let userGender = "";
+    if (this.state.gender === "Male") {
+      userGender = "M";
+    } else if (this.state.gender === "Female") {
+      userGender = "F";
+    }
+    this.props.setFilter(
+      userGender,
+      this.state.ageRange.min,
+      this.state.ageRange.max
+    );
+    console.log(this.props);
+    this.handleRedirect();
+  };
+
+  handleAgeRange = event => {
+    this.setState({ ageRange: event });
+  };
+
+  toggle = () => {
+    this.setState({ dropDownOpen: !this.state.dropDownOpen });
+  };
+
+  select = event => {
+    this.setState({
+      dropDownOpen: !this.state.dropDownOpen,
+      gender: event.target.innerText
+    });
+  };
+  handleRedirect() {
+    window.location.reload();
+  }
+
   componentDidMount() {
     this.props.getSuggestion();
   }
@@ -59,7 +115,70 @@ class Profile extends React.Component {
               <Container className="inner-scroll">{suggestionList}</Container>
             </Col>
             <Col id="profile-history">
-              <FilterCard />
+              <Card
+                className="profile-dashboard "
+                style={{ alignItems: "center" }}
+              >
+                <Card.Body style={{ justifyContent: "center" }}>
+                  <Card.Header as="h4">Filter Suggestion</Card.Header>
+                  <Container
+                    style={{
+                      padding: "15px",
+                      alignContent: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Container style={{ padding: "15px" }}>
+                      <Button
+                        pill
+                        style={{
+                          borderRadius: "25px",
+                          backgroundColor: "#242424",
+                          border: 0
+                        }}
+                        disabled
+                      >
+                        Set Age Range
+                      </Button>
+                    </Container>
+                    <Container style={{ padding: "15px" }}>
+                      <InputRange
+                        minValue={15}
+                        maxValue={50}
+                        name="Set Age range"
+                        value={this.state.ageRange}
+                        style={{ padding: "20px" }}
+                        onChange={event => this.handleAgeRange(event)}
+                      />
+                    </Container>
+                    <Container style={{ padding: "10px" }}>
+                      <Dropdown
+                        isOpen={this.state.dropDownOpen}
+                        toggle={this.toggle}
+                      >
+                        <Dropdown.Toggle caret>
+                          {this.state.gender}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={this.select}>
+                            Male
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={this.select}>
+                            Female
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Container>
+                    <Button
+                      className="btn-lg btn-block"
+                      id="button"
+                      onClick={this.handleFilter}
+                    >
+                      Filter
+                    </Button>
+                  </Container>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </div>
@@ -76,7 +195,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getSuggestion: () => dispatch(filterActions.getFriendSuggestion())
+    getSuggestion: () => dispatch(filterActions.getFriendSuggestion()),
+    setFilter: (gender, min_age, max_age) => {
+      dispatch(filterActions.initFilter(gender, min_age, max_age));
+    }
   };
 };
 
