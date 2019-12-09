@@ -21,7 +21,7 @@ djangorestframework-jwt = "*"
 drf-jwt = "*"
 djangorestframework-simplejwt = "*"
 redis = "*"
-django-extra-fields = "*"
+django-multiselectfield = "*"
 
 [requires]
 python_version = "3.7"
