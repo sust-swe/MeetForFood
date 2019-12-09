@@ -58,8 +58,6 @@ export const completeProfile = (
           birth_date,
           gender,
           what_you_crave_for,
-          userImage,
-          userID,
           settingID,
           dispatch
         );
