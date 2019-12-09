@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import "react-input-range/lib/css/index.css";
 
 import reducer from "./redux_store/reducers/authenticate";
 import dataReducer from "./redux_store/reducers/dataReducer";

@@ -31,7 +31,13 @@ const getDataFail = (state, action) => {
 const getUserData = (state, action) => {
   return updateObject(state, {
     data: action.data.data,
-    dataLoading: true
+    dataLoading: false
+  });
+};
+
+const setImage = (state, action) => {
+  return updateObject(state, {
+    dataLoading: false
   });
 };
 
@@ -45,6 +51,8 @@ const dataReducer = (state = initialState, action) => {
       return getDataFail(state, action);
     case actionType.GET_DATA:
       return getUserData(state, action);
+    case actionType.SET_IMAGE:
+      return setImage(state, action);
     default:
       return state;
   }

@@ -1,5 +1,6 @@
 import React from "react";
 import {} from "react-router-dom";
+import ImageLoader from "react-load-image";
 import { Container, Image, Card, Badge } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actions from "../redux_store/actions/dataAction";
@@ -8,9 +9,11 @@ import "../Styles/header.css";
 class ProfileCard extends React.Component {
   componentDidMount() {
     this.props.fetchUsers();
+    this.props.getImage();
   }
   render() {
-    console.log(this.props.users);
+    const token = localStorage.getItem("token");
+    console.log(token);
     return (
       <Card className="profile-dashboard " style={{ alignItems: "center" }}>
         <Image
@@ -54,7 +57,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers: () => dispatch(actions.getUser())
+    fetchUsers: () => dispatch(actions.getUser()),
+    getImage: () => dispatch(actions.getImage())
   };
 };
 
