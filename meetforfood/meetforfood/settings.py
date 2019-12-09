@@ -68,10 +68,10 @@ INSTALLED_APPS = [
     'profiles',
     'explorerestaurants',
     'friendship',  # Django friendship
-  # Django REST Framework
-    'rest_friendship', 
+    # Django REST Framework
+    'rest_friendship',
     'multiselectfield',
-     # Django REST Friendship
+    # Django REST Friendship
 
 ]
 
@@ -117,7 +117,7 @@ DATABASES = {
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
-        'PASSWORD': '1234'
+        'PASSWORD': '12345'
     }
 }
 

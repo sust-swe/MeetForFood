@@ -8,8 +8,10 @@ import "../Styles/header.css";
 
 class ProfileCard extends React.Component {
   componentDidMount() {
-    this.props.fetchUsers();
     this.props.getImage();
+  }
+  componentWillMount() {
+    this.props.fetchUsers();
   }
   render() {
     const token = localStorage.getItem("token");
@@ -24,7 +26,7 @@ class ProfileCard extends React.Component {
         />
         <Card.Body style={{ justifyContent: "center" }}>
           <Card.Title>
-            <h3 style={{ textAlign: "center" }}>{this.props.users.name}</h3>
+            {/* <h3 style={{ textAlign: "center" }}>{this.props.users.name}</h3> */}
             <h5 style={{ textAlign: "center" }}>Love to eat</h5>
           </Card.Title>
           <Card.Text>
@@ -39,7 +41,7 @@ class ProfileCard extends React.Component {
             </Container>
             <Container style={{ padding: "0", margin: "0" }}>
               <Badge pill variant="info">
-                {this.props.users.what_you_crave_for}
+                {/* {this.props.users.what_you_crave_for} */}
               </Badge>
             </Container>
           </Card.Text>
