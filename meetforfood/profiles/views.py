@@ -195,6 +195,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
         
+    def get_queryset(self):
+        return Image.objects.filter(user_profile=self.request.user)
+        
 class BioViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     http_method_names = ['post', 'put', 'get','delete']
