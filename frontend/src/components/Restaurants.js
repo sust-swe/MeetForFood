@@ -3,6 +3,7 @@ import "../Styles/header.css";
 import NavBar from "./Navbar";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import ProfileCard from "./Profilecard";
+import RestaurantCard from "./RestaurantCard";
 
 class Restaurants extends React.Component {
   render() {
@@ -14,7 +15,17 @@ class Restaurants extends React.Component {
             <Col sm={4}>
               <ProfileCard />
             </Col>
+
             <Col sm={8}>
+            <RestaurantCard />
+            <RestaurantCard />
+            <RestaurantCard />
+            <RestaurantCard />
+            </Col>
+            
+              
+
+            {/* <Col sm={8}>
               <h1 style={{ textAlign: "left", marginTop: "15px" }}>
                 Restaurants
               </h1>
@@ -31,7 +42,7 @@ class Restaurants extends React.Component {
                   </Col>
                 </Row>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>
