@@ -7,6 +7,12 @@ export const getDataSuccess = () => {
   };
 };
 
+export const setImageAction = () => {
+  return {
+    type: actionType.SET_IMAGE
+  };
+};
+
 export const getDataStart = () => {
   return {
     type: actionType.GET_DATA_START
@@ -46,6 +52,7 @@ export const completeProfile = (
       .then(response => {
         const settingID = response.data[0].id;
         const userID = response.data[0].user_profile;
+        console.log("userId " + userID);
         setAbout(
           phone_number,
           birth_date,
@@ -65,8 +72,6 @@ const setAbout = (
   birth_date,
   gender,
   what_you_crave_for,
-  userImage,
-  userID,
   settingId,
   dispatch
 ) => {
@@ -89,36 +94,76 @@ const setAbout = (
     )
     .then(response => {
       if (response.data != null) {
-        setImage(userID, userImage, token);
         dispatch(getDataSuccess());
       }
-      console.log(response.data);
     })
     .catch(err => {
       dispatch(getDataFail(err));
     });
 };
 
-const setImage = (userID, userImage, token) => {
-  let image = new FormData();
-  image.append("image", userImage);
-  axios
-    .post(
-      "http://127.0.0.1:8000/api/image/",
-      {
-        user_profile: userID,
-        image: image
-      },
-      {
+export const setImage = userImage => {
+  return dispatch => {
+    dispatch(getDataStart());
+    const token = localStorage.getItem("token");
+    console.log(token);
+    axios
+      .get("http://127.0.0.1:8000/api/profilesettings/", {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
+          authorization: `Bearer ${token}`
         }
+      })
+      .then(response => {
+        const userID = response.data[0].user_profile;
+        uploadImage(userImage, userID, token, dispatch);
+      });
+  };
+};
+
+export const getImage = () => {
+  return dispatch => {
+    dispatch(getDataStart());
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://127.0.0.1:8000/api/profilesettings/", {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        const userID = response.data[0].user_profile;
+        downloadImage(userID, token);
+      });
+  };
+};
+
+const downloadImage = (userID, token) => {
+  axios
+    .get("http://127.0.0.1:8000/api/image/", {
+      headers: {
+        authorization: `Bearer ${token}`
       }
-    )
+    })
     .then(response => {
-      console.log("image uploaded");
       console.log(response.data);
+    });
+};
+
+const uploadImage = (userImage, userID, token, dispatch) => {
+  const formData = new FormData();
+  formData.append("user_profile", userID);
+  formData.append("image", userImage, userImage.name);
+  axios
+    .post(`http://127.0.0.1:8000/api/image/`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.8",
+        "Content-Type": "multipart/form-data"
+      }
+    })
+    .then(response => {
+      dispatch(setImageAction());
     })
     .catch(err => {
       console.log(err);
