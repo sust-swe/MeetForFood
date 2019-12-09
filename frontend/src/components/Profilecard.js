@@ -12,6 +12,7 @@ class ProfileCard extends React.Component {
   }
   componentWillMount() {
     this.props.fetchUsers();
+    this.props.getImage();
   }
   render() {
     const token = localStorage.getItem("token");

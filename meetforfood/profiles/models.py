@@ -63,7 +63,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         """return string representation of User"""
-        return self.email
+        return self.name
 
 
 class ProfileSettings(models.Model):
