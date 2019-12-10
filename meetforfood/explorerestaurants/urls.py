@@ -10,7 +10,8 @@ routers.register('menu',views.MenuInfoViewSet)
 
 
 urlpatterns = [
-    path('',include(routers.urls))
+    path('',include(routers.urls)),
+    path('^menu/(?P<restaurantid>.+)/$', views.MenuInfoViewSet.as_view({'get': 'list'})),
 
 
-]
+] + routers.urls

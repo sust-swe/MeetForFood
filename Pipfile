@@ -22,6 +22,8 @@ drf-jwt = "*"
 djangorestframework-simplejwt = "*"
 redis = "*"
 django-multiselectfield = "*"
+django-filter = "*"
+six = "*"
 
 [requires]
 python_version = "3.7"
