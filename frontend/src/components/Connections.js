@@ -10,7 +10,9 @@ class Connections extends React.Component {
   componentWillMount() {
     this.props.getFriendList();
   }
+
   render() {
+    const host = "http://127.0.0.1:8000";
     const friendList = this.props.friendList.map(data => (
       <list key={data.id}>
         <Card
@@ -25,7 +27,7 @@ class Connections extends React.Component {
             style={{ display: "flex", justifyContent: "space-between" }}
           >
             <Image
-              src={require("../Images/photo.jpg")}
+              src={host + data.image}
               height="60px"
               width="60px"
               roundedCircle
@@ -42,7 +44,7 @@ class Connections extends React.Component {
           <NavBar />
         </Affix>
         <Row>
-          <Col xs={3} style={{ margin: "15px" }}>
+          <Col xs={3} style={{ margin: "15px" }} className="inner-scroll">
             {friendList}
           </Col>
           <Col>
