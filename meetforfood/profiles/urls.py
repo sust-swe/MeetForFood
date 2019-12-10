@@ -5,6 +5,7 @@ from profiles import views
 from django.views.decorators.csrf import csrf_exempt
 
 
+
 from rest_framework_simplejwt import views as jwt_view
 
 routers = DefaultRouter()
@@ -30,3 +31,5 @@ urlpatterns = [
     # path('login/', views.UserLoginApiView.as_view()),
     #path('authenticate/',csrf_exempt(CustomObtainAuthToken.as_view())),
 ] + routers.urls
+
+

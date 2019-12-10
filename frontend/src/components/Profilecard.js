@@ -7,27 +7,26 @@ import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class ProfileCard extends React.Component {
-  componentDidMount() {
-    this.props.getImage();
-  }
   componentWillMount() {
     this.props.fetchUsers();
     this.props.getImage();
+    console.log("props called");
   }
   render() {
     const token = localStorage.getItem("token");
     console.log(token);
+    console.log("image " + this.props.image);
     return (
       <Card className="profile-dashboard " style={{ alignItems: "center" }}>
         <Image
-          src={require("../Images/photo.jpg")}
+          src={this.props.image.image}
           height="150px"
           width="150px"
           roundedCircle
         />
         <Card.Body style={{ justifyContent: "center" }}>
           <Card.Title>
-            {/* <h3 style={{ textAlign: "center" }}>{this.props.users.name}</h3> */}
+            <h3 style={{ textAlign: "center" }}>{this.props.users.name}</h3>
             <h5 style={{ textAlign: "center" }}>Love to eat</h5>
           </Card.Title>
           <Card.Text>
@@ -42,7 +41,7 @@ class ProfileCard extends React.Component {
             </Container>
             <Container style={{ padding: "0", margin: "0" }}>
               <Badge pill variant="info">
-                {/* {this.props.users.what_you_crave_for} */}
+                {this.props.users.what_you_crave_for}
               </Badge>
             </Container>
           </Card.Text>
@@ -54,7 +53,8 @@ class ProfileCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.dataReducer.data
+    users: state.dataReducer.data,
+    image: state.dataReducer.image
   };
 };
 

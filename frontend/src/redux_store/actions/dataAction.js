@@ -13,6 +13,13 @@ export const setImageAction = () => {
   };
 };
 
+export const getImageData = data => {
+  return {
+    type: actionType.GET_IMAGE_SUCCESS,
+    data: { data }
+  };
+};
+
 export const getDataStart = () => {
   return {
     type: actionType.GET_DATA_START
@@ -58,8 +65,6 @@ export const completeProfile = (
           birth_date,
           gender,
           what_you_crave_for,
-          userImage,
-          userID,
           settingID,
           dispatch
         );
@@ -115,6 +120,7 @@ export const setImage = userImage => {
       })
       .then(response => {
         const userID = response.data[0].user_profile;
+        console.log(userID);
         uploadImage(userImage, userID, token, dispatch);
       });
   };
@@ -132,12 +138,12 @@ export const getImage = () => {
       })
       .then(response => {
         const userID = response.data[0].user_profile;
-        downloadImage(userID, token);
+        downloadImage(userID, token, dispatch);
       });
   };
 };
 
-const downloadImage = (userID, token) => {
+const downloadImage = (userID, token, dispatch) => {
   axios
     .get("http://127.0.0.1:8000/api/image/", {
       headers: {
@@ -146,6 +152,7 @@ const downloadImage = (userID, token) => {
     })
     .then(response => {
       console.log(response.data);
+      dispatch(getImageData(response.data[0]));
     });
 };
 
@@ -163,6 +170,7 @@ const uploadImage = (userImage, userID, token, dispatch) => {
       }
     })
     .then(response => {
+      console.log(response.data);
       dispatch(setImageAction());
     })
     .catch(err => {

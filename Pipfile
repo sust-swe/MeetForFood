@@ -24,6 +24,7 @@ redis = "*"
 django-multiselectfield = "*"
 django-filter = "*"
 six = "*"
-
+channels = "*"
+channels-redis = "*"
 [requires]
 python_version = "3.7"

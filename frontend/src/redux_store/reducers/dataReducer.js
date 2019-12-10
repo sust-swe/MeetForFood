@@ -3,6 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   data: [],
+  image: {},
   dataError: null,
   dataLoading: false
 };
@@ -41,6 +42,13 @@ const setImage = (state, action) => {
   });
 };
 
+const getImage = (state, action) => {
+  return updateObject(state, {
+    image: action.data.data,
+    dataLoading: false
+  });
+};
+
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_DATA_START:
@@ -53,6 +61,8 @@ const dataReducer = (state = initialState, action) => {
       return getUserData(state, action);
     case actionType.SET_IMAGE:
       return setImage(state, action);
+    case actionType.GET_IMAGE_SUCCESS:
+      return getImage(state, action);
     default:
       return state;
   }
