@@ -31,6 +31,14 @@ div.scroll {
   margin: 1em 0;
 }
 
+.vertical_divider {
+  display: block;
+  height: 500px;
+  border: 0;
+  border-left: 3px solid rgba(158, 0, 139, 1);
+  margin: 1em 0;
+}
+
 .inner-scroll {
   overflow-y: scroll;
   height: 460px;
@@ -85,6 +93,12 @@ div.scroll {
 
 #normal_button {
   background: #9e008b;
+  border: 0;
+  border-radius: 25px;
+}
+
+#inner-button {
+  background: #242424;
   border: 0;
   border-radius: 25px;
 }

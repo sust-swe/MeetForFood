@@ -46,8 +46,8 @@ export class NavBar extends React.Component {
           <NavLink to="/restaurants" style={{ textDecoration: "none" }}>
             <Nav.Item className="menuItem">Explore Restaurants</Nav.Item>
           </NavLink>
-          <NavLink to="/inbox" style={{ textDecoration: "none" }}>
-            <Nav.Item className="menuItem">Inbox</Nav.Item>
+          <NavLink to="/connections" style={{ textDecoration: "none" }}>
+            <Nav.Item className="menuItem">Connections</Nav.Item>
           </NavLink>
           <NavLink to="/friendrequest" style={{ textDecoration: "none" }}>
             <Nav.Item className="menuItem">Friend request</Nav.Item>

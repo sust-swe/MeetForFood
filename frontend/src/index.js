@@ -10,15 +10,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-input-range/lib/css/index.css";
+import "./Styles/header.css";
 
 import reducer from "./redux_store/reducers/authenticate";
 import dataReducer from "./redux_store/reducers/dataReducer";
 import filterReducer from "./redux_store/reducers/filterReducer";
+import friendRequestReducer from "./redux_store/reducers/friendRequestReducer";
 
 const masterReducer = combineReducers({
   authenticate: reducer,
   dataReducer: dataReducer,
-  filterReducer: filterReducer
+  filterReducer: filterReducer,
+  friendRequestReducer: friendRequestReducer
 });
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
