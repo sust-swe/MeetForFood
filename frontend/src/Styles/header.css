@@ -89,6 +89,12 @@ div.scroll {
   border-radius: 25px;
 }
 
+#inner-button {
+  background: #242424;
+  border: 0;
+  border-radius: 25px;
+}
+
 #navtheme {
   overflow: hidden;
   min-height: 60px;

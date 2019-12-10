@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { Affix } from "antd";
 
 import * as filterActions from "../redux_store/actions/filterAction";
+import * as requestAction from "../redux_store/actions/friendRequest";
 import "../Styles/header.css";
 
 class Profile extends React.Component {
@@ -28,7 +29,8 @@ class Profile extends React.Component {
       dropDownOpen: false,
       gender: "Select Gender",
       ageRange: { min: 20, max: 45 },
-      redirect: false
+      redirect: false,
+      requestButton: "Send Request"
     };
   }
 
@@ -67,9 +69,15 @@ class Profile extends React.Component {
     window.location.reload();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getSuggestion();
   }
+
+  sendRequest = requestID => {
+    console.log(requestID);
+    this.props.sendRequest(requestID);
+  };
+
   render() {
     const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
@@ -86,9 +94,13 @@ class Profile extends React.Component {
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Card.Text>{data.email}</Card.Text>
-            <Card.Body style={{ display: "flex" }}>
-              <Button>Send Request</Button>
+            <Card.Body style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                id="normal_button"
+                onClick={() => this.sendRequest(data.email)}
+              >
+                {this.state.requestButton}
+              </Button>
             </Card.Body>
           </Card.Body>
         </Card>
@@ -198,6 +210,9 @@ const mapDispatchToProps = dispatch => {
     getSuggestion: () => dispatch(filterActions.getFriendSuggestion()),
     setFilter: (gender, min_age, max_age) => {
       dispatch(filterActions.initFilter(gender, min_age, max_age));
+    },
+    sendRequest: requestID => {
+      dispatch(requestAction.sendRequest(requestID));
     }
   };
 };
