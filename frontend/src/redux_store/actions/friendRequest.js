@@ -142,3 +142,24 @@ export const sendRequest = requestID => {
       });
   };
 };
+
+export const getFriendList = () => {
+  return dispatch => {
+    dispatch(getListStart());
+    const token = localStorage.getItem("token");
+    console.log("accesing friend list");
+    axios
+      .get("http://127.0.0.1:8000/api/friends/", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        dispatch(getListSuccess(response.data));
+      })
+      .catch(err => {
+        dispatch(getListFail(err));
+      });
+  };
+};
