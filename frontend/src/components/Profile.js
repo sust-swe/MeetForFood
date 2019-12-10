@@ -82,27 +82,28 @@ class Profile extends React.Component {
     const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>
-          <Card.Header id="suggested-profile-header">
-            <Image
-              src={require("../Images/photo.jpg")}
-              height="60px"
-              width="60px"
-              roundedCircle
-            />
-            <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
-              {data.name}
-            </Card.Title>
+          <Card.Header
+            id="suggested-profile-header"
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <div style={{ display: "flex" }}>
+              <Image
+                src={require("../Images/photo.jpg")}
+                height="60px"
+                width="60px"
+                roundedCircle
+              />
+              <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
+                {data.name}
+              </Card.Title>
+            </div>
+            <Button
+              id="normal_button"
+              onClick={() => this.sendRequest(data.email)}
+            >
+              {this.state.requestButton}
+            </Button>
           </Card.Header>
-          <Card.Body>
-            <Card.Body style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                id="normal_button"
-                onClick={() => this.sendRequest(data.email)}
-              >
-                {this.state.requestButton}
-              </Button>
-            </Card.Body>
-          </Card.Body>
         </Card>
       </list>
     ));

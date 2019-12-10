@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     # Django REST Framework
     'rest_friendship',
     'multiselectfield',
+    'channels'
     # Django REST Friendship
 
 ]
@@ -139,6 +140,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+ASGI_APPLICATION = "chat.channels_app.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://localhost:6379/4']
+        }
+    },
+}
 
 
 # Internationalization
