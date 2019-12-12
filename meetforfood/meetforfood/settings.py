@@ -38,6 +38,8 @@ REST_FRAMEWORK = {
         #     'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 # REST_USE_JWT = True
@@ -71,7 +73,8 @@ INSTALLED_APPS = [
     # Django REST Framework
     'rest_friendship',
     'multiselectfield',
-    'channels'
+    'six',
+    'django_filters',
     # Django REST Friendship
 
 ]
@@ -118,7 +121,7 @@ DATABASES = {
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
-        'PASSWORD': '12345'
+        'PASSWORD': '1234'
     }
 }
 

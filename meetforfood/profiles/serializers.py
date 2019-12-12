@@ -7,7 +7,7 @@ from friendship.models import FriendshipRequest
 class ProfileSerializer(serializers.ModelSerializer):
 
     #profiles = serializers.StringRelatedField(many=False)
-    image = serializers.ImageField(source = "image.image",allow_null = True,use_url =True,required = False)
+    image = serializers.ImageField(source = "image.image",allow_null = True,required = False)
     class Meta:
         model = models.UserProfile
         fields = ('id','name','image','email','password')
