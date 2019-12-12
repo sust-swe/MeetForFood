@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     'multiselectfield',
     'six',
     'django_filters',
-    'channels'
     # Django REST Friendship
 
 ]
