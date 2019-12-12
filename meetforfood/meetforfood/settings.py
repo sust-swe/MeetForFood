@@ -164,5 +164,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'profiles.UserProfile'
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+STREAM_API_KEY = 'fr3fxt3yfjhd'
+STREAM_API_SECRET = 'nyfktg2cc2gaep2n6ryp8t8u9n6dzapqgyymc7bntn5s85cm4r68bts6ha7cezhc'
