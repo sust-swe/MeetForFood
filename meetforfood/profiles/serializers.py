@@ -3,6 +3,15 @@ from rest_framework import serializers
 from profiles import models
 from friendship.models import FriendshipRequest
 
+from rest_framework.authtoken.models import Token
+
+
+from stream_chat import StreamChat
+
+from django.conf import settings
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -25,6 +34,55 @@ class ProfileSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # # Add custom claims
+        # token['name'] = user.name
+        # # ...
+
+        return token
+    
+    def validate(self,attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        
+        client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
+        token = client.create_token(self.user.id)
+        
+        data['stream-token'] = token
+
+        # Add extra responses here
+        # data['username'] = self.user.username
+        # data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
+    
+
+class CustomTokenSerializer(serializers.ModelSerializer):
+    auth_token = serializers.CharField(source="key")
+
+    class Meta:
+        model = Token
+        fields = ("auth_token",)
+        
+class StreamTokenSerializer(CustomTokenSerializer):
+    stream_token = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Token
+        fields = ('auth_token','stream_token')
+
+    def get_stream_token(self, obj):
+        client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
+        token = client.create_token(obj.user.id)
+
+        return token
 
 
 class ProfileAboutItemSerializer(serializers.ModelSerializer):

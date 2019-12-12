@@ -30,7 +30,9 @@ from django.db.models import Q
 #from django_filters.rest_framework import DjangoFilterBackend
 
 from friendship.models import Friend, FriendshipRequest
-from .serializers import FriendshipRequestSerializer
+from .serializers import FriendshipRequestSerializer,MyTokenObtainPairSerializer
+
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 config = apps.get_app_config('rest_friendship')
@@ -59,6 +61,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
     
 class ProfileAboutItemView(APIView):
     permission_classes = [IsAuthenticated]
