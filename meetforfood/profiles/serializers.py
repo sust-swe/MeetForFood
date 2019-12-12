@@ -41,11 +41,27 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
-        token['name'] = user.name
-        # ...
+        # # Add custom claims
+        # token['name'] = user.name
+        # # ...
 
         return token
+    
+    def validate(self,attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        
+        client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
+        token = client.create_token(self.user.id)
+        
+        data['stream-token'] = token
+
+        # Add extra responses here
+        # data['username'] = self.user.username
+        # data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
     
 
 class CustomTokenSerializer(serializers.ModelSerializer):
