@@ -12,7 +12,7 @@ from rest_framework import status
 # from django_filters import rest_framework as filters
 
 
-from django_filters import rest_framework as filterss
+# from django_filters import rest_framework as filterss
 
 
 class RestaurantInfoViewSet(viewsets.ModelViewSet):
