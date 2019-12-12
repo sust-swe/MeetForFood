@@ -22,7 +22,7 @@ routers.register('friendrequests', views.FriendshipRequestViewSet,
 
 
 urlpatterns = [
-    path('token/', jwt_view.TokenObtainPairView.as_view(), name='token_obtain'),
+    path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain'),
     path('token/refresh/', jwt_view.TokenRefreshView.as_view(), name='token_refresh'),
     path('profilecard/', views.ProfileAboutItemView.as_view()),
     # path('profilecreate/', views.ProfileAboutItemPostView.as_view()),
