@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 //import { DatePicker } from "antd";
-import ImageUploader from "react-images-upload";
+// import ImageUploader from "react-images-upload";
 import PhoneInput from "react-phone-number-input";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
