@@ -40,6 +40,13 @@ export const getData = data => {
   };
 };
 
+export const getRestaurantData = data => {
+  return {
+    type: actionType.GET_RESTAURANTS_DATA,
+    data: data
+  };
+};
+
 export const completeProfile = (
   phone_number,
   birth_date,
@@ -190,6 +197,20 @@ export const getUser = () => {
       })
       .then(response => {
         dispatch(getData(response.data[0]));
+      })
+      .catch(err => {
+        dispatch(getDataFail(err));
+      });
+  };
+};
+
+export const getRestaurants = () => {
+  return dispatch => {
+    dispatch(getDataStart());
+    axios
+      .get("http://127.0.0.1:8000/restaurantapi/restaurants/")
+      .then(response => {
+        dispatch(getRestaurantData(response.data));
       })
       .catch(err => {
         dispatch(getDataFail(err));

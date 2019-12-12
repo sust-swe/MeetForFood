@@ -62,6 +62,23 @@ div.scroll {
   position: absolute;
 }
 
+.side-by-side {
+  display: flex;
+  float: left;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  margin: 2px;
+}
+
+.card_background {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: "10px";
+  display: "flex";
+  flex-direction: column;
+}
+
 .menuItem {
   color: white !important;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
