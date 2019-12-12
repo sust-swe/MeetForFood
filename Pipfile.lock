@@ -345,11 +345,11 @@
         },
         "phonenumbers": {
             "hashes": [
-                "sha256:964ecfcf261b98fa7a749ddabd289a484bef9ed8be42d2ed46c35c68c44683bd",
-                "sha256:975f1638a743ef53f1b80a8440159047f79ce484f28704b61479e119acc0a503"
+                "sha256:239507184ee5b1b83557005af1d5fcce70f83ae18f5dff45b94a67226db10d63",
+                "sha256:aaa19bc1f2c7efbf7a94be33558e0c5b71620377c9271692d3e314c558962460"
             ],
             "index": "pypi",
-            "version": "==8.11.0"
+            "version": "==8.11.1"
         },
         "pillow": {
             "hashes": [
@@ -422,7 +422,8 @@
         },
         "pycparser": {
             "hashes": [
-                "sha256:a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3"
+                "sha256:a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3",
+                "sha256:eae2ebd6e0a0c2b2e97439780b4d90acf887dab006d6b9a9c5f892df9b4a7251"
             ],
             "version": "==2.19"
         },
