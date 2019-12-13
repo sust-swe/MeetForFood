@@ -26,6 +26,18 @@ export const getDataStart = () => {
   };
 };
 
+export const getProfileDataStart = () => {
+  return {
+    type: actionType.GET_PROFILE_DATA_START
+  };
+};
+
+export const getProfileDataSuccess = () => {
+  return {
+    type: actionType.GET_PROFILE_DATA_SUCCESS
+  };
+};
+
 export const getDataFail = error => {
   return {
     type: actionType.GET_DATA_FAIL,
@@ -187,7 +199,7 @@ const uploadImage = (userImage, userID, token, dispatch) => {
 
 export const getUser = () => {
   return dispatch => {
-    dispatch(getDataStart());
+    dispatch(getProfileDataStart());
     const token = localStorage.getItem("token");
     axios
       .get("http://127.0.0.1:8000/api/profileaboutitem/", {
@@ -197,6 +209,7 @@ export const getUser = () => {
       })
       .then(response => {
         dispatch(getData(response.data[0]));
+        dispatch(getProfileDataSuccess());
       })
       .catch(err => {
         dispatch(getDataFail(err));
@@ -207,8 +220,9 @@ export const getUser = () => {
 export const getRestaurants = () => {
   return dispatch => {
     dispatch(getDataStart());
+    console.log("getting restaurants");
     axios
-      .get("http://127.0.0.1:8000/restaurantapi/restaurants/")
+      .get("http://127.0.0.1:8000/restaurantapi/restaurant/")
       .then(response => {
         dispatch(getRestaurantData(response.data));
       })

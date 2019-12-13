@@ -11,6 +11,7 @@ import { Affix } from "antd";
 class Restaurants extends React.Component {
   componentWillMount() {
     this.props.getRestaurant();
+    console.log("calling restaurants");
   }
   render() {
     const restaurants = this.props.restaurant.map(data => (
@@ -64,6 +65,7 @@ class Restaurants extends React.Component {
         </Card>
       </Col>
     ));
+    console.log("accessing restaurants");
     return (
       <div>
         <Affix offsetTop={0}>
@@ -71,16 +73,17 @@ class Restaurants extends React.Component {
         </Affix>
         <Container style={{ margin: "0" }}>
           <Row>
-            <Col xs={3}>
+            <Col xs={4}>
               <Affix offsetTop={90}>
                 <ProfileCard />
               </Affix>
             </Col>
-            <Col>
+            <Col xs={5}>
               <div style={{ paddingTop: "50px" }}>
                 <Container className="inner-scroll">{restaurants}</Container>
               </div>
             </Col>
+            <Col xs={2}></Col>
           </Row>
         </Container>
       </div>

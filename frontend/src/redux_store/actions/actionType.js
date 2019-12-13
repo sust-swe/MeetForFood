@@ -4,6 +4,8 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
 export const GET_DATA_START = "GET_DATA_START";
+export const GET_PROFILE_DATA_START = "GET_PROFILE_DATA_START";
+export const GET_PROFILE_DATA_SUCCESS = "GET_PROFILE_DATA_SUCCESS";
 export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
 export const GET_DATA_FAIL = "GET_DATA_FAIL";
 export const GET_DATA = "GET_DATA";

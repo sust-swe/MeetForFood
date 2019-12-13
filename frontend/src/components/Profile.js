@@ -14,6 +14,7 @@ import ProfileCard from "./Profilecard";
 import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
+import { DualRing } from "react-spinners-css";
 
 import * as filterActions from "../redux_store/actions/filterAction";
 import * as requestAction from "../redux_store/actions/friendRequest";
@@ -30,7 +31,9 @@ class Profile extends React.Component {
       gender: "Select Gender",
       ageRange: { min: 20, max: 45 },
       redirect: false,
-      requestButton: "Send Request"
+      requestButton: "Send Request",
+      loading: true,
+      suggestionLoading: true
     };
   }
 
@@ -71,6 +74,8 @@ class Profile extends React.Component {
 
   componentWillMount() {
     this.props.getSuggestion();
+    this.setState({ loading: this.props.profileLoading });
+    this.setState({ loading: this.props.suggestionLoading });
   }
 
   sendRequest = requestID => {
@@ -78,7 +83,14 @@ class Profile extends React.Component {
     this.props.sendRequest(requestID);
   };
 
+  componentDidMount() {
+    this.setState({ loading: this.props.profileLoading });
+    this.setState({ loading: this.props.suggestionLoading });
+  }
+
   render() {
+    console.log(this.loading);
+
     const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>
@@ -108,6 +120,7 @@ class Profile extends React.Component {
       </list>
     ));
     console.log(this.props.userSuggestion);
+    console.log(this.props.profileLoading);
     return (
       <div>
         <Affix offsetTop={0}>
@@ -117,7 +130,13 @@ class Profile extends React.Component {
           <Row>
             <Col xs={3}>
               <Affix offsetTop={90}>
-                <ProfileCard />
+                {this.loading ? (
+                  <DualRing
+                    style={{ display: "flex", justifyContent: "center" }}
+                  />
+                ) : (
+                  <ProfileCard />
+                )}
               </Affix>
             </Col>
             <Col xs={6} id="profile-history">
@@ -125,7 +144,9 @@ class Profile extends React.Component {
                 Suggested friends
               </h2>
               <div className="divider"></div>
-              <Container className="inner-scroll">{suggestionList}</Container>
+              <Container className="inner-scroll">
+                {this.suggestionLoading ? <DualRing /> : suggestionList}
+              </Container>
             </Col>
             <Col id="profile-history">
               <Card
@@ -202,7 +223,9 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    userSuggestion: state.filterReducer.suggestion
+    userSuggestion: state.filterReducer.suggestion,
+    profileLoading: state.dataReducer.profileLoading,
+    suggestionLoading: state.filterReducer.filterLoading
   };
 };
 

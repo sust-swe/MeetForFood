@@ -6,13 +6,28 @@ const initialState = {
   image: {},
   restaurants: [],
   dataError: null,
-  dataLoading: false
+  dataLoading: false,
+  profileLoading: false
 };
 
 const getDataStart = (state, action) => {
   return updateObject(state, {
     dataError: null,
     dataLoading: true
+  });
+};
+
+const getProfileDataStart = (state, action) => {
+  return updateObject(state, {
+    dataError: null,
+    profileLoading: true
+  });
+};
+
+const getProfileDataSuccess = (state, action) => {
+  return updateObject(state, {
+    dataError: null,
+    profileLoading: false
   });
 };
 
@@ -61,6 +76,10 @@ const dataReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_DATA_START:
       return getDataStart(state, action);
+    case actionType.GET_PROFILE_DATA_START:
+      return getProfileDataStart(state, action);
+    case actionType.GET_PROFILE_DATA_SUCCESS:
+      return getProfileDataSuccess(state, action);
     case actionType.GET_DATA_SUCCESS:
       return getDataSuccess(state, action);
     case actionType.GET_DATA_FAIL:
