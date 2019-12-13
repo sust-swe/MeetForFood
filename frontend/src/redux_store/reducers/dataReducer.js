@@ -4,6 +4,7 @@ import { updateObject } from "../utility";
 const initialState = {
   data: [],
   image: {},
+  restaurants: [],
   dataError: null,
   dataLoading: false
 };
@@ -49,6 +50,13 @@ const getImage = (state, action) => {
   });
 };
 
+const getRestaurants = (state, action) => {
+  return updateObject(state, {
+    restaurants: action.data,
+    dataLoading: false
+  });
+};
+
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_DATA_START:
@@ -63,6 +71,8 @@ const dataReducer = (state = initialState, action) => {
       return setImage(state, action);
     case actionType.GET_IMAGE_SUCCESS:
       return getImage(state, action);
+    case actionType.GET_RESTAURANTS_DATA:
+      return getRestaurants(state, action);
     default:
       return state;
   }

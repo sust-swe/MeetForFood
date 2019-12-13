@@ -7,6 +7,7 @@ export const GET_DATA_START = "GET_DATA_START";
 export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
 export const GET_DATA_FAIL = "GET_DATA_FAIL";
 export const GET_DATA = "GET_DATA";
+export const GET_RESTAURANTS_DATA = "GET_RESTAURANTS_DATA";
 export const SET_IMAGE = "SET_IMAGE";
 
 export const GET_FILTER_START = " GET_FILTER_START";
