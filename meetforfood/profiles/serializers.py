@@ -56,7 +56,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
         token = client.create_token(self.user.id)
         
-        data['stream-token'] = token
+        data['stream'] = token
 
         # Add extra responses here
         # data['username'] = self.user.username
