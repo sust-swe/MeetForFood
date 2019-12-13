@@ -52,9 +52,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         refresh = self.get_token(self.user)
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
+
+        id1 = str(self.user.id)
         
         client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
-        token = client.create_token(self.user.id)
+        token = client.create_token(id1)
         
         data['stream'] = token
 

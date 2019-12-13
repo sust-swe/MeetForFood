@@ -14,6 +14,7 @@ const login = (email, password, dispatch, id) => {
       const authToken = response.data.access;
       const streamToken = response.data;
       console.log("analyze token" + streamToken);
+      localStorage.setItem("stream", response.data.stream);
       localStorage.setItem("token", authToken);
       setDefaultFilter(id, authToken);
       dispatch(authSuccess(authToken));
@@ -63,6 +64,7 @@ export const authFail = error => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("stream");
   return {
     type: actionType.AUTH_LOGOUT
   };

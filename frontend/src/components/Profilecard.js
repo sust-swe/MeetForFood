@@ -4,28 +4,43 @@ import ImageLoader from "react-load-image";
 import { Container, Image, Card, Badge } from "react-bootstrap";
 import { connect } from "react-redux";
 import { ClipLoader } from "react-spinners";
+import { DualRing } from "react-spinners-css";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class ProfileCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true
+    };
+  }
   componentWillMount() {
     this.props.fetchUsers();
     this.props.getImage();
+    this.setState({ loading: this.props.imageLoading });
     console.log("props called");
+  }
+  componentDidMount() {
+    this.setState({ loading: this.props.imageLoading });
   }
   render() {
     const token = localStorage.getItem("token");
     console.log(token);
-    console.log("image " + this.props.image.image);
     return (
       <div>
         <Card className="profile-dashboard " style={{ alignItems: "center" }}>
-          <Image
-            src={this.props.image.image}
-            height="150px"
-            width="150px"
-            roundedCircle
-          />
+          {this.props.imageLoading ? (
+            <DualRing />
+          ) : (
+            <Image
+              src={this.props.image.image}
+              height="150px"
+              width="150px"
+              roundedCircle
+            />
+          )}
+
           <Card.Body style={{ justifyContent: "center" }}>
             <Card.Title>
               <h3 style={{ textAlign: "center" }}>{this.props.users.name}</h3>
@@ -57,7 +72,8 @@ class ProfileCard extends React.Component {
 const mapStateToProps = state => {
   return {
     users: state.dataReducer.data,
-    image: state.dataReducer.image
+    image: state.dataReducer.image,
+    imageLoading: state.dataReducer.imageLoading
   };
 };
 

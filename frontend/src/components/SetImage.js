@@ -69,8 +69,9 @@ class SetImage extends React.Component {
               <h4>Select Profile Picture</h4>
             </CardHeader>
             <CardBody style={{ alignContent: "center" }}>
-              <Form onSubmit={event => this.handleSubmit(event)}>
+              <Form onSubmit={event => this.handleSubmit(event)} noValidate>
                 <ImageUploader
+                  name="image"
                   withIcon={true}
                   buttonText="Choose Image"
                   onChange={this.handleChangeImage}

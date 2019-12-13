@@ -13,9 +13,15 @@ export const setImageAction = () => {
   };
 };
 
+export const getImageDataStart = data => {
+  return {
+    type: actionType.GET_IMAGE_DATA_START
+  };
+};
+
 export const getImageData = data => {
   return {
-    type: actionType.GET_IMAGE_SUCCESS,
+    type: actionType.GET_IMAGE_DATA_SUCCESS,
     data: { data }
   };
 };
@@ -163,6 +169,7 @@ export const getImage = () => {
 };
 
 const downloadImage = (userID, token, dispatch) => {
+  dispatch(getImageDataStart());
   axios
     .get("http://127.0.0.1:8000/api/image/", {
       headers: {

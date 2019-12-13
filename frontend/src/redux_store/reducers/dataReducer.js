@@ -7,7 +7,8 @@ const initialState = {
   restaurants: [],
   dataError: null,
   dataLoading: false,
-  profileLoading: false
+  profileLoading: false,
+  imageLoading: false
 };
 
 const getDataStart = (state, action) => {
@@ -45,6 +46,12 @@ const getDataFail = (state, action) => {
   });
 };
 
+const getImageDataStart = (state, action) => {
+  return updateObject(state, {
+    imageLoading: true
+  });
+};
+
 const getUserData = (state, action) => {
   return updateObject(state, {
     data: action.data.data,
@@ -61,7 +68,7 @@ const setImage = (state, action) => {
 const getImage = (state, action) => {
   return updateObject(state, {
     image: action.data.data,
-    dataLoading: false
+    imageLoading: false
   });
 };
 
@@ -88,7 +95,9 @@ const dataReducer = (state = initialState, action) => {
       return getUserData(state, action);
     case actionType.SET_IMAGE:
       return setImage(state, action);
-    case actionType.GET_IMAGE_SUCCESS:
+    case actionType.GET_IMAGE_DATA_START:
+      return getImageDataStart(state, action);
+    case actionType.GET_IMAGE_DATA_SUCCESS:
       return getImage(state, action);
     case actionType.GET_RESTAURANTS_DATA:
       return getRestaurants(state, action);

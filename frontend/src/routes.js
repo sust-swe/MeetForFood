@@ -7,6 +7,7 @@ import Profile from "./components/Profile";
 import Info from "./components/profileInfo";
 import SetImage from "./components/SetImage";
 import Connections from "./components/Connections";
+import ChatComp from "./components/ChatComp";
 import FriendRequests from "./components/FriendRequest";
 
 export const BaseRouter = () => (
@@ -15,7 +16,7 @@ export const BaseRouter = () => (
     <Route exact path="/restaurants" component={Restaurants} />
     <Route exact path="/profileinfo" component={Info} />
     <Route exact path="/setimage" component={SetImage} />
-    <Route exact path="/connections" component={Connections} />
+    <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/friendrequest" component={FriendRequests} />
   </Switch>
 );

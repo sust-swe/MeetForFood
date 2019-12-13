@@ -15,9 +15,11 @@ import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 import { DualRing } from "react-spinners-css";
+import jwt_decode from "jwt-decode";
 
 import * as filterActions from "../redux_store/actions/filterAction";
 import * as requestAction from "../redux_store/actions/friendRequest";
+import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 
 class Profile extends React.Component {
@@ -78,6 +80,14 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
+  getGender = gender => {
+    if (gender === "M") {
+      return "Male";
+    } else if (gender === "F") {
+      return "Female";
+    }
+  };
+
   sendRequest = requestID => {
     console.log(requestID);
     this.props.sendRequest(requestID);
@@ -88,9 +98,15 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
-  render() {
-    console.log(this.loading);
+  decode(tkn) {
+    const dc = jwt_decode(tkn);
+    console.log(dc);
+  }
 
+  render() {
+    const token = localStorage.getItem("stream");
+    console.log("stream:  " + token);
+    this.decode(token);
     const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>
@@ -106,7 +122,11 @@ class Profile extends React.Component {
                 roundedCircle
               />
               <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
-                {data.name}
+                <div>
+                  <h4>{data.name}</h4>
+                  <h6>Age: {data.user_age}</h6>
+                  <h6>Gender: {this.getGender(data.gender)}</h6>
+                </div>
               </Card.Title>
             </div>
             <Button
@@ -237,7 +257,8 @@ const mapDispatchToProps = dispatch => {
     },
     sendRequest: requestID => {
       dispatch(requestAction.sendRequest(requestID));
-    }
+    },
+    getImage: () => dispatch(actions.getImage())
   };
 };
 

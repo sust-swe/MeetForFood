@@ -169,5 +169,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-STREAM_API_KEY = 'fr3fxt3yfjhd'
-STREAM_API_SECRET = 'nyfktg2cc2gaep2n6ryp8t8u9n6dzapqgyymc7bntn5s85cm4r68bts6ha7cezhc'
+STREAM_API_KEY = 'vzr8e3ge8km4'
+STREAM_API_SECRET = '62fzhncffejtwmwhruxa9nczfueertpeq24uyab9vrewg7s7jtxyrhe84r5rfhds'
