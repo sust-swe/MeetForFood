@@ -15,7 +15,6 @@ import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 import { DualRing } from "react-spinners-css";
-import jwt_decode from "jwt-decode";
 
 import * as filterActions from "../redux_store/actions/filterAction";
 import * as requestAction from "../redux_store/actions/friendRequest";
@@ -98,15 +97,10 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
-  decode(tkn) {
-    const dc = jwt_decode(tkn);
-    console.log(dc);
-  }
 
   render() {
     const token = localStorage.getItem("stream");
     console.log("stream:  " + token);
-    this.decode(token);
     const suggestionList = this.props.userSuggestion.map(data => (
       <list key={data.id}>
         <Card style={{ margin: "15px" }}>

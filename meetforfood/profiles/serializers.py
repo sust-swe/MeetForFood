@@ -12,6 +12,8 @@ from django.conf import settings
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from django.contrib.auth.hashers import make_password
+
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -23,7 +25,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'style': {'input_type': 'password'}
+                'style': {'input_type': 'password'},
+                'min_length': 6,
+                'max_length': 32
             }
         }
 
