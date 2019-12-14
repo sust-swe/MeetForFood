@@ -7,7 +7,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-datepicker/dist/react-datepicker.css";
-import "react-phone-number-input/style.css";
+import "react-phone-input-2/lib/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-input-range/lib/css/index.css";
 import "./Styles/header.css";

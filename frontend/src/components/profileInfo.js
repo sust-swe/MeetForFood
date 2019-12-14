@@ -2,10 +2,9 @@ import React from "react";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import DatePicker from "react-datepicker";
-//import { DatePicker } from "antd";
-// import ImageUploader from "react-images-upload";
-import PhoneInput from "react-phone-number-input";
+import { Ripple } from "react-spinners-css";
+import * as dataActions from "../redux_store/actions/dataAction";
+import PhoneInput from "react-phone-input-2";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
 import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
@@ -22,7 +21,9 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  CardHeader,
+  FormFeedback
 } from "reactstrap";
 
 class Info extends React.Component {
@@ -32,34 +33,113 @@ class Info extends React.Component {
     this.select = this.select.bind(this);
     this.handleRedirect = this.handleRedirect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChangeImage = this.handleChangeImage.bind(this);
     this.state = {
       dropDownOpen: false,
-      gender: "Select Gender",
+      gender: "Male",
       phoneNumber: "",
+      phoneNumberValid: false,
       foodChoice: "",
+      foodChoiceError: false,
       redirect: false,
-      image: [],
-      birthDate: new Date()
+      loading: false,
+      birthDate: "",
+      birthDateError: false,
+      buttonDisabled: true
     };
   }
 
+  formValidation(phone, birthDate, foodChoice) {
+    if (phone || birthDate || foodChoice) {
+      console.log("phone " + phone);
+      console.log("birthDate " + birthDate);
+      console.log("foodChoice " + foodChoice);
+      return true;
+    } else if (
+      this.state.phoneNumber === "" ||
+      this.state.foodChoice === "" ||
+      this.state.birthDate === ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  birthDateValidation(selectedDate) {
+    let date = new Date();
+    date = this.formatDate(date);
+    const currentYear = moment(date).format("YYYY");
+    const year = moment(selectedDate).format("YYYY");
+    console.log(year);
+    if (currentYear - year <= 17) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  phoneNumberValidity(phoneNum) {
+    console.log(phoneNum.length);
+    if (phoneNum.length > 14 || phoneNum.length < 14) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   handleChangePhoneNumber = event => {
-    this.setState({ phoneNumber: event });
+    console.log(event);
+    console.log(this.phoneNumberValidity(event));
+    this.setState({
+      phoneNumber: event,
+      phoneNumberValid: this.phoneNumberValidity(event),
+      buttonDisabled: this.formValidation(
+        this.phoneNumberValidity(event),
+        this.state.birthDateError,
+        this.state.foodChoiceError
+      )
+    });
   };
 
-  handleChangeBirthDate = date => {
-    this.setState({ birthDate: date });
+  handleChangeBirthDate = event => {
+    const formdate = event.target.value;
+    this.setState({
+      birthDate: formdate,
+      birthDateError: this.birthDateValidation(formdate),
+      buttonDisabled: this.formValidation(
+        this.state.phoneNumberValid,
+        this.birthDateValidation(formdate),
+        this.state.foodChoiceError
+      )
+    });
   };
+
+  foodChoiceValidity(data) {
+    if (data.length <= 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   handleChangeFoodChoice = event => {
-    this.setState({ foodChoice: event.target.value });
-  };
-
-  handleChangeImage = picture => {
     this.setState({
-      image: this.state.image.concat(picture)
+      foodChoice: event.target.value,
+      foodChoiceError: this.foodChoiceValidity(event.target.value),
+      buttonDisabled: this.formValidation(
+        this.state.phoneNumberValid,
+        this.state.birthDateError,
+        this.foodChoiceValidity(event.target.value)
+      )
     });
+
+    const td = this.formValidation(
+      this.state.phoneNumberValid,
+      this.state.birthDateError,
+      this.foodChoiceValidity(event.target.value)
+    );
+
+    console.log(td);
   };
 
   toggle = () => {
@@ -85,14 +165,14 @@ class Info extends React.Component {
     } else if (this.state.gender === "Female") {
       userGender = "F";
     }
-    const customDate = this.formatDate(this.state.birthDate);
+    console.log(this.state.birthDate);
     this.props.onComplete(
       this.state.phoneNumber,
-      customDate,
+      this.state.birthDate,
       userGender,
-      this.state.foodChoice,
-      this.state.image[0]
+      this.state.foodChoice
     );
+    this.setState({ loading: this.props.completionLoading });
     this.handleRedirect();
   };
 
@@ -103,10 +183,8 @@ class Info extends React.Component {
   }
 
   render() {
-    console.log(this.state.image[0]);
     return (
       <div className="wrapper">
-        {this.state.redirect ? <Redirect to="/setimage" /> : null}
         <Navbar id="navtheme" fixed="top">
           <NavbarBrand>
             <Image
@@ -119,94 +197,111 @@ class Info extends React.Component {
         </Navbar>
         <div className="overlay"></div>
         <div id="form-container">
-          <Card>
-            <CardBody className="card-color">
-              <Form onSubmit={this.handleSubmit}>
-                <Row form>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label className="font-weight-bold">Phone number</Label>
-                      <PhoneInput
-                        country="BD"
-                        placeholder="Enter phone number"
-                        onChange={this.handleChangePhoneNumber}
-                        value={this.state.phoneNumber}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label className="font-weight-bold">Birth date</Label>
-                      <DatePicker
-                        customInput={<Input />}
-                        dateFormat="yyyy-MM-dd"
-                        selected={this.state.birthDate}
-                        onChange={this.handleChangeBirthDate}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md={6}>
-                    <Label className="font-weight-bold">Gender</Label>
-                    <Container>
-                      <Dropdown
-                        isOpen={this.state.dropDownOpen}
-                        toggle={this.toggle}
-                      >
-                        <DropdownToggle caret>
-                          {this.state.gender}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem onClick={this.select}>
-                            Male
-                          </DropdownItem>
-                          <DropdownItem onClick={this.select}>
-                            Female
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </Container>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label className="font-weight-bold">
-                        What you crave for
-                      </Label>
-                      <Input
-                        type="text"
-                        placeholder="Enter favourite food"
-                        name="foodChoice"
-                        value={this.state.foodChoice}
-                        onChange={this.handleChangeFoodChoice}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  {/* <Col md={12}>
-                    <ImageUploader
-                      withIcon={false}
-                      buttonText="Choose Image"
-                      onChange={this.handleChangeImage}
-                      imgExtension={[".jpg", ".png"]}
-                      maxFileSize={5242880}
-                      singleImage={true}
-                      withLabel={false}
-                      withPreview={true}
-                      fileContainerStyle={{
-                        padding: "0px"
-                      }}
-                    />
-                  </Col> */}
-                </Row>
-                <FormGroup></FormGroup>
-                <Button className="btn-lg btn-block" id="button" type="submit">
-                  Create
-                </Button>
-              </Form>
-            </CardBody>
-          </Card>
+          {this.props.completionLoading ? (
+            <Ripple color="#FFFFFF" size={200} />
+          ) : (
+            <Card>
+              <CardHeader
+                className="font-weight-bold"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  padding: "10px",
+                  fontSize: "18pt"
+                }}
+              >
+                Complete Your Profile
+              </CardHeader>
+              <CardBody className="card-color">
+                <Form onSubmit={this.handleSubmit}>
+                  <Row form>
+                    <Col md={4}>
+                      <FormGroup style={{ paddingRight: "10px" }}>
+                        <Label>Phone number</Label>
+                        <PhoneInput
+                          country={"bd"}
+                          placeholder="Enter phone number"
+                          onChange={this.handleChangePhoneNumber}
+                          value={this.state.phoneNumber}
+                          autoFormat={false}
+                          enableLongNumbers={false}
+                          isValid={() => {
+                            return !this.state.phoneNumberValid;
+                          }}
+                        />
+                        <FormFeedback>Erroe</FormFeedback>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <Label for="exampleDate">Birth Date</Label>
+                        <Input
+                          type="date"
+                          name="date"
+                          id="exampleDatetime"
+                          placeholder="datetime placeholder"
+                          value={this.state.birthDate}
+                          onChange={this.handleChangeBirthDate}
+                          invalid={this.state.birthDateError}
+                        />
+                        <FormFeedback>
+                          You must be 18 years old to register
+                        </FormFeedback>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md={6}>
+                      <Label>Gender</Label>
+                      <Container>
+                        <Dropdown
+                          isOpen={this.state.dropDownOpen}
+                          toggle={this.toggle}
+                        >
+                          <DropdownToggle caret>
+                            {this.state.gender}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem onClick={this.select}>
+                              Male
+                            </DropdownItem>
+                            <DropdownItem onClick={this.select}>
+                              Female
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </Container>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <Label>What you crave for</Label>
+                        <Input
+                          type="text"
+                          placeholder="Enter favourite food"
+                          name="foodChoice"
+                          value={this.state.foodChoice}
+                          onChange={this.handleChangeFoodChoice}
+                          invalid={this.state.foodChoiceError}
+                        />
+                        <FormFeedback>Enter valid food name</FormFeedback>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Button
+                    className="btn-lg btn-block"
+                    id="button"
+                    type="submit"
+                    disabled={this.state.buttonDisabled}
+                  >
+                    Create
+                  </Button>
+                </Form>
+              </CardBody>
+            </Card>
+          )}
+          {this.state.redirect ? <Redirect to="/setimage" /> : null}
         </div>
       </div>
     );
@@ -217,7 +312,8 @@ const mapStateToProps = state => {
   return {
     err: state.authenticate.err,
     loading: state.authenticate.loading,
-    token: state.authenticate.token
+    token: state.authenticate.token,
+    completionLoading: state.dataReducer.profileLoading
   };
 };
 

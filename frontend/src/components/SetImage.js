@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { DualRing, Ripple } from "react-spinners-css";
 import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 import * as actions from "../redux_store/actions/dataAction";
@@ -12,13 +13,23 @@ class SetImage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       imageData: [],
-      redirect: false
+      redirect: false,
+      buttonName: "Skip"
     };
+  }
+
+  setButtonName(data) {
+    if (data[0] == null || data[0] === "" || data[0] === undefined) {
+      return "Skip";
+    } else {
+      return "Upload";
+    }
   }
 
   handleChangeImage = event => {
     this.setState({
-      imageData: this.state.imageData.concat(event)
+      imageData: this.state.imageData.concat(event),
+      buttonName: this.setButtonName(event)
     });
   };
 
@@ -26,6 +37,7 @@ class SetImage extends React.Component {
     event.preventDefault();
     this.props.setImageData(this.state.imageData[0]);
     this.handleRedirect();
+    this.props.getProfile();
   };
 
   handleRedirect() {
@@ -39,10 +51,8 @@ class SetImage extends React.Component {
   }
 
   render() {
-    console.log(this.state.imageData[0]);
     return (
       <div className="wrapper">
-        {this.state.redirect ? <Redirect to="/" /> : null}
         <Navbar id="navtheme" fixed="top">
           <NavbarBrand>
             <Image
@@ -53,48 +63,58 @@ class SetImage extends React.Component {
             />
           </NavbarBrand>
         </Navbar>
+
         <div className="overlay"></div>
+
         <div id="form-container">
-          <Card style={{ padding: "0px" }}>
-            <CardHeader
-              style={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                background: "#FFFFFF",
-                color: "black",
-                alignContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <h4>Select Profile Picture</h4>
-            </CardHeader>
-            <CardBody style={{ alignContent: "center" }}>
-              <Form onSubmit={event => this.handleSubmit(event)} noValidate>
-                <ImageUploader
-                  name="image"
-                  withIcon={true}
-                  buttonText="Choose Image"
-                  onChange={this.handleChangeImage}
-                  imgExtension={[".jpg", ".png"]}
-                  maxFileSize={5242880}
-                  singleImage={true}
-                  withLabel={false}
-                  withPreview={true}
-                  buttonStyles={{ background: "#242424" }}
-                  fileContainerStyle={{
-                    padding: "0px"
+          {this.props.profileLoading ? (
+            <Ripple color="FFFFFF" size={200} />
+          ) : this.state.redirect ? (
+            <Redirect to="/" />
+          ) : (
+            <Card style={{ padding: "0px" }}>
+              <div>
+                <CardHeader
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    background: "#FFFFFF",
+                    color: "black",
+                    alignContent: "center",
+                    alignItems: "center"
                   }}
-                />
-                <Button
-                  type="submit"
-                  id="normal_button"
-                  className="btn-lg btn-block btn-dark"
                 >
-                  Upload
-                </Button>
-              </Form>
-            </CardBody>
-          </Card>
+                  <h4>Select Profile Picture</h4>
+                </CardHeader>
+                <CardBody style={{ alignContent: "center" }}>
+                  <Form onSubmit={event => this.handleSubmit(event)} noValidate>
+                    <ImageUploader
+                      name="image"
+                      withIcon={true}
+                      buttonText="Choose Image"
+                      onChange={this.handleChangeImage}
+                      imgExtension={[".jpg", ".png"]}
+                      maxFileSize={5242880}
+                      singleImage={true}
+                      withLabel={false}
+                      withPreview={true}
+                      buttonStyles={{ background: "#242424" }}
+                      fileContainerStyle={{
+                        padding: "0px"
+                      }}
+                    />
+                    <Button
+                      type="submit"
+                      id="normal_button"
+                      className="btn-lg btn-block btn-dark"
+                    >
+                      {this.state.buttonName}
+                    </Button>
+                  </Form>
+                </CardBody>
+              </div>
+            </Card>
+          )}
         </div>
       </div>
     );
@@ -103,7 +123,8 @@ class SetImage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.dataReducer.dataLoading
+    loading: state.dataReducer.dataLoading,
+    profileLoading: state.dataReducer.profileLoading
   };
 };
 
@@ -111,6 +132,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setImageData: imageData => {
       dispatch(actions.setImage(imageData));
+    },
+    getProfile: () => {
+      dispatch(actions.getUser());
     }
   };
 };

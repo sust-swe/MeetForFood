@@ -14,10 +14,10 @@ export const BaseRouter = () => (
   <Switch>
     <Route exact path="/" component={Profile} />
     <Route exact path="/restaurants" component={Restaurants} />
-    <Route exact path="/profileinfo" component={Info} />
-    <Route exact path="/setimage" component={SetImage} />
     <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/friendrequest" component={FriendRequests} />
+    <Route exact path="/profileinfo" component={Info} />
+    <Route exact path="/setimage" component={SetImage} />
   </Switch>
 );
 

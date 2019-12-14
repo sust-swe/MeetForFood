@@ -34,13 +34,13 @@ export const getDataStart = () => {
 
 export const getProfileDataStart = () => {
   return {
-    type: actionType.GET_PROFILE_DATA_START
+    type: actionType.PROFILE_DATA_START
   };
 };
 
 export const getProfileDataSuccess = () => {
   return {
-    type: actionType.GET_PROFILE_DATA_SUCCESS
+    type: actionType.PROFILE_DATA_SUCCESS
   };
 };
 
@@ -73,7 +73,7 @@ export const completeProfile = (
   userImage
 ) => {
   return dispatch => {
-    dispatch(getDataStart());
+    dispatch(getProfileDataStart());
     const token = localStorage.getItem("token");
     axios
       .get("http://127.0.0.1:8000/api/profilesettings/", {
@@ -124,7 +124,7 @@ const setAbout = (
     )
     .then(response => {
       if (response.data != null) {
-        dispatch(getDataSuccess());
+        dispatch(getProfileDataSuccess());
       }
     })
     .catch(err => {

@@ -3,6 +3,7 @@ import "../Styles/header.css";
 import * as actions from "../redux_store/actions/authenticate";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { Ripple } from "react-spinners-css";
 import {
   Card,
   CardBody,
@@ -10,7 +11,8 @@ import {
   Form,
   Input,
   Button,
-  Label
+  Label,
+  FormFeedback
 } from "reactstrap";
 
 class Login extends React.Component {
@@ -37,47 +39,54 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
-        <Card>
-          <CardBody className="card-color">
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label className="font-weight-bold">Username</Label>
-                <Input
-                  type="email"
-                  placeholder="email"
-                  id="input1"
-                  value={this.state.email}
-                  name="email"
-                  onChange={this.handleEmailChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label className="font-weight-bold">Password</Label>
-                <Input
-                  type="password"
-                  placeholder="password"
-                  id="input2"
-                  value={this.state.password}
-                  name="password"
-                  onChange={this.handlePasswordChange}
-                />
-              </FormGroup>
-              <Button className="btn-lg btn-block" id="button" type="submit">
-                LogIn
-              </Button>
-              <h6 className="text-center">Not a member?</h6>
-              <NavLink to="/signup" style={{ textDecoration: "none" }}>
-                <Button
-                  className="btn-lg btn-block btn-dark"
-                  id="inactive-button"
-                >
-                  Signup
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {this.props.loading ? (
+          <Ripple color="FFFFFF" size={200} />
+        ) : (
+          <Card>
+            <CardBody className="card-color">
+              <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                  <Label className="font-weight-bold">Username</Label>
+                  <Input
+                    type="email"
+                    placeholder="email"
+                    id="input1"
+                    value={this.state.email}
+                    name="email"
+                    onChange={this.handleEmailChange}
+                    invalid={this.props.error}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label className="font-weight-bold">Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="password"
+                    id="input2"
+                    value={this.state.password}
+                    name="password"
+                    onChange={this.handlePasswordChange}
+                    invalid={this.props.error}
+                  />
+                  <FormFeedback>Wrong Username or Password</FormFeedback>
+                </FormGroup>
+                <Button className="btn-lg btn-block" id="button" type="submit">
+                  LogIn
                 </Button>
-              </NavLink>
-            </Form>
-          </CardBody>
-        </Card>
+                <h6 className="text-center">Not a member?</h6>
+                <NavLink to="/signup" style={{ textDecoration: "none" }}>
+                  <Button
+                    className="btn-lg btn-block btn-dark"
+                    id="inactive-button"
+                  >
+                    Signup
+                  </Button>
+                </NavLink>
+              </Form>
+            </CardBody>
+          </Card>
+        )}
       </div>
     );
   }
@@ -86,7 +95,8 @@ class Login extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.authenticate.token !== null,
-    error: state.authenticate.error
+    error: state.authenticate.error,
+    loading: state.authenticate.loading
   };
 };
 

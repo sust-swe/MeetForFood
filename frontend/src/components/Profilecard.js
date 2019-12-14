@@ -19,7 +19,6 @@ class ProfileCard extends React.Component {
     this.props.fetchUsers();
     this.props.getImage();
     this.setState({ loading: this.props.imageLoading });
-    console.log("props called");
   }
   componentDidMount() {
     this.setState({ loading: this.props.imageLoading });
@@ -29,9 +28,16 @@ class ProfileCard extends React.Component {
     console.log(token);
     return (
       <div>
-        <Card className="profile-dashboard " style={{ alignItems: "center" }}>
+        <Card
+          className="profile-dashboard "
+          style={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
           {this.props.imageLoading ? (
-            <DualRing />
+            <DualRing color="#F99116" size={120} />
           ) : (
             <Image
               src={this.props.image.image}

@@ -16,9 +16,8 @@ routers.register('image', views.ImageViewSet)
 routers.register('bio', views.BioViewSet)
 
 
-routers.register('friends', views.FriendViewSet, base_name='friends')
-routers.register('friendrequests', views.FriendshipRequestViewSet,
-                 base_name='friendrequests')
+routers.register('friends', views.FriendViewSet,basename='friends')
+routers.register('friendrequests', views.FriendshipRequestViewSet,basename='friendrequests')
 
 
 urlpatterns = [

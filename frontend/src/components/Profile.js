@@ -1,5 +1,5 @@
 import React from "react";
-import {} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   Container,
   Row,
@@ -14,7 +14,7 @@ import ProfileCard from "./Profilecard";
 import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
-import { DualRing } from "react-spinners-css";
+import { DualRing, Ellipsis } from "react-spinners-css";
 import jwt_decode from "jwt-decode";
 
 import * as filterActions from "../redux_store/actions/filterAction";
@@ -30,12 +30,16 @@ class Profile extends React.Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.state = {
       dropDownOpen: false,
-      gender: "Select Gender",
+      gender: "Male",
       ageRange: { min: 20, max: 45 },
       redirect: false,
       requestButton: "Send Request",
       loading: true,
-      suggestionLoading: true
+      editColor: "#9E008B",
+      suggestionLoading: true,
+      filteringLoading: false,
+      reload: false,
+      suggestionListData: []
     };
   }
 
@@ -47,13 +51,14 @@ class Profile extends React.Component {
     } else if (this.state.gender === "Female") {
       userGender = "F";
     }
+    console.log("gender " + userGender);
     this.props.setFilter(
       userGender,
       this.state.ageRange.min,
       this.state.ageRange.max
     );
-    console.log(this.props);
-    this.handleRedirect();
+    this.setState({ filteringLoading: this.props.suggestionLoading });
+    this.setState({ reload: true });
   };
 
   handleAgeRange = event => {
@@ -76,6 +81,7 @@ class Profile extends React.Component {
 
   componentWillMount() {
     this.props.getSuggestion();
+    this.props.getFilter();
     this.setState({ loading: this.props.profileLoading });
     this.setState({ loading: this.props.suggestionLoading });
   }
@@ -88,9 +94,10 @@ class Profile extends React.Component {
     }
   };
 
-  sendRequest = requestID => {
+  sendRequest = (requestID, index) => {
+    // console.log(requestID);
+    // this.props.sendRequest(requestID);
     console.log(requestID);
-    this.props.sendRequest(requestID);
   };
 
   componentDidMount() {
@@ -103,42 +110,49 @@ class Profile extends React.Component {
     console.log(dc);
   }
 
+  redirect() {
+    return <Redirect to="/profileinfo" />;
+  }
+
   render() {
-    const token = localStorage.getItem("stream");
-    console.log("stream:  " + token);
-    this.decode(token);
-    const suggestionList = this.props.userSuggestion.map(data => (
-      <list key={data.id}>
-        <Card style={{ margin: "15px" }}>
-          <Card.Header
-            id="suggested-profile-header"
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <div style={{ display: "flex" }}>
-              <Image
-                src={require("../Images/photo.jpg")}
-                height="60px"
-                width="60px"
-                roundedCircle
-              />
-              <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
-                <div>
-                  <h4>{data.name}</h4>
-                  <h6>Age: {data.user_age}</h6>
-                  <h6>Gender: {this.getGender(data.gender)}</h6>
-                </div>
-              </Card.Title>
-            </div>
-            <Button
-              id="normal_button"
-              onClick={() => this.sendRequest(data.email)}
+    this.state.suggestionListData = this.props.userSuggestion.map(
+      (data, index) => (
+        <list key={data.id}>
+          <Card style={{ margin: "15px" }}>
+            <Card.Header
+              id="suggested-profile-header"
+              style={{ display: "flex", justifyContent: "space-between" }}
             >
-              {this.state.requestButton}
-            </Button>
-          </Card.Header>
-        </Card>
-      </list>
-    ));
+              <div style={{ display: "flex" }}>
+                <Image
+                  src={require("../Images/photo.jpg")}
+                  height="60px"
+                  width="60px"
+                  roundedCircle
+                />
+                <Card.Title style={{ color: "#FFFFFF", paddingLeft: "10px" }}>
+                  <div>
+                    <h3 style={{ color: "#F99116" }}>{data.name}</h3>
+                    <p style={{ fontStyle: "italic" }}>Age: {data.user_age}</p>
+                    <p style={{ fontStyle: "italic" }}>
+                      Gender: {this.getGender(data.gender)}
+                    </p>
+                  </div>
+                </Card.Title>
+              </div>
+              <Button
+                id="normal_button"
+                name="send-button"
+                style={{ background: this.state.editColor }}
+                onClick={this.sendRequest.bind(this, data.email, index)}
+              >
+                {this.state.requestButton}
+              </Button>
+            </Card.Header>
+          </Card>
+        </list>
+      )
+    );
     console.log(this.props.userSuggestion);
     console.log(this.props.profileLoading);
     return (
@@ -153,6 +167,7 @@ class Profile extends React.Component {
                 {this.loading ? (
                   <DualRing
                     style={{ display: "flex", justifyContent: "center" }}
+                    color="#F99116"
                   />
                 ) : (
                   <ProfileCard />
@@ -165,7 +180,7 @@ class Profile extends React.Component {
               </h2>
               <div className="divider"></div>
               <Container className="inner-scroll">
-                {this.suggestionLoading ? <DualRing /> : suggestionList}
+                {this.state.suggestionListData}
               </Container>
             </Col>
             <Col id="profile-history">
@@ -182,7 +197,13 @@ class Profile extends React.Component {
                       justifyContent: "center"
                     }}
                   >
-                    <Container style={{ padding: "15px" }}>
+                    <Container
+                      style={{
+                        padding: "15px",
+                        display: "flex",
+                        justifyContent: "center"
+                      }}
+                    >
                       <Button
                         pill
                         style={{
@@ -195,7 +216,13 @@ class Profile extends React.Component {
                         Set Age Range
                       </Button>
                     </Container>
-                    <Container style={{ padding: "15px" }}>
+                    <Container
+                      style={{
+                        padding: "15px",
+                        display: "flex",
+                        justifyContent: "center"
+                      }}
+                    >
                       <InputRange
                         minValue={15}
                         maxValue={50}
@@ -205,7 +232,13 @@ class Profile extends React.Component {
                         onChange={event => this.handleAgeRange(event)}
                       />
                     </Container>
-                    <Container style={{ padding: "10px" }}>
+                    <Container
+                      style={{
+                        padding: "10px",
+                        display: "flex",
+                        justifyContent: "center"
+                      }}
+                    >
                       <Dropdown
                         isOpen={this.state.dropDownOpen}
                         toggle={this.toggle}
@@ -230,6 +263,16 @@ class Profile extends React.Component {
                     >
                       Filter
                     </Button>
+                    {this.state.reload ? (
+                      this.props.suggestionLoading ? (
+                        <Ellipsis
+                          style={{ display: "flex", justifyContent: "center" }}
+                          color="#F99116"
+                        />
+                      ) : (
+                        this.handleRedirect()
+                      )
+                    ) : null}
                   </Container>
                 </Card.Body>
               </Card>
@@ -245,7 +288,10 @@ const mapStateToProps = state => {
   return {
     userSuggestion: state.filterReducer.suggestion,
     profileLoading: state.dataReducer.profileLoading,
-    suggestionLoading: state.filterReducer.filterLoading
+    suggestionLoading: state.filterReducer.filterLoading,
+    profileData: state.dataReducer.data,
+    suggestionSetting: state.filterReducer.filterInfo,
+    filterLoading: state.filterReducer.filterDataLoading
   };
 };
 
@@ -258,7 +304,8 @@ const mapDispatchToProps = dispatch => {
     sendRequest: requestID => {
       dispatch(requestAction.sendRequest(requestID));
     },
-    getImage: () => dispatch(actions.getImage())
+    getImage: () => dispatch(actions.getImage()),
+    getFilter: () => dispatch(filterActions.getFilter())
   };
 };
 

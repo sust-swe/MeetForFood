@@ -18,14 +18,14 @@ const getDataStart = (state, action) => {
   });
 };
 
-const getProfileDataStart = (state, action) => {
+const profileDataStart = (state, action) => {
   return updateObject(state, {
     dataError: null,
     profileLoading: true
   });
 };
 
-const getProfileDataSuccess = (state, action) => {
+const profileDataSuccess = (state, action) => {
   return updateObject(state, {
     dataError: null,
     profileLoading: false
@@ -42,7 +42,8 @@ const getDataSuccess = (state, action) => {
 const getDataFail = (state, action) => {
   return updateObject(state, {
     dataError: action.error,
-    dataLoading: false
+    dataLoading: false,
+    profileLoading: false
   });
 };
 
@@ -83,10 +84,10 @@ const dataReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_DATA_START:
       return getDataStart(state, action);
-    case actionType.GET_PROFILE_DATA_START:
-      return getProfileDataStart(state, action);
-    case actionType.GET_PROFILE_DATA_SUCCESS:
-      return getProfileDataSuccess(state, action);
+    case actionType.PROFILE_DATA_START:
+      return profileDataStart(state, action);
+    case actionType.PROFILE_DATA_SUCCESS:
+      return profileDataSuccess(state, action);
     case actionType.GET_DATA_SUCCESS:
       return getDataSuccess(state, action);
     case actionType.GET_DATA_FAIL:

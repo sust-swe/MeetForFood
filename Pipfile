@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-autopep8 = "*"
 
 [packages]
 django = "*"
@@ -20,12 +19,7 @@ django-rest-auth = "*"
 djangorestframework-jwt = "*"
 drf-jwt = "*"
 djangorestframework-simplejwt = "*"
-redis = "*"
 django-multiselectfield = "*"
-channels = "*"
-channels-redis = "*"
-chat = "*"
-stream-chat = "*"
 
 [requires]
 python_version = "3.7"
