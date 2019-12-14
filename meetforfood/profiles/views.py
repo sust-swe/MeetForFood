@@ -72,6 +72,7 @@ class ProfileAboutItemView(APIView):
         
         profile_settings = models.ProfileSettings.objects.all()
         user_id = self.request.user.id
+        user_id2= self.request.user
         print(profile_settings)
         ps = models.ProfileAboutItem.objects.all()
         print(ps)
@@ -92,14 +93,27 @@ class ProfileAboutItemView(APIView):
         
         
         result_list = []
+        result_list2 = []
+        
 
         for item in ps :
             if (item.age >= min_age) and (item.age <= max_age) and (item.gender == foodie_partner):
                 result_list.append(item)
 
         print (result_list)
+        
+        # result_list = result_list2
+        for item in result_list:
+            if(item.user_profile != user_id2):
+                result_list2.append(item)
+                
+        print(result_list2)
+            
+            
+        
+        # result_list2 = result_list.exclude(user_profile = self.request.user)
 
-        serializer = serializers.ProfileAboutItemSerializer(result_list, many=True)
+        serializer = serializers.ProfileAboutItemSerializer(result_list2, many=True)
         return Response(serializer.data)
     
     
