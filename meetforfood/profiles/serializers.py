@@ -12,6 +12,8 @@ from django.conf import settings
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from django.contrib.auth.hashers import make_password
+
 
 class ProfileSerializer(serializers.ModelSerializer):
 
@@ -23,7 +25,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'style': {'input_type': 'password'}
+                'style': {'input_type': 'password'},
+                'min_length': 6,
+                'max_length': 32
             }
         }
 
@@ -90,6 +94,10 @@ class StreamTokenSerializer(CustomTokenSerializer):
 class ProfileAboutItemSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source="user_profile.name")
     email = serializers.ReadOnlyField(source="user_profile.email")
+    
+    image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True)
+
+    
 
     # user_settings = serializers.ReadOnlyField(allow_null = True)
 
@@ -101,7 +109,7 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id', 'name', 'user_settings', 'email', 'user_image', 'user_bio', 'phone_number', 'birth_date', 'user_age',
+        fields = ('id', 'name', 'user_settings', 'email', 'image', 'user_bio', 'phone_number', 'birth_date', 'user_age',
                   'gender', 'what_you_crave_for', 'created_time')
         extra_kwargs = {'user_profile': {'read_only': True}}
 
@@ -112,7 +120,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Image
-        fields = ('user_profile', 'image')
+        fields = ('user_profile','user_about', 'image')
 
 
 class BioSerializer(serializers.ModelSerializer):

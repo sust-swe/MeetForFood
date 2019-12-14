@@ -92,17 +92,17 @@ class ProfileSettings(models.Model):
 def nameFile(instance,filename):
     return '/'.join(['images', instance.user_profile.name,filename])
 
-class Image(models.Model):
-    user_profile = models.OneToOneField(
-        AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    image = models.ImageField(upload_to=nameFile, max_length=254, blank=True, null=True,default=None)
+# class Image(models.Model):
+#     user_profile = models.OneToOneField(
+#         AUTH_USER_MODEL,
+#         on_delete=models.CASCADE
+#     )
+#     image = models.ImageField(upload_to=nameFile, max_length=254, blank=True, null=True,default=None)
     
 
-    def __str__(self):
-        """return string representation of User Profile"""
-        return self.user_profile.email
+#     def __str__(self):
+#         """return string representation of User Profile"""
+#         return self.user_profile.email
     
 class Bio(models.Model):
     user_profile = models.OneToOneField(
@@ -132,10 +132,10 @@ class ProfileAboutItem(models.Model):
         on_delete=models.CASCADE, related_name='settings',
     )
     
-    user_image = models.OneToOneField(
-        Image,
-        on_delete=models.CASCADE,blank=True,null=True
-    )
+    # user_image = models.OneToOneField(
+    #     Image,
+    #     on_delete=models.CASCADE,blank=True,null=True,
+    # )
 
     user_bio = models.OneToOneField(
         Bio,
@@ -162,4 +162,22 @@ class ProfileAboutItem(models.Model):
 
     def __str__(self):
         # return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
+        return self.user_profile.email
+
+
+class Image(models.Model):
+    user_profile = models.OneToOneField(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    user_about = models.OneToOneField(
+        ProfileAboutItem,
+        on_delete=models.CASCADE
+    )
+    
+    image = models.ImageField(upload_to=nameFile, max_length=254, blank=True, null=True,default=None)
+    
+
+    def __str__(self):
+        """return string representation of User Profile"""
         return self.user_profile.email

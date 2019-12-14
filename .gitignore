@@ -4,5 +4,5 @@ db.sqlite3
 node_modules
 Pipfile.lock
 media
-meetforfood/meetforfood/settings_BACKUP_1848.py
-meetforfood/meetforfood/settings_BACKUP_1848.py
+migrations
+
