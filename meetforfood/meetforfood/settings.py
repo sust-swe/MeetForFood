@@ -72,9 +72,12 @@ INSTALLED_APPS = [
     'rest_friendship',
     'multiselectfield',
     'six',
+    'django.contrib.sites',
     # Django REST Friendship
 
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -114,7 +117,7 @@ WSGI_APPLICATION = 'meetforfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend13',
+        'NAME': 'backend15',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
