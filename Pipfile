@@ -15,11 +15,19 @@ django-rest-friendship = "*"
 django-friendship = "*"
 djangorestframework-filters = "*"
 pillow = "*"
-django-rest-auth = "*"
+django-rest-auth = {extras = ["with_social"],version = "*"}
 djangorestframework-jwt = "*"
 drf-jwt = "*"
 djangorestframework-simplejwt = "*"
 django-multiselectfield = "*"
+<<<<<<< HEAD
+=======
+channels = "*"
+channels-redis = "*"
+stream-chat = "*"
+django-allauth = "*"
+chat = "*"
+>>>>>>> 3486e27c06766d8f065919b670308dd8efa80a30
 
 [requires]
 python_version = "3.7"

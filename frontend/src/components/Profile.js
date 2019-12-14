@@ -105,11 +105,6 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
-  decode(tkn) {
-    const dc = jwt_decode(tkn);
-    console.log(dc);
-  }
-
   redirect() {
     return <Redirect to="/profileinfo" />;
   }
