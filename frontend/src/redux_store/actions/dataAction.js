@@ -7,22 +7,29 @@ export const getDataSuccess = () => {
   };
 };
 
-export const setImageAction = () => {
+export const setImageStart = () => {
   return {
-    type: actionType.SET_IMAGE
+    type: actionType.SET_IMAGE_START
   };
 };
 
-export const getImageDataStart = data => {
+export const setImageSuccess = data => {
+  return {
+    type: actionType.SET_IMAGE_SUCCESS,
+    image: { data }
+  };
+};
+
+export const getImageDataStart = () => {
   return {
     type: actionType.GET_IMAGE_DATA_START
   };
 };
 
-export const getImageData = data => {
+export const getImageDataSuccess = data => {
   return {
     type: actionType.GET_IMAGE_DATA_SUCCESS,
-    data: { data }
+    image: { data }
   };
 };
 
@@ -38,9 +45,10 @@ export const getProfileDataStart = () => {
   };
 };
 
-export const getProfileDataSuccess = () => {
+export const getProfileDataSuccess = data => {
   return {
-    type: actionType.PROFILE_DATA_SUCCESS
+    type: actionType.PROFILE_DATA_SUCCESS,
+    data: { data }
   };
 };
 
@@ -69,8 +77,7 @@ export const completeProfile = (
   phone_number,
   birth_date,
   gender,
-  what_you_crave_for,
-  userImage
+  what_you_crave_for
 ) => {
   return dispatch => {
     dispatch(getProfileDataStart());
@@ -124,7 +131,8 @@ const setAbout = (
     )
     .then(response => {
       if (response.data != null) {
-        dispatch(getProfileDataSuccess());
+        console.log(response.data);
+        dispatch(getProfileDataSuccess(response.data));
       }
     })
     .catch(err => {
@@ -134,26 +142,49 @@ const setAbout = (
 
 export const setImage = userImage => {
   return dispatch => {
-    dispatch(getDataStart());
+    dispatch(setImageStart());
     const token = localStorage.getItem("token");
     console.log(token);
     axios
-      .get("http://127.0.0.1:8000/api/profilesettings/", {
+      .get("http://127.0.0.1:8000/api/profileaboutitem/", {
         headers: {
           authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        const userID = response.data[0].user_profile;
-        console.log(userID);
-        uploadImage(userImage, userID, token, dispatch);
+        const userId = response.data[0];
+        uploadImage(userImage, userId.user_id, userId.id, token, dispatch);
       });
   };
 };
 
+const uploadImage = (userImage, userID, aboutId, token, dispatch) => {
+  const formData = new FormData();
+  formData.append("user_profile", userID);
+  formData.append("user_about", aboutId);
+  formData.append("image", userImage, userImage.name);
+  console.log(userImage.name);
+  axios
+    .post(`http://127.0.0.1:8000/api/image/`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.8",
+        "Content-Type": "multipart/form-data"
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+      dispatch(setImageSuccess(response.data));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 export const getImage = () => {
   return dispatch => {
-    dispatch(getDataStart());
+    dispatch(getImageDataStart());
     const token = localStorage.getItem("token");
     axios
       .get("http://127.0.0.1:8000/api/profilesettings/", {
@@ -169,7 +200,6 @@ export const getImage = () => {
 };
 
 const downloadImage = (userID, token, dispatch) => {
-  dispatch(getImageDataStart());
   axios
     .get("http://127.0.0.1:8000/api/image/", {
       headers: {
@@ -178,29 +208,7 @@ const downloadImage = (userID, token, dispatch) => {
     })
     .then(response => {
       console.log(response.data);
-      dispatch(getImageData(response.data[0]));
-    });
-};
-
-const uploadImage = (userImage, userID, token, dispatch) => {
-  const formData = new FormData();
-  formData.append("user_profile", userID);
-  formData.append("image", userImage, userImage.name);
-  axios
-    .post(`http://127.0.0.1:8000/api/image/`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        accept: "application/json",
-        "Accept-Language": "en-US,en;q=0.8",
-        "Content-Type": "multipart/form-data"
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-      dispatch(setImageAction());
-    })
-    .catch(err => {
-      console.log(err);
+      dispatch(getImageDataSuccess(response.data[0]));
     });
 };
 
@@ -215,8 +223,8 @@ export const getUser = () => {
         }
       })
       .then(response => {
-        dispatch(getData(response.data[0]));
-        dispatch(getProfileDataSuccess());
+        // console.log(response.data);
+        dispatch(getProfileDataSuccess(response.data[0]));
       })
       .catch(err => {
         dispatch(getDataFail(err));
@@ -232,6 +240,44 @@ export const getRestaurants = () => {
       .get("http://127.0.0.1:8000/restaurantapi/restaurant/")
       .then(response => {
         dispatch(getRestaurantData(response.data));
+      })
+      .catch(err => {
+        dispatch(getDataFail(err));
+      });
+  };
+};
+
+export const updateProfile = (
+  user_id,
+  settingId,
+  phone_number,
+  birth_date,
+  gender,
+  favourite_food
+) => {
+  return dispatch => {
+    dispatch(getProfileDataStart());
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `http://127.0.0.1:8000/api/profileaboutitem/${user_id}/`,
+        {
+          id: user_id,
+          user_settings: settingId,
+          phone_number: phone_number,
+          birth_date: birth_date,
+          gender: gender,
+          what_you_crave_for: favourite_food
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        dispatch(getProfileDataSuccess(response.data));
       })
       .catch(err => {
         dispatch(getDataFail(err));

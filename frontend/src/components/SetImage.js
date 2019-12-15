@@ -35,9 +35,10 @@ class SetImage extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    console.log(this.props.profileData);
     this.props.setImageData(this.state.imageData[0]);
-    this.handleRedirect();
     this.props.getProfile();
+    this.handleRedirect();
   };
 
   handleRedirect() {
@@ -67,7 +68,9 @@ class SetImage extends React.Component {
         <div className="overlay"></div>
 
         <div id="form-container">
-          {this.props.profileLoading ? (
+          {this.props.submitImageLoading ? (
+            <Ripple color="FFFFFF" size={200} />
+          ) : this.props.profileLoading ? (
             <Ripple color="FFFFFF" size={200} />
           ) : this.state.redirect ? (
             <Redirect to="/" />
@@ -124,7 +127,9 @@ class SetImage extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: state.dataReducer.dataLoading,
-    profileLoading: state.dataReducer.profileLoading
+    profileLoading: state.dataReducer.profileLoading,
+    setImageLoading: state.dataReducer.submitImageLoading,
+    profileData: state.dataReducer.data
   };
 };
 

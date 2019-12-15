@@ -146,6 +146,8 @@ class Signup extends React.Component {
         this.state.password
       );
       this.handleRedirect();
+    } else {
+      this.setState({ confirmPasswordError: true });
     }
   };
 

@@ -39,7 +39,11 @@ class Restaurants extends React.Component {
           <Card.ImgOverlay style={{ padding: "0px" }}>
             <Card.Body style={{ padding: "0px" }}>
               <h2
-                style={{ color: "white", fontStyle: "bold", padding: "10px" }}
+                style={{
+                  color: "white",
+                  fontStyle: "bold",
+                  padding: "10px"
+                }}
               >
                 {data.name}
               </h2>
@@ -71,7 +75,7 @@ class Restaurants extends React.Component {
         <Affix offsetTop={0}>
           <NavBar />
         </Affix>
-        <Container style={{ margin: "0" }}>
+        <Container style={{ margin: "0px" }}>
           <Row>
             <Col xs={4}>
               <Affix offsetTop={90}>
@@ -83,7 +87,10 @@ class Restaurants extends React.Component {
                 <Container className="inner-scroll">{restaurants}</Container>
               </div>
             </Col>
-            <Col xs={2}></Col>
+            <Col xs={3} className="inner-scroll" style={{ paddingTop: "40px" }}>
+              <h2>Restaurant Menu</h2>
+              <div className="divider"></div>
+            </Col>
           </Row>
         </Container>
       </div>

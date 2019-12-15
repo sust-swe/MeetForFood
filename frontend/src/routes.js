@@ -9,10 +9,12 @@ import SetImage from "./components/SetImage";
 import Connections from "./components/Connections";
 import ChatComp from "./components/ChatComp";
 import FriendRequests from "./components/FriendRequest";
+import EditProfile from "./Containers/EditProfile";
 
 export const BaseRouter = () => (
   <Switch>
     <Route exact path="/" component={Profile} />
+    <Route exact path="/editprofile" component={EditProfile} />
     <Route exact path="/restaurants" component={Restaurants} />
     <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/friendrequest" component={FriendRequests} />

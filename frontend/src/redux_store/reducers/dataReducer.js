@@ -8,7 +8,8 @@ const initialState = {
   dataError: null,
   dataLoading: false,
   profileLoading: false,
-  imageLoading: false
+  imageLoading: false,
+  submitImageLoading: false
 };
 
 const getDataStart = (state, action) => {
@@ -27,6 +28,7 @@ const profileDataStart = (state, action) => {
 
 const profileDataSuccess = (state, action) => {
   return updateObject(state, {
+    data: action.data.data,
     dataError: null,
     profileLoading: false
   });
@@ -47,12 +49,6 @@ const getDataFail = (state, action) => {
   });
 };
 
-const getImageDataStart = (state, action) => {
-  return updateObject(state, {
-    imageLoading: true
-  });
-};
-
 const getUserData = (state, action) => {
   return updateObject(state, {
     data: action.data.data,
@@ -60,15 +56,28 @@ const getUserData = (state, action) => {
   });
 };
 
-const setImage = (state, action) => {
+const setImageStart = (state, action) => {
   return updateObject(state, {
-    dataLoading: false
+    submitImageLoading: true
   });
 };
 
-const getImage = (state, action) => {
+const setImageSuccess = (state, action) => {
   return updateObject(state, {
-    image: action.data.data,
+    image: action.image.data,
+    submitImageLoading: false
+  });
+};
+
+const getImageDataStart = (state, action) => {
+  return updateObject(state, {
+    imageLoading: true
+  });
+};
+
+const getImageDataSuccess = (state, action) => {
+  return updateObject(state, {
+    image: action.image.data,
     imageLoading: false
   });
 };
@@ -94,12 +103,14 @@ const dataReducer = (state = initialState, action) => {
       return getDataFail(state, action);
     case actionType.GET_DATA:
       return getUserData(state, action);
-    case actionType.SET_IMAGE:
-      return setImage(state, action);
+    case actionType.SET_IMAGE_START:
+      return setImageStart(state, action);
+    case actionType.SET_IMAGE_SUCCESS:
+      return setImageSuccess(state, action);
     case actionType.GET_IMAGE_DATA_START:
       return getImageDataStart(state, action);
     case actionType.GET_IMAGE_DATA_SUCCESS:
-      return getImage(state, action);
+      return getImageDataSuccess(state, action);
     case actionType.GET_RESTAURANTS_DATA:
       return getRestaurants(state, action);
     default:

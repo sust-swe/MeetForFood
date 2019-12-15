@@ -39,6 +39,7 @@ class Profile extends React.Component {
       suggestionLoading: true,
       filteringLoading: false,
       reload: false,
+      update: false,
       suggestionListData: []
     };
   }
@@ -95,8 +96,8 @@ class Profile extends React.Component {
   };
 
   sendRequest = (requestID, index) => {
-    // console.log(requestID);
-    // this.props.sendRequest(requestID);
+    console.log(requestID);
+    this.props.sendRequest(requestID);
     console.log(requestID);
   };
 
@@ -105,11 +106,27 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
+  componentDidUpdate() {
+    if (this.props.filterLoading !== true) {
+      if (this.state.update !== true) {
+        this.setState({
+          gender: this.getGender(this.props.suggestionSetting.foodie_partner),
+          ageRange: {
+            min: this.props.suggestionSetting.min_age,
+            max: this.props.suggestionSetting.max_age
+          },
+          update: true
+        });
+      }
+    }
+  }
+
   redirect() {
     return <Redirect to="/profileinfo" />;
   }
 
   render() {
+    const host = "http://127.0.0.1:8000";
     this.state.suggestionListData = this.props.userSuggestion.map(
       (data, index) => (
         <list key={data.id}>
@@ -120,7 +137,7 @@ class Profile extends React.Component {
             >
               <div style={{ display: "flex" }}>
                 <Image
-                  src={require("../Images/photo.jpg")}
+                  src={host + data.image}
                   height="60px"
                   width="60px"
                   roundedCircle
@@ -181,7 +198,12 @@ class Profile extends React.Component {
             <Col id="profile-history">
               <Card
                 className="profile-dashboard "
-                style={{ alignItems: "center" }}
+                style={{
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center"
+                }}
               >
                 <Card.Body style={{ justifyContent: "center" }}>
                   <Card.Header as="h4">Filter Suggestion</Card.Header>
@@ -189,7 +211,8 @@ class Profile extends React.Component {
                     style={{
                       padding: "15px",
                       alignContent: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      alignItems: "center"
                     }}
                   >
                     <Container
@@ -219,7 +242,7 @@ class Profile extends React.Component {
                       }}
                     >
                       <InputRange
-                        minValue={15}
+                        minValue={18}
                         maxValue={50}
                         name="Set Age range"
                         value={this.state.ageRange}
@@ -258,18 +281,18 @@ class Profile extends React.Component {
                     >
                       Filter
                     </Button>
-                    {this.state.reload ? (
-                      this.props.suggestionLoading ? (
-                        <Ellipsis
-                          style={{ display: "flex", justifyContent: "center" }}
-                          color="#F99116"
-                        />
-                      ) : (
-                        this.handleRedirect()
-                      )
-                    ) : null}
                   </Container>
                 </Card.Body>
+                {this.state.reload ? (
+                  this.props.suggestionLoading ? (
+                    <Ellipsis
+                      style={{ display: "flex", justifyContent: "center" }}
+                      color="#F99116"
+                    />
+                  ) : (
+                    this.handleRedirect()
+                  )
+                ) : null}
               </Card>
             </Col>
           </Row>

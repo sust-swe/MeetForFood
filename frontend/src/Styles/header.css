@@ -39,11 +39,29 @@ div.scroll {
   margin: 1em 0;
 }
 
+.card_gallery {
+  width: 100px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-wrap: break-word;
+  overflow-y: scroll;
+  overflow-x: inherit;
+  width: 100px;
+  height: 0px;
+}
+
 .inner-scroll {
   overflow-y: scroll;
   height: 460px;
   -ms-overflow-style: none;
   width: 0px;
+}
+
+#edit-button {
+  margin-top: 10px;
+  border-radius: 25px;
+  background: #242424;
 }
 
 .inner-scroll::-webkit-scrollbar {
@@ -81,11 +99,11 @@ div.scroll {
 
 .menuItem {
   color: white !important;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   padding: 10px;
   font-size: 16px;
   text-decoration: none;
-  font-style: italic;
   font-weight: bold;
 }
 .menuItem::after {
@@ -103,7 +121,8 @@ div.scroll {
   color: rgba(249, 145, 22, 1) !important;
   background: rgba(158, 0, 139, 1);
   opacity: 0.8;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   text-decoration: none;
   margin: 0;
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import {} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ImageLoader from "react-load-image";
-import { Container, Image, Card, Badge } from "react-bootstrap";
+import { Container, Image, Card, Badge, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { ClipLoader } from "react-spinners";
 import { DualRing } from "react-spinners-css";
@@ -33,7 +33,8 @@ class ProfileCard extends React.Component {
           style={{
             alignItems: "center",
             display: "flex",
-            justifyContent: "center"
+            justifyContent: "center",
+            boxShadow: "1px 1px 5px #242424"
           }}
         >
           {this.props.imageLoading ? (
@@ -70,6 +71,19 @@ class ProfileCard extends React.Component {
             </Card.Text>
           </Card.Body>
         </Card>
+        <NavLink to="/editprofile">
+          <Button
+            style={{
+              marginTop: "10px",
+              borderRadius: "25px",
+              background: "#242424",
+              border: "0px",
+              boxShadow: "1px 1px 5px #242424"
+            }}
+          >
+            Edit profile
+          </Button>
+        </NavLink>
       </div>
     );
   }
