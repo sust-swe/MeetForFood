@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { DualRing, Ripple } from "react-spinners-css";
+import { Ripple } from "react-spinners-css";
+import { Affix } from "antd";
 import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 import * as actions from "../redux_store/actions/dataAction";
@@ -54,16 +55,18 @@ class SetImage extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <Navbar id="navtheme" fixed="top">
-          <NavbarBrand>
-            <Image
-              src={require("../Images/logo.png")}
-              height="39px"
-              width="150px"
-              style={{ paddingLeft: "15px" }}
-            />
-          </NavbarBrand>
-        </Navbar>
+        <Affix offsetTop={0}>
+          <Navbar id="navtheme" fixed="top">
+            <NavbarBrand>
+              <Image
+                src={require("../Images/logo.png")}
+                height="39px"
+                width="150px"
+                style={{ paddingLeft: "15px" }}
+              />
+            </NavbarBrand>
+          </Navbar>
+        </Affix>
 
         <div className="overlay"></div>
 

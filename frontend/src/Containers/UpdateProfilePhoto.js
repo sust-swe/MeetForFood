@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect, NavLink } from "react-router-dom";
 import { Ripple } from "react-spinners-css";
+import { Affix } from "antd";
 import ImageUploader from "react-images-upload";
 import * as actions from "../redux_store/actions/dataAction";
 import { connect } from "react-redux";
@@ -54,7 +55,9 @@ class UpdateProfilePhoto extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <EmptyNav />
+        <Affix offsetTop={0}>
+          <EmptyNav />
+        </Affix>
         <div className="overlay"></div>
         <div id="form-container">
           {this.props.dataLoading ? (
@@ -86,7 +89,7 @@ class UpdateProfilePhoto extends React.Component {
                       buttonText="Choose Image"
                       onChange={this.handleChangeImage}
                       imgExtension={[".jpg", ".png"]}
-                      maxFileSize={5242880}
+                      maxFileSize={819200}
                       singleImage={true}
                       withLabel={false}
                       withPreview={true}
