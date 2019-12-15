@@ -202,7 +202,8 @@ class Profile extends React.Component {
                   alignItems: "center",
                   display: "flex",
                   justifyContent: "center",
-                  alignContent: "center"
+                  alignContent: "center",
+                  boxShadow: "1px 1px 5px #242424"
                 }}
               >
                 <Card.Body style={{ justifyContent: "center" }}>

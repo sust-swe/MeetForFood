@@ -1,9 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import ImageLoader from "react-load-image";
 import { Container, Image, Card, Badge, Button } from "react-bootstrap";
+import { UncontrolledTooltip } from "reactstrap";
 import { connect } from "react-redux";
-import { ClipLoader } from "react-spinners";
 import { DualRing } from "react-spinners-css";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";
@@ -40,12 +39,19 @@ class ProfileCard extends React.Component {
           {this.props.imageLoading ? (
             <DualRing color="#F99116" size={120} />
           ) : (
-            <Image
-              src={this.props.image.image}
-              height="150px"
-              width="150px"
-              roundedCircle
-            />
+            <div>
+              <NavLink to="/updateimage" id="tooltip">
+                <Image
+                  src={this.props.image.image}
+                  height="150px"
+                  width="150px"
+                  roundedCircle
+                />
+              </NavLink>
+              <UncontrolledTooltip placement="right" target="tooltip">
+                Update Profile Photo
+              </UncontrolledTooltip>
+            </div>
           )}
 
           <Card.Body style={{ justifyContent: "center" }}>

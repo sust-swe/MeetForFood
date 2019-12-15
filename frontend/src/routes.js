@@ -10,6 +10,7 @@ import Connections from "./components/Connections";
 import ChatComp from "./components/ChatComp";
 import FriendRequests from "./components/FriendRequest";
 import EditProfile from "./Containers/EditProfile";
+import UpdateProfilePhoto from "./Containers/UpdateProfilePhoto";
 
 export const BaseRouter = () => (
   <Switch>
@@ -18,6 +19,7 @@ export const BaseRouter = () => (
     <Route exact path="/restaurants" component={Restaurants} />
     <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/friendrequest" component={FriendRequests} />
+    <Route exact path="/updateimage" component={UpdateProfilePhoto} />
     <Route exact path="/profileinfo" component={Info} />
     <Route exact path="/setimage" component={SetImage} />
   </Switch>

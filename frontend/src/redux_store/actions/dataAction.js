@@ -284,3 +284,26 @@ export const updateProfile = (
       });
   };
 };
+
+export const updateImage = (userProfile, userAbout, userImage) => {
+  return dispatch => {
+    dispatch(setImageStart());
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("user_profile", userProfile);
+    formData.append("user_about", userAbout);
+    formData.append("image", userImage, userImage.name);
+    axios
+      .put(`http://127.0.0.1:8000/api/image/${userAbout}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        dispatch(setImageSuccess(response.data));
+      })
+      .catch(err => {
+        dispatch(getDataFail(err));
+      });
+  };
+};
