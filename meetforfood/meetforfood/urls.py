@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/', include('profiles.urls')),
     path('friendship/', include('friendship.urls')),
     path('restaurantapi/',include('explorerestaurants.urls')),
+    path('chat/', include('chat.urls')),
     
     
 

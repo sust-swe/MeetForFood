@@ -73,6 +73,9 @@ INSTALLED_APPS = [
     'multiselectfield',
     'six',
     'django.contrib.sites',
+    'chat',
+    'channels',
+
     # Django REST Friendship
 
 ]
@@ -109,6 +112,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'meetforfood.wsgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -143,6 +154,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+ASGI_APPLICATION = 'meetforfood.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Internationalization

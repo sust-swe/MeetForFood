@@ -4,7 +4,7 @@ import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import * as friendAction from "../redux_store/actions/friendRequest";
 
-import { Row, Col, Card, Image, ListGroup } from "react-bootstrap";
+import { Row, Col, Card, Image } from "react-bootstrap";
 
 class Connections extends React.Component {
   componentWillMount() {

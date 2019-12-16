@@ -2,7 +2,7 @@ import React from "react";
 import { Affix } from "antd";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 
 class RestaurantMenu extends React.Component {
   render() {

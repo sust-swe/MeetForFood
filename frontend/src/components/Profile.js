@@ -40,7 +40,8 @@ class Profile extends React.Component {
       filteringLoading: false,
       reload: false,
       update: false,
-      suggestionListData: []
+      suggestionListData: [],
+      suggestionUpdate: false
     };
   }
 
@@ -96,9 +97,12 @@ class Profile extends React.Component {
   };
 
   sendRequest = (requestID, index) => {
-    console.log(requestID);
     this.props.sendRequest(requestID);
-    console.log(requestID);
+    console.log(index);
+    const array = this.state.suggestionListData;
+    delete array[index];
+    console.log(array);
+    this.setState({ suggestionListData: array });
   };
 
   componentDidMount() {
@@ -106,26 +110,7 @@ class Profile extends React.Component {
     this.setState({ loading: this.props.suggestionLoading });
   }
 
-  componentDidUpdate() {
-    if (this.props.filterLoading !== true) {
-      if (this.state.update !== true) {
-        this.setState({
-          gender: this.getGender(this.props.suggestionSetting.foodie_partner),
-          ageRange: {
-            min: this.props.suggestionSetting.min_age,
-            max: this.props.suggestionSetting.max_age
-          },
-          update: true
-        });
-      }
-    }
-  }
-
-  redirect() {
-    return <Redirect to="/profileinfo" />;
-  }
-
-  render() {
+  createSuggestionList() {
     const host = "http://127.0.0.1:8000";
     this.state.suggestionListData = this.props.userSuggestion.map(
       (data, index) => (
@@ -165,6 +150,36 @@ class Profile extends React.Component {
         </list>
       )
     );
+  }
+
+  componentDidUpdate() {
+    if (this.props.filterLoading !== true) {
+      if (this.state.update !== true) {
+        this.setState({
+          gender: this.getGender(this.props.suggestionSetting.foodie_partner),
+          ageRange: {
+            min: this.props.suggestionSetting.min_age,
+            max: this.props.suggestionSetting.max_age
+          },
+          update: true
+        });
+        this.createSuggestionList();
+      }
+    }
+
+    if (this.props.suggestionLoading !== true) {
+      if (this.state.suggestionUpdate !== true) {
+        this.createSuggestionList();
+        this.setState({ suggestionUpdate: true });
+      }
+    }
+  }
+
+  redirect() {
+    return <Redirect to="/profileinfo" />;
+  }
+
+  render() {
     console.log(this.props.userSuggestion);
     console.log(this.props.profileLoading);
     return (
