@@ -2,17 +2,23 @@ import React from "react";
 import "../Styles/header.css";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import ProfileCard from "./Profilecard";
 import { MdLocationOn } from "react-icons/md";
 import * as dataActions from "../redux_store/actions/dataAction";
 import { Affix } from "antd";
+import { NavLink } from "react-router-dom";
 
 class Restaurants extends React.Component {
   componentWillMount() {
     this.props.getRestaurant();
     console.log("calling restaurants");
   }
+
+  getRestaurantId(id) {
+    this.props.getMenu(id);
+  }
+
   render() {
     const restaurants = this.props.restaurant.map(data => (
       <Col key={data.id}>
@@ -61,8 +67,28 @@ class Restaurants extends React.Component {
                   Price: {data.price_category}
                 </div>
                 <div style={{ padding: "2px" }}>Location: {data.address}</div>
-                <div style={{ padding: "2px" }}>E-mail: {data.email}</div>
                 <div style={{ padding: "2px" }}>Phone: {data.phone_no}</div>
+                <NavLink
+                  to="/restaurants/restaurantmenu"
+                  style={{
+                    display: "block",
+                    position: "relative",
+                    textDecoration: "none"
+                  }}
+                >
+                  <Button
+                    style={{
+                      background: "white",
+                      color: "#242424",
+                      borderRadius: "25px",
+                      border: 0,
+                      display: "flex"
+                    }}
+                    onClick={this.getRestaurantId.bind(this, data.id)}
+                  >
+                    View
+                  </Button>
+                </NavLink>
               </div>
             </Card.Body>
           </Card.ImgOverlay>
@@ -108,6 +134,9 @@ const mapDipatchToProps = dispatch => {
   return {
     getRestaurant: () => {
       dispatch(dataActions.getRestaurants());
+    },
+    getMenu: id => {
+      dispatch(dataActions.getRestaurantMenu(id));
     }
   };
 };

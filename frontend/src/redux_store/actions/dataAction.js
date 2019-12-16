@@ -73,6 +73,13 @@ export const getRestaurantData = data => {
   };
 };
 
+export const getRestaurantMenuSuccess = data => {
+  return {
+    type: actionType.GET_RESTAURANTS_MENU,
+    data: data
+  };
+};
+
 export const completeProfile = (
   phone_number,
   birth_date,
@@ -243,6 +250,18 @@ export const getRestaurants = () => {
       })
       .catch(err => {
         dispatch(getDataFail(err));
+      });
+  };
+};
+
+export const getRestaurantMenu = id => {
+  return dispatch => {
+    dispatch(getDataStart());
+    axios
+      .get(`http://127.0.0.1:8000/restaurantapi/restaurants/${id}/menu/`)
+      .then(response => {
+        console.log(response.data);
+        dispatch(getRestaurantMenuSuccess(response.data));
       });
   };
 };

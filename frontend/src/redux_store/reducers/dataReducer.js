@@ -1,10 +1,12 @@
 import * as actionType from "../actions/actionType";
 import { updateObject } from "../utility";
+import { getRestaurantMenu } from "../actions/dataAction";
 
 const initialState = {
   data: [],
   image: {},
   restaurants: [],
+  restMenu: [],
   dataError: null,
   dataLoading: false,
   profileLoading: false,
@@ -89,6 +91,13 @@ const getRestaurants = (state, action) => {
   });
 };
 
+const getRestaurantsMenu = (state, action) => {
+  return updateObject(state, {
+    restMenu: action.data,
+    dataLoading: false
+  });
+};
+
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_DATA_START:
@@ -113,6 +122,8 @@ const dataReducer = (state = initialState, action) => {
       return getImageDataSuccess(state, action);
     case actionType.GET_RESTAURANTS_DATA:
       return getRestaurants(state, action);
+    case actionType.GET_RESTAURANTS_MENU:
+      return getRestaurantsMenu(state, action);
     default:
       return state;
   }
