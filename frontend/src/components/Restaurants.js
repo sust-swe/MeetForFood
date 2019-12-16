@@ -40,7 +40,7 @@ class Restaurants extends React.Component {
             <Card.Body style={{ padding: "0px" }}>
               <h2
                 style={{
-                  color: "white",
+                  color: "#F99116",
                   fontStyle: "bold",
                   padding: "10px"
                 }}
@@ -75,24 +75,24 @@ class Restaurants extends React.Component {
         <Affix offsetTop={0}>
           <NavBar />
         </Affix>
-        <Container style={{ margin: "0px" }}>
-          <Row>
-            <Col xs={4}>
-              <Affix offsetTop={90}>
-                <ProfileCard />
-              </Affix>
-            </Col>
-            <Col xs={5}>
-              <div style={{ paddingTop: "50px" }}>
-                <Container className="inner-scroll">{restaurants}</Container>
-              </div>
-            </Col>
-            <Col xs={3} className="inner-scroll" style={{ paddingTop: "40px" }}>
-              <h2>Restaurant Menu</h2>
-              <div className="divider"></div>
-            </Col>
-          </Row>
-        </Container>
+
+        <div style={{ margin: "0px", padding: "0" }}>
+          <Affix offsetTop={60}>
+            <div
+              style={{
+                background: "white",
+                boxShadow: "1px 1px 5px #242424",
+                margin: "0px",
+                padding: "10px"
+              }}
+            >
+              <h2 style={{ color: "#F99116" }}>Restaurants</h2>
+            </div>
+          </Affix>
+          <div className="restaurnat-scroll">
+            <Row noGutters={true}>{restaurants}</Row>
+          </div>
+        </div>
       </div>
     );
   }

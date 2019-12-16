@@ -170,7 +170,7 @@ class Profile extends React.Component {
     return (
       <div>
         <Affix offsetTop={0}>
-          <NavBar />
+          <NavBar {...this.props.propsData} />
         </Affix>
         <div style={{ margin: "5px" }}>
           <Row>
@@ -310,7 +310,8 @@ const mapStateToProps = state => {
     suggestionLoading: state.filterReducer.filterLoading,
     profileData: state.dataReducer.data,
     suggestionSetting: state.filterReducer.filterInfo,
-    filterLoading: state.filterReducer.filterDataLoading
+    filterLoading: state.filterReducer.filterDataLoading,
+    propsData: state.dataReducer
   };
 };
 

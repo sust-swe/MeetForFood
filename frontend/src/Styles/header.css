@@ -58,6 +58,17 @@ div.scroll {
   width: 0px;
 }
 
+.restaurnat-scroll {
+  overflow-y: scroll;
+  height: 520px;
+  -ms-overflow-style: none;
+  width: 100%;
+}
+
+.restaurnat-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 #edit-button {
   margin-top: 10px;
   border-radius: 25px;
