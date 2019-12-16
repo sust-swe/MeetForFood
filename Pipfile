@@ -26,7 +26,6 @@ channels = "*"
 channels-redis = "*"
 stream-chat = "*"
 django-allauth = "*"
-chat = "*"
 daphne = "*"
 
 [requires]
