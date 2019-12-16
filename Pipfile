@@ -27,6 +27,7 @@ channels-redis = "*"
 stream-chat = "*"
 django-allauth = "*"
 chat = "*"
+daphne = "*"
 
 [requires]
 python_version = "3.7"

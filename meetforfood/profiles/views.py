@@ -7,6 +7,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
+from itertools import chain
+
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
@@ -267,9 +269,17 @@ class FriendViewSet(viewsets.ViewSet):
                               email=request.data['email']),  # The recipient
             message=request.data.get('message', 'Add Me')
         )
+        # image = Image.objects.filter(user_profile__id=friend_obj.from_user.id)
+        
+        
+        
+        # result_list = set()
+        # result = result_list.union(friend_obj,image)
+        
+        # print(result)
 
         return Response(
-            FriendshipRequestSerializer(friend_obj).data,
+            FriendshipRequestSerializer(result).data,
             status.HTTP_201_CREATED
         )
 

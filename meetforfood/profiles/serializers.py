@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from profiles import models
+
+# from profiles.models import MyFriendRequests
 from friendship.models import FriendshipRequest
 
 from rest_framework.authtoken.models import Token
@@ -96,6 +98,8 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
     email = serializers.ReadOnlyField(source="user_profile.email")
     
     image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True)
+    
+    # sent_requests = serializers.ReadOnlyField(source='friend_requests.to_user')
 
     
 
@@ -143,7 +147,7 @@ class ProfileSettingsSerializer(serializers.ModelSerializer):
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     
     name = serializers.ReadOnlyField(source = "from_user.name")
-    
+    # image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True  
 
     class Meta:
         model = FriendshipRequest
