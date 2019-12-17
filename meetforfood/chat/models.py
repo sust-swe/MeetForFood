@@ -1,6 +1,6 @@
 from django.db import models
 
-# from profiles.models import UserProfile as User
+from profiles.models import UserProfile as User
 import uuid
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
@@ -15,11 +15,7 @@ def validate_message_content(content):
             }
         )
         
-class User(AbstractUser):
-    REQUIRED_FIELDS = []
 
-    def __str__(self):
-        return self.username
         
 class Message(models.Model):
     id = models.UUIDField(primary_key = True,null = False, default = uuid.uuid4, editable = False)

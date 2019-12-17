@@ -1,4 +1,4 @@
-import config from './config';
+import config from './index';
 
 class WebSocketService{
     static instance = null; 

@@ -1,5 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from chat.models import User
+from profiles.models import UserProfile as User
 from chat.models import Message
 import json
 

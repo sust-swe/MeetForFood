@@ -16,7 +16,6 @@ export const BaseRouter = () => (
     <Route exact path="/restaurants" component={Restaurants} />
     <Route exact path="/profileinfo" component={Info} />
     <Route exact path="/setimage" component={SetImage} />
-    <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/friendrequest" component={FriendRequests} />
   </Switch>
 );
@@ -24,6 +23,7 @@ export const BaseRouter = () => (
 export const AuthRouter = () => (
   <Switch>
     <Route exact path="/" component={LoginForm} />
+    <Route exact path="/connections" component={ChatComp} />
     <Route exact path="/signup" component={SignupLayout} />
   </Switch>
 );

@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from datetime import timedelta
+# from config import global_config
 
-from global_config import get_global_config
-active_config = get_global_config()
+# from global_config import get_global_config
+# active_config = get_global_config()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
