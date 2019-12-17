@@ -52,12 +52,12 @@ class WebSocketService{
         }
     }
 
-    initChatUser(username){
-        this.sendMessage({command : 'init_chat', username : username});
+    initChatUser(name){
+        this.sendMessage({command : 'init_chat', name : name});
     }
 
-    fetchMessages(username){
-        this.sendMessage({command : 'fetch_messages', username : username});
+    fetchMessages(name){
+        this.sendMessage({command : 'fetch_messages', name : name});
     }
 
     newChatMessage(message){

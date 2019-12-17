@@ -5,14 +5,14 @@ import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def init_chat(self, data):
-        username = data['username']
-        user, created = User.objects.get_or_create(username = username)
+        name = data['name']
+        user, created = User.objects.get_or_create(name = name)
         content = {
             'command' : 'init_chat'
         }
         if not user:
-            content['error'] = 'Unable to get or create User with username : ' + username
-        content['success'] = 'Chatting success with username : ' + username
+            content['error'] = 'Unable to get or create User with username : ' + name
+        content['success'] = 'Chatting success with username : ' + name
         await self.send(text_data=json.dumps(content))
     
     async def fetch_messages(self, data):
@@ -21,7 +21,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         for message in messages:
             messages_list.append({
                 'id' : str(message.id),
-                'author' : message.author.username,
+                'author' : message.author.name,
                 'content' : message.content,
                 'created_at' : str(message.created_at)
             })
@@ -35,14 +35,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def new_message(self, data):
         author, text = data['from'], data['text']
-        author_user, created = User.objects.get_or_create(username = author)
+        author_user, created = User.objects.get_or_create(name = author)
         print('Creation of a new author : ',author_user, created)
         message = Message.objects.create(author=author_user, content=text)
         content = {
             'command' : 'new_message',
             'message' : {
                 'id' : str(message.id),
-                'author' : message.author.username,
+                'author' : message.author.name,
                 'content' : message.content,
                 'created_at' : str(message.created_at)
             }
