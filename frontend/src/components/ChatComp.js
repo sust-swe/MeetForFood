@@ -1,72 +1,99 @@
 import React from "react";
-import {
-  Chat,
-  Channel,
-  ChannelHeader,
-  Thread,
-  Window
-} from "stream-chat-react";
-import { MessageList, MessageInput } from "stream-chat-react";
-import { StreamChat } from "stream-chat";
-import { connect } from "react-redux";
-
+import { Affix } from "antd";
 import NavBar from "./Navbar";
+import { connect } from "react-redux";
+import * as friendAction from "../redux_store/actions/friendRequest";
+import { Row, Col, Card, Image } from "react-bootstrap";
 
 class ChatComp extends React.Component {
   constructor(props) {
     super(props);
 
-    const chatClient = new StreamChat("vzr8e3ge8km4");
-    let userid = this.props.userid;
-    let myId = userid + "";
-    console.log(userid);
-
-    let userToken = localStorage.getItem("stream");
-    if (userToken === null) {
-      userToken =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoic2h5LXdpbmQtNSJ9.K4h-UfyUY7gk7fGrGy3iF0HwCJdF3oynZJx9hzSoTZI";
-    }
-
-    chatClient.setUser(
-      {
-        id: myId,
-        name: "initGroup",
-        image: "https://getstream.io/random_svg/?id=shy-wind-5&name=Shy+wind"
-      },
-      userToken
-    );
-
-    chatClient.get(
-      {
-        id: myId,
-        name: "my name",
-        image: "https://getstream.io/random_svg/?id=shy-wind-5&name=Shy+wind"
-      },
-      userToken
-    );
-
-    this.channel = chatClient.channel("messaging", "marakha", {
-      // add as many custom fields as you'd like
-
-      image:
-        "https://cdn.chrisshort.net/testing-certificate-chains-in-go/GOPHER_MIC_DROP.png",
-      name: "Talk about Go"
-    });
+    this.state = {
+      friendList: []
+    };
+    this.socketInit = null;
   }
+
+  componentWillMount() {
+    this.props.getFriendList();
+  }
+
+  connect() {
+    this.socketInit = new WebSocket(`ws://127.0.0.1:8000/ws/chat/`);
+    this.socketInit.onopen = () => {
+      console.log("server started");
+      this.socketInit.send("hello");
+    };
+
+    this.socketInit.onmessage = e => {
+      console.log("client" + e.data);
+    };
+
+    // this.socketInit.onerror = e => {
+    //   console.log(e.message);
+    // };
+  }
+
+  socketNewMessage(data) {
+    const parsedData = JSON.parse(data);
+    const command = parsedData.command;
+    if (Object.keys(this.callbacks).length === 0) {
+      return;
+    }
+    if (command === "messages") {
+      this.callbacks[command](parsedData.messages);
+      console.log(data);
+    }
+    if (command === "new_message") {
+      this.callbacks[command](parsedData.message);
+    }
+  }
+
+  getFriendList() {
+    const host = "http://127.0.0.1:8000";
+    this.state.friendList = this.props.friendList.map(data => (
+      <list key={data.id}>
+        <Card
+          style={{
+            margin: "5px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            paddingTop: "10px"
+          }}
+        >
+          <Card.Title
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Image
+              src={host + data.image}
+              height="60px"
+              width="60px"
+              roundedCircle
+            />
+            <h3 style={{ paddingLeft: "10px" }}>{data.name}</h3>
+          </Card.Title>
+        </Card>
+      </list>
+    ));
+  }
+
   render() {
+    this.getFriendList();
+    this.connect();
     return (
       <div>
-        <NavBar />
-        <Chat client={this.chatClient} theme={"messaging light"}>
-          <Channel channel={this.channel}>
-            <Window>
-              <ChannelHeader />
-              <MessageList />
-              <MessageInput />
-            </Window>
-            <Thread />
-          </Channel>
-        </Chat>
+        <Affix offsetTop={0}>
+          <NavBar />
+        </Affix>
+        <Row>
+          <Col xs={3} style={{ margin: "15px" }} className="inner-scroll">
+            {this.state.friendList}
+          </Col>
+          <Col>
+            <div className="vertical_divider"></div>
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -74,8 +101,16 @@ class ChatComp extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    userid: state.dataReducer.image.user_profile
+    friendList: state.friendRequestReducer.friendList
   };
 };
 
-export default connect(mapStateToProps, null)(ChatComp);
+const mapDispatchToProps = dispatch => {
+  return {
+    getFriendList: () => {
+      dispatch(friendAction.getFriendList());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatComp);
