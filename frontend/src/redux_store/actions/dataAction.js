@@ -254,6 +254,21 @@ export const getRestaurants = () => {
   };
 };
 
+export const getSearchedRestaurants = item => {
+  return dispatch => {
+    dispatch(getDataStart());
+    console.log("getting restaurants");
+    axios
+      .get(`http://127.0.0.1:8000/restaurantapi/restaurant/?search=${item}`)
+      .then(response => {
+        dispatch(getRestaurantData(response.data));
+      })
+      .catch(err => {
+        dispatch(getDataFail(err));
+      });
+  };
+};
+
 export const getRestaurantMenu = id => {
   return dispatch => {
     dispatch(getDataStart());

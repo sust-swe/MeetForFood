@@ -1,7 +1,6 @@
-import React, { isValidElement } from "react";
+import React from "react";
 import "../Styles/header.css";
 import { NavLink, Redirect } from "react-router-dom";
-import { DualRing } from "react-spinners-css";
 import { connect } from "react-redux";
 import * as actions from "../redux_store/actions/authenticate";
 import * as EmailValidator from "email-validator";
@@ -218,8 +217,8 @@ class Signup extends React.Component {
                       valid={this.state.passwordOk}
                     />
                     <FormFeedback>
-                      Minimum password lengt is 6, Password contains both number
-                      and digits
+                      Minimum password length is 6, Password must contains both
+                      number and digits
                     </FormFeedback>
                   </FormGroup>
                 </Col>

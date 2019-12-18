@@ -6,7 +6,6 @@ import SignupLayout from "./Containers/SignupLayout";
 import Profile from "./components/Profile";
 import Info from "./components/profileInfo";
 import SetImage from "./components/SetImage";
-import Connections from "./components/Connections";
 import ChatComp from "./components/ChatComp";
 import FriendRequests from "./components/FriendRequest";
 import EditProfile from "./Containers/EditProfile";

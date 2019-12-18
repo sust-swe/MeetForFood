@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Ripple } from "react-spinners-css";
 import { Affix } from "antd";
-import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
+import { Navbar, NavbarBrand, Image } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 import * as actions from "../redux_store/actions/dataAction";
 import { connect } from "react-redux";

@@ -9,9 +9,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from datetime import timedelta
+# from config import global_config
+
+# from global_config import get_global_config
+# active_config = get_global_config()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -54,6 +59,7 @@ SIMPLE_JWT = {
 
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,6 +72,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'profiles',
+    'chat',
     'explorerestaurants',
     'friendship',  # Django friendship
     # Django REST Framework
@@ -73,8 +80,6 @@ INSTALLED_APPS = [
     'multiselectfield',
     'six',
     'django.contrib.sites',
-    'chat',
-    'channels',
 
     # Django REST Friendship
 
@@ -98,7 +103,7 @@ ROOT_URLCONF = 'meetforfood.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,15 +117,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'meetforfood.wsgi.application'
+ASGI_APPLICATION = 'meetforfood.routing.application'
+
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
+        'config': {
+            'hosts': [('127.0.0.1', 6379)],
+        }
+    }
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -154,17 +161,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-ASGI_APPLICATION = 'meetforfood.routing.application'
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
 
 
 # Internationalization

@@ -3,7 +3,6 @@ import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Ripple } from "react-spinners-css";
-import * as dataActions from "../redux_store/actions/dataAction";
 import PhoneInput from "react-phone-input-2";
 import * as actions from "../redux_store/actions/dataAction";
 import "../Styles/header.css";

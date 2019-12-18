@@ -61,8 +61,8 @@ class ProfileCard extends React.Component {
             </Card.Title>
             <Card.Text>
               <span>
-                <span style={{ fontWeight: "bold" }}>City: </span> Sylhet,
-                Bangladesh
+                <span style={{ fontWeight: "bold" }}>Email: </span>
+                {this.props.users.email}
               </span>
               <br />
               <br />

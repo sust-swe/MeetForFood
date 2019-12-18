@@ -9,6 +9,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 import datetime
 from datetime import date
 
+from friendship.models import Friend, FriendshipRequest
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
@@ -92,6 +93,21 @@ class ProfileSettings(models.Model):
 def nameFile(instance,filename):
     return '/'.join(['images', instance.user_profile.name,filename])
 
+
+# class MyFriendRequests(Friend):
+    
+#     def __str__(self):
+#         return self.from_user +"---- "+ self.to_user
+
+    # message = models.TextField(_("Message"), blank=True,null=True)
+
+    # created = models.DateTimeField(default=timezone.now)
+    # rejected = models.DateTimeField(blank=True, null=True)
+
+
+
+
+
 # class Image(models.Model):
 #     user_profile = models.OneToOneField(
 #         AUTH_USER_MODEL,
@@ -136,6 +152,12 @@ class ProfileAboutItem(models.Model):
     #     Image,
     #     on_delete=models.CASCADE,blank=True,null=True,
     # )
+    
+    
+    # friend_requests = models.ForeignKey(
+    #     FriendshipRequest,on_delete=models.CASCADE,blank = True,null = True,related_name='friend_requests')
+    
+    
 
     user_bio = models.OneToOneField(
         Bio,
@@ -175,9 +197,15 @@ class Image(models.Model):
         on_delete=models.CASCADE
     )
     
+    # request_list = models.ForeignKey(
+    #     FriendshipRequest,
+    #     on_delete=models.CASCADE,blank=True,null=True,default=None
+    # ) 
+    
     image = models.ImageField(upload_to=nameFile, max_length=254, blank=True, null=True,default=None)
     
 
     def __str__(self):
         """return string representation of User Profile"""
         return self.user_profile.email
+    

@@ -1,5 +1,5 @@
 import React from "react";
-import { Affix } from "antd";
+import { Affix, Input, Button } from "antd";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import * as friendAction from "../redux_store/actions/friendRequest";
@@ -47,8 +47,12 @@ class Connections extends React.Component {
           <Col xs={3} style={{ margin: "15px" }} className="inner-scroll">
             {friendList}
           </Col>
-          <Col>
+          <Col xs={2}>
             <div className="vertical_divider"></div>
+            <div>akjsbdcakjsbckj kjhaxkj h</div>
+          </Col>
+          <Col xs={5}>
+            <Button>My Button</Button>
           </Col>
         </Row>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BaseRouter, AuthRouter, CompletionRouter } from "./routes";
+import { BaseRouter, AuthRouter } from "./routes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "./redux_store/actions/authenticate";

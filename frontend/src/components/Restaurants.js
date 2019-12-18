@@ -2,14 +2,26 @@ import React from "react";
 import "../Styles/header.css";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
-import { Row, Col, Card, Button } from "react-bootstrap";
-import ProfileCard from "./Profilecard";
-import { MdLocationOn } from "react-icons/md";
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  InputGroup,
+  FormControl
+} from "react-bootstrap";
 import * as dataActions from "../redux_store/actions/dataAction";
 import { Affix } from "antd";
 import { NavLink } from "react-router-dom";
 
 class Restaurants extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchItem: ""
+    };
+  }
+
   componentWillMount() {
     this.props.getRestaurant();
     console.log("calling restaurants");
@@ -18,6 +30,15 @@ class Restaurants extends React.Component {
   getRestaurantId(id) {
     this.props.getMenu(id);
   }
+
+  handleSearchChange = event => {
+    this.setState({ searchItem: event.target.value });
+  };
+
+  search = event => {
+    event.preventDefault();
+    this.props.getSearchResult(this.state.searchItem);
+  };
 
   render() {
     const restaurants = this.props.restaurant.map(data => (
@@ -29,7 +50,6 @@ class Restaurants extends React.Component {
             margin: "10px",
             width: "20rem",
             overflow: "hidden",
-            alignItems: "bottom",
             alignContent: "bottom",
             borderRadius: "0"
           }}
@@ -69,7 +89,10 @@ class Restaurants extends React.Component {
                 <div style={{ padding: "2px" }}>Location: {data.address}</div>
                 <div style={{ padding: "2px" }}>Phone: {data.phone_no}</div>
                 <NavLink
-                  to="/restaurants/restaurantmenu"
+                  to={{
+                    pathname: "/restaurants/restaurantmenu",
+                    restaurantID: data.id
+                  }}
                   style={{
                     display: "block",
                     position: "relative",
@@ -109,10 +132,31 @@ class Restaurants extends React.Component {
                 background: "white",
                 boxShadow: "1px 1px 5px #242424",
                 margin: "0px",
-                padding: "10px"
+                padding: "10px",
+                display: "flex"
               }}
             >
               <h2 style={{ color: "#F99116" }}>Restaurants</h2>
+              <InputGroup
+                style={{ marginLeft: "10px", marginRight: "20px" }}
+                size="lg"
+                className="mb-3"
+              >
+                <FormControl
+                  placeholder="Search Restaurant"
+                  aria-label="With textarea"
+                  value={this.state.searchItem}
+                  onChange={this.handleSearchChange}
+                />
+                <InputGroup.Append>
+                  <Button
+                    className="btn-lg btn-block btn-dark"
+                    onClick={this.search}
+                  >
+                    Search
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
             </div>
           </Affix>
           <div className="restaurnat-scroll">
@@ -137,6 +181,9 @@ const mapDipatchToProps = dispatch => {
     },
     getMenu: id => {
       dispatch(dataActions.getRestaurantMenu(id));
+    },
+    getSearchResult: item => {
+      dispatch(dataActions.getSearchedRestaurants(item));
     }
   };
 };

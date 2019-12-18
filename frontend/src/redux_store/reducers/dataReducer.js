@@ -1,6 +1,5 @@
 import * as actionType from "../actions/actionType";
 import { updateObject } from "../utility";
-import { getRestaurantMenu } from "../actions/dataAction";
 
 const initialState = {
   data: [],
