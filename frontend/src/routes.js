@@ -5,12 +5,28 @@ import LoginForm from "./Containers/LoginForm";
 import SignupLayout from "./Containers/SignupLayout";
 import Profile from "./components/Profile";
 import Info from "./components/profileInfo";
+import SetImage from "./components/SetImage";
+import ChatComp from "./components/ChatComp";
+import FriendRequests from "./components/FriendRequest";
+import EditProfile from "./Containers/EditProfile";
+import UpdateProfilePhoto from "./Containers/UpdateProfilePhoto";
+import RestaurantMenu from "./components/RestaurantMenu";
 
 export const BaseRouter = () => (
   <Switch>
     <Route exact path="/" component={Profile} />
+    <Route exact path="/editprofile" component={EditProfile} />
     <Route exact path="/restaurants" component={Restaurants} />
+    <Route
+      exact
+      path="/restaurants/restaurantmenu"
+      component={RestaurantMenu}
+    />
+    <Route exact path="/connections" component={ChatComp} />
+    <Route exact path="/friendrequest" component={FriendRequests} />
+    <Route exact path="/updateimage" component={UpdateProfilePhoto} />
     <Route exact path="/profileinfo" component={Info} />
+    <Route exact path="/setimage" component={SetImage} />
   </Switch>
 );
 

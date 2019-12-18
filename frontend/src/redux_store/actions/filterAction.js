@@ -15,6 +15,19 @@ export const getFilterSuccess = data => {
   };
 };
 
+export const getFilterSettingStart = () => {
+  return {
+    type: actionType.GET_FILTER_SETTING_START
+  };
+};
+
+export const getFilterSetting = data => {
+  return {
+    type: actionType.GET_FILTER_SETTING,
+    filterInfo: { data }
+  };
+};
+
 export const filterStart = () => {
   return {
     type: actionType.GET_FILTER_START
@@ -33,7 +46,7 @@ export const initFilter = (gender, min_age, max_age) => {
     dispatch(filterStart());
     const token = localStorage.getItem("token");
     axios
-      .post("http://127.0.0.1:8000/api/profilesettings/", {
+      .get("http://127.0.0.1:8000/api/profilesettings/", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -91,6 +104,23 @@ export const getFriendSuggestion = () => {
       })
       .catch(err => {
         dispatch(filterFail());
+      });
+  };
+};
+
+export const getFilter = () => {
+  return dispatch => {
+    dispatch(getFilterSettingStart());
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://127.0.0.1:8000/api/profilesettings/", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        dispatch(getFilterSetting(response.data[0]));
       });
   };
 };

@@ -9,9 +9,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from datetime import timedelta
+# from config import global_config
+
+# from global_config import get_global_config
+# active_config = get_global_config()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,12 +36,12 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-    #    'rest_framework.authentication.TokenAuthentication',
-    
-    # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    #     'rest_framework.authentication.SessionAuthentication',
-    #     'rest_framework.authentication.BasicAuthentication',
-    'rest_framework_simplejwt.authentication.JWTAuthentication',
+        #    'rest_framework.authentication.TokenAuthentication',
+
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        #     'rest_framework.authentication.SessionAuthentication',
+        #     'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -70,14 +75,22 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'profiles',
+    'chat',
     'explorerestaurants',
     'friendship',  # Django friendship
-  # Django REST Framework
     'rest_friendship', 
     'chat'
-     # Django REST Friendship
+    # Django REST Framework
+    'rest_friendship',
+    'multiselectfield',
+    'six',
+    'django.contrib.sites',
+
+    # Django REST Friendship
 
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -95,7 +108,7 @@ ROOT_URLCONF = 'meetforfood.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,7 +132,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -177,6 +189,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'profiles.UserProfile'
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -185,3 +198,4 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 SITE_ID = 1
+

@@ -11,10 +11,13 @@ const login = (email, password, dispatch, id) => {
       password: password
     })
     .then(response => {
-      const token = response.data.access;
-      localStorage.setItem("token", token);
-      setDefaultFilter(id, token);
-      dispatch(authSuccess(token));
+      const authToken = response.data.access;
+      const streamToken = response.data;
+      console.log("analyze token" + streamToken);
+      localStorage.setItem("stream", response.data.stream);
+      localStorage.setItem("token", authToken);
+      setDefaultFilter(id, authToken);
+      dispatch(authSuccess(authToken));
     })
     .catch(err => {
       dispatch(authFail(err));
@@ -61,6 +64,7 @@ export const authFail = error => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("stream");
   return {
     type: actionType.AUTH_LOGOUT
   };

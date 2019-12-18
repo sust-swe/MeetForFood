@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, NavbarBrand, Image, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { DualRing } from "react-spinners-css";
 import * as actions from "../redux_store/actions/authenticate";
 import { connect } from "react-redux";
 import "../Styles/header.css";
@@ -46,21 +47,41 @@ export class NavBar extends React.Component {
           <NavLink to="/restaurants" style={{ textDecoration: "none" }}>
             <Nav.Item className="menuItem">Explore Restaurants</Nav.Item>
           </NavLink>
-          <NavLink to="/inbox" style={{ textDecoration: "none" }}>
-            <Nav.Item className="menuItem">Inbox</Nav.Item>
+          <NavLink to="/connections" style={{ textDecoration: "none" }}>
+            <Nav.Item className="menuItem">Connections</Nav.Item>
           </NavLink>
           <NavLink to="/friendrequest" style={{ textDecoration: "none" }}>
             <Nav.Item className="menuItem">Friend request</Nav.Item>
           </NavLink>
 
-          <NavLink to="/" justify>
-            <Nav.Item>
-              <Image
-                src={require("../Images/photo.jpg")}
-                roundedCircle
-                height="45px"
-                width="45px"
-              />
+          <NavLink
+            to="/"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center"
+            }}
+            justify
+          >
+            <Nav.Item
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center"
+              }}
+            >
+              {this.props.loadingImage ? (
+                <DualRing color="#FFFFFF" size={30} />
+              ) : (
+                <Image
+                  src={this.props.image.image}
+                  roundedCircle
+                  height="45px"
+                  width="45px"
+                />
+              )}
             </Nav.Item>
           </NavLink>
         </Nav>
@@ -69,10 +90,17 @@ export class NavBar extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    image: state.dataReducer.image,
+    loadingImage: state.dataReducer.imageLoading
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(actions.logout())
   };
 };
 
-export default connect(null, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
