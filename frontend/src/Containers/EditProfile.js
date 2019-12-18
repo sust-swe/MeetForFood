@@ -1,12 +1,12 @@
 import React from "react";
-import moment from "moment";
-import { Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Ripple } from "react-spinners-css";
+import EmptyNav from "../components/EmptyNav";
+import moment from "moment";
+import * as dataActions from "../redux_store/actions/dataAction";
 import PhoneInput from "react-phone-input-2";
-import * as actions from "../redux_store/actions/dataAction";
-import "../Styles/header.css";
-import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {
   Card,
   CardBody,
@@ -25,7 +25,7 @@ import {
   FormFeedback
 } from "reactstrap";
 
-class Info extends React.Component {
+class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -40,7 +40,7 @@ class Info extends React.Component {
       foodChoice: "",
       foodChoiceError: false,
       redirect: false,
-      loading: false,
+      loading: true,
       birthDate: "",
       birthDateError: false,
       buttonDisabled: true
@@ -164,14 +164,15 @@ class Info extends React.Component {
     } else if (this.state.gender === "Female") {
       userGender = "F";
     }
-    console.log(this.state.birthDate);
-    this.props.onComplete(
+    this.props.updateProfileAbout(
+      this.props.userData.id,
+      this.props.userData.user_settings,
       this.state.phoneNumber,
       this.state.birthDate,
       userGender,
       this.state.foodChoice
     );
-    this.setState({ loading: this.props.completionLoading });
+    this.setState({ loading: this.props.dataLoading });
     this.handleRedirect();
   };
 
@@ -181,25 +182,50 @@ class Info extends React.Component {
     }
   }
 
+  setPrevState() {
+    this.setState({ phoneNumber: this.props.userData.name });
+  }
+
+  componentDidMount() {
+    this.props.getProfileAbout();
+    console.log(this.props.userData);
+  }
+
+  getGender(gender) {
+    if (gender === "F") {
+      return "Female";
+    } else if (gender === "M") {
+      return "Male";
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.dataLoading !== true) {
+      if (this.state.loading !== false) {
+        console.log("joker");
+        this.setState({
+          loading: false,
+          phoneNumber: this.props.userData.phone_number,
+          birthDate: this.props.userData.birth_date,
+          foodChoice: this.props.userData.what_you_crave_for,
+          gender: this.getGender(this.props.userData.gender)
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <div className="wrapper">
-        <Navbar id="navtheme" fixed="top">
-          <NavbarBrand>
-            <Image
-              src={require("../Images/logo.png")}
-              height="39px"
-              width="150px"
-              style={{ paddingLeft: "15px" }}
-            />
-          </NavbarBrand>
-        </Navbar>
+        <EmptyNav />
         <div className="overlay"></div>
         <div id="form-container">
-          {this.props.completionLoading ? (
-            <Ripple color="#FFFFFF" size={200} />
+          {this.props.dataLoading ? (
+            <Ripple color="#FFFFFF" size={150} />
+          ) : this.state.redirect ? (
+            <Redirect to="/" />
           ) : (
-            <Card>
+            <Card style={{ width: "400px" }}>
               <CardHeader
                 className="font-weight-bold"
                 style={{
@@ -209,15 +235,16 @@ class Info extends React.Component {
                   fontSize: "18pt"
                 }}
               >
-                Complete Your Profile
+                Update Your Profile
               </CardHeader>
               <CardBody className="card-color">
                 <Form onSubmit={this.handleSubmit}>
                   <Row form>
                     <Col md={4}>
                       <FormGroup style={{ paddingRight: "10px" }}>
-                        <Label>Phone number</Label>
+                        <Label style={{ display: "flex" }}>PhoneNumber</Label>
                         <PhoneInput
+                          name="phone"
                           country={"bd"}
                           placeholder="Enter phone number"
                           onChange={this.handleChangePhoneNumber}
@@ -294,13 +321,20 @@ class Info extends React.Component {
                     type="submit"
                     disabled={this.state.buttonDisabled}
                   >
-                    Create
+                    Submit
                   </Button>
+                  <NavLink to="/" style={{ textDecoration: "none" }}>
+                    <Button
+                      className="btn-lg btn-block btn-dark"
+                      style={{ marginTop: "10px" }}
+                    >
+                      Cancel
+                    </Button>
+                  </NavLink>
                 </Form>
               </CardBody>
             </Card>
           )}
-          {this.state.redirect ? <Redirect to="/setimage" /> : null}
         </div>
       </div>
     );
@@ -309,27 +343,34 @@ class Info extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    err: state.authenticate.err,
-    loading: state.authenticate.loading,
-    token: state.authenticate.token,
-    completionLoading: state.dataReducer.profileLoading
+    userData: state.dataReducer.data,
+    dataLoading: state.dataReducer.profileLoading
   };
 };
 
-const mapDipatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
-    onComplete: (phoneNumber, birthDate, gender, foodChoice, userImage) => {
+    getProfileAbout: () => dispatch(dataActions.getUser()),
+    updateProfileAbout: (
+      userId,
+      settingsId,
+      phoneNumber,
+      birthDate,
+      gender,
+      favouriteFood
+    ) => {
       dispatch(
-        actions.completeProfile(
+        dataActions.updateProfile(
+          userId,
+          settingsId,
           phoneNumber,
           birthDate,
           gender,
-          foodChoice,
-          userImage
+          favouriteFood
         )
       );
     }
   };
 };
 
-export default connect(mapStateToProps, mapDipatchToProps)(Info);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

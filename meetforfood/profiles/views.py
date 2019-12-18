@@ -7,6 +7,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
+from itertools import chain
+
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from django.apps import apps
@@ -21,7 +23,7 @@ from profiles import models
 from profiles import permissions
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import FileUploadParser
-from .models import UserProfile, ProfileAboutItem, ProfileSettings
+from .models import UserProfile, ProfileAboutItem, ProfileSettings,Image
 
 from django.conf import settings
 
@@ -30,7 +32,9 @@ from django.db.models import Q
 #from django_filters.rest_framework import DjangoFilterBackend
 
 from friendship.models import Friend, FriendshipRequest
-from .serializers import FriendshipRequestSerializer
+from .serializers import FriendshipRequestSerializer,MyTokenObtainPairSerializer
+
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 config = apps.get_app_config('rest_friendship')
@@ -50,15 +54,18 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-class ProfileAboutItemPostView(APIView):
-    permission_classes = [IsAuthenticated]
+# class ProfileAboutItemPostView(APIView):
+#     permission_classes = [IsAuthenticated]
     
-    def post(self, request, format=None):
-        serializer = ProfileAboutItemSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request, format=None):
+#         serializer = ProfileAboutItemSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
     
 class ProfileAboutItemView(APIView):
     permission_classes = [IsAuthenticated]
@@ -67,6 +74,7 @@ class ProfileAboutItemView(APIView):
         
         profile_settings = models.ProfileSettings.objects.all()
         user_id = self.request.user.id
+        user_id2= self.request.user
         print(profile_settings)
         ps = models.ProfileAboutItem.objects.all()
         print(ps)
@@ -87,14 +95,27 @@ class ProfileAboutItemView(APIView):
         
         
         result_list = []
+        result_list2 = []
+        
 
         for item in ps :
             if (item.age >= min_age) and (item.age <= max_age) and (item.gender == foodie_partner):
                 result_list.append(item)
 
         print (result_list)
+        
+        # result_list = result_list2
+        for item in result_list:
+            if(item.user_profile != user_id2):
+                result_list2.append(item)
+                
+        print(result_list2)
+            
+            
+        
+        # result_list2 = result_list.exclude(user_profile = self.request.user)
 
-        serializer = serializers.ProfileAboutItemSerializer(result_list, many=True)
+        serializer = serializers.ProfileAboutItemSerializer(result_list2, many=True)
         return Response(serializer.data)
     
     
@@ -195,6 +216,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
         
+    def get_queryset(self):
+        return Image.objects.filter(user_profile=self.request.user)
+        
 class BioViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     http_method_names = ['post', 'put', 'get','delete']
@@ -213,7 +237,7 @@ class FriendViewSet(viewsets.ViewSet):
 
     def list(self, request):
         friends = Friend.objects.friends(request.user)
-        serializer = self.serializer_class(friends, many=True)
+        serializer = serializers.ProfileSerializer(friends, many=True)
         return Response(serializer.data)
 
     @action(detail=False)
@@ -245,9 +269,17 @@ class FriendViewSet(viewsets.ViewSet):
                               email=request.data['email']),  # The recipient
             message=request.data.get('message', 'Add Me')
         )
+        # image = Image.objects.filter(user_profile__id=friend_obj.from_user.id)
+        
+        
+        
+        # result_list = set()
+        # result = result_list.union(friend_obj,image)
+        
+        # print(result)
 
         return Response(
-            FriendshipRequestSerializer(friend_obj).data,
+            FriendshipRequestSerializer(result).data,
             status.HTTP_201_CREATED
         )
 
