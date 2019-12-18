@@ -9,6 +9,7 @@ from rest_framework.generics import (
     UpdateAPIView
 )
 from chat.models import Chat, Contact
+from chat.views import get_user_contact
 from .serializers import ChatSerializer
 
 User = get_user_model()
