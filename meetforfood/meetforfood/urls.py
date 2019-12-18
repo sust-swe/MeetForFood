@@ -21,12 +21,9 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('profiles.urls')),
+    path('chat/', include('chat.api.urls', namespace='chat')),
     path('friendship/', include('friendship.urls')),
     path('restaurantapi/',include('explorerestaurants.urls')),
-    
-    
-
-
 
 ]
 

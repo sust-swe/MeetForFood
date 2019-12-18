@@ -43,6 +43,9 @@ REST_FRAMEWORK = {
         #     'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
 }
 
 # REST_USE_JWT = True
@@ -75,6 +78,8 @@ INSTALLED_APPS = [
     'chat',
     'explorerestaurants',
     'friendship',  # Django friendship
+    'rest_friendship', 
+    'chat'
     # Django REST Framework
     'rest_friendship',
     'multiselectfield',
@@ -119,14 +124,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'meetforfood.wsgi.application'
 ASGI_APPLICATION = 'meetforfood.routing.application'
 
-
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'config': {
-            'hosts': [('127.0.0.1', 6379)],
-        }
-    }
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 # Database
@@ -135,11 +139,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend15',
+        'NAME': 'backend17',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
-        'PASSWORD': '12345'
+        'PASSWORD': '1234'
     }
 }
 
@@ -189,6 +193,9 @@ AUTH_USER_MODEL = 'profiles.UserProfile'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
-STREAM_API_KEY = 'vzr8e3ge8km4'
-STREAM_API_SECRET = '62fzhncffejtwmwhruxa9nczfueertpeq24uyab9vrewg7s7jtxyrhe84r5rfhds'
+SITE_ID = 1
+
