@@ -38,6 +38,9 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.BasicAuthentication',
     'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
 }
 
 # REST_USE_JWT = True
@@ -54,6 +57,7 @@ SIMPLE_JWT = {
 
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,6 +74,7 @@ INSTALLED_APPS = [
     'friendship',  # Django friendship
   # Django REST Framework
     'rest_friendship', 
+    'chat'
      # Django REST Friendship
 
 ]
@@ -104,6 +109,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'meetforfood.wsgi.application'
+ASGI_APPLICATION = 'meetforfood.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -112,11 +127,11 @@ WSGI_APPLICATION = 'meetforfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backend11',
+        'NAME': 'backend17',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
-        'PASSWORD': '12345'
+        'PASSWORD': '1234'
     }
 }
 
@@ -164,3 +179,9 @@ AUTH_USER_MODEL = 'profiles.UserProfile'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
+
+SITE_ID = 1
