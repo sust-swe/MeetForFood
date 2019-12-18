@@ -75,13 +75,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'profiles',
-    'chat',
     'explorerestaurants',
     'friendship',  # Django friendship
     'rest_friendship', 
-    'chat'
+    'chat',
     # Django REST Framework
-    'rest_friendship',
     'multiselectfield',
     'six',
     'django.contrib.sites',
