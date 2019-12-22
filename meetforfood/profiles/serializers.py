@@ -118,6 +118,25 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user_profile': {'read_only': True}}
 
 
+class FavRestaurantSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source='user_profile.name')
+    email = serializers.ReadOnlyField(source = 'user_profile.email')
+    image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True)
+    user_age = serializers.IntegerField(source='user_about.age', read_only=True)
+    
+    
+    
+    
+    # phone_number = serializers.ReadOnlyField(source = 'user_about.phone_number')
+    
+    
+    
+    class Meta:
+        model = models.ExploreRestaurantsCard
+        fields = ('name','email','image','user_age','restaurant_name','menu_choice','eating_time')
+        
+        
+
 class ImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(
         max_length=254, allow_null=True, use_url=True, required=False)
@@ -127,10 +146,10 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ('user_profile','user_about', 'image')
 
 
-class BioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Bio
-        fields = "__all__"
+# class BioSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Bio
+#         fields = "__all__"
 
 
 class ProfileSettingsSerializer(serializers.ModelSerializer):

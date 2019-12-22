@@ -11,6 +11,8 @@ from datetime import date
 
 from friendship.models import Friend, FriendshipRequest
 
+from explorerestaurants.models import RestaurantInfo,MenuInfo
+
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
@@ -120,17 +122,6 @@ def nameFile(instance,filename):
 #         """return string representation of User Profile"""
 #         return self.user_profile.email
     
-class Bio(models.Model):
-    user_profile = models.OneToOneField(
-        AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    bio = models.TextField()
-
-    def __str__(self):
-        """return string representation of User Profile"""
-        return self.user_profile.email
-
 
 class ProfileAboutItem(models.Model):
 
@@ -159,10 +150,10 @@ class ProfileAboutItem(models.Model):
     
     
 
-    user_bio = models.OneToOneField(
-        Bio,
-        on_delete=models.CASCADE,blank=True,null=True
-    )
+    # user_bio = models.OneToOneField(
+    #     Bio,
+    #     on_delete=models.CASCADE,blank=True,null=True
+    # )
     
     phone_number = PhoneNumberField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
@@ -185,6 +176,25 @@ class ProfileAboutItem(models.Model):
     def __str__(self):
         # return '%s: %s: %s: %s' % (self.user_profile.name, self.gender,self.birth_date,self.what_you_crave_for)
         return self.user_profile.email
+    
+class ExploreRestaurantsCard(models.Model):
+    user_profile = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,related_name='explorerestaurants'
+    )
+    user_about = models.ForeignKey(ProfileAboutItem,on_delete = models.CASCADE)
+    restaurant_name=models.CharField(max_length=320,blank=True,null=True)
+    menu_choice = models.CharField(max_length = 500,blank=True,null=True)
+    eating_time = models.TimeField(auto_now=False,blank = True,null=True)
+    
+    
+    
+    
+    # user_menu = models.ManyToManyField(MenuInfo,on_delete = models.CASCADE,blank=True,null=True)
+    
+    def __str__(self):
+        """return string representation of User Profile"""
+        return self.user_profile.email
 
 
 class Image(models.Model):
@@ -196,6 +206,12 @@ class Image(models.Model):
         ProfileAboutItem,
         on_delete=models.CASCADE
     )
+    restaurant_card = models.OneToOneField(
+        ExploreRestaurantsCard,
+        on_delete=models.CASCADE
+    )
+    
+    
     
     # request_list = models.ForeignKey(
     #     FriendshipRequest,

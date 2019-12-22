@@ -6,7 +6,7 @@ import SignupLayout from "./Containers/SignupLayout";
 import Profile from "./components/Profile";
 import Info from "./components/profileInfo";
 import SetImage from "./components/SetImage";
-import ChatComp from "./components/ChatComp";
+import Connections from "./components/Connections";
 import FriendRequests from "./components/FriendRequest";
 import EditProfile from "./Containers/EditProfile";
 import UpdateProfilePhoto from "./Containers/UpdateProfilePhoto";
@@ -22,7 +22,7 @@ export const BaseRouter = () => (
       path="/restaurants/restaurantmenu"
       component={RestaurantMenu}
     />
-    <Route exact path="/connections" component={ChatComp} />
+    <Route exact path="/connections" component={Connections} />
     <Route exact path="/friendrequest" component={FriendRequests} />
     <Route exact path="/updateimage" component={UpdateProfilePhoto} />
     <Route exact path="/profileinfo" component={Info} />

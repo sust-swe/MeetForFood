@@ -62,7 +62,6 @@ SIMPLE_JWT = {
 
 
 INSTALLED_APPS = [
-    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,11 +74,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'profiles',
-    'chat',
+
     'explorerestaurants',
     'friendship',  # Django friendship
-    'rest_friendship', 
-    'chat'
+    'chat',
     # Django REST Framework
     'rest_friendship',
     'multiselectfield',

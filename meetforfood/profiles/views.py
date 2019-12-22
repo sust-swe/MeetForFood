@@ -219,15 +219,15 @@ class ImageViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Image.objects.filter(user_profile=self.request.user)
         
-class BioViewSet(viewsets.ModelViewSet):
-    # authentication_classes = (TokenAuthentication,)
-    http_method_names = ['post', 'put', 'get','delete']
-    serializer_class = serializers.BioSerializer
-    queryset = models.Bio.objects.all()
-    permission_classes = (IsAuthenticated,)
+# class BioViewSet(viewsets.ModelViewSet):
+#     # authentication_classes = (TokenAuthentication,)
+#     http_method_names = ['post', 'put', 'get','delete']
+#     serializer_class = serializers.BioSerializer
+#     queryset = models.Bio.objects.all()
+#     permission_classes = (IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        serializer.save(user_profile=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(user_profile=self.request.user)
         
         
 class FriendViewSet(viewsets.ViewSet):

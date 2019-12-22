@@ -13,7 +13,7 @@ routers.register('profile', views.UserProfileViewSet)
 routers.register('profilesettings', views.ProfileSettingsViewSet)
 routers.register('profileaboutitem', views.ProfileAboutItemViewSet)
 routers.register('image', views.ImageViewSet)
-routers.register('bio', views.BioViewSet)
+# routers.register('bio', views.BioViewSet)
 
 
 routers.register('friends', views.FriendViewSet, basename='friends')
