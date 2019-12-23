@@ -23,7 +23,7 @@ from profiles import models
 from profiles import permissions
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import FileUploadParser
-from .models import UserProfile, ProfileAboutItem, ProfileSettings,Image
+from .models import UserProfile, ProfileAboutItem, ProfileSettings,Image,ExploreRestaurantsCard
 
 from django.conf import settings
 
@@ -134,6 +134,29 @@ class ProfileAboutItemView(APIView):
     #     return Response(status=status.HTTP_204_NO_CONTENT)
     
     
+    
+class ExploreRestaurantsCardView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request,format = None):
+        
+        exp = models.ExploreRestaurantsCard.objects.all()
+        
+        restaurant_name = exp.get(user_profile=self.request.user).restaurant_name
+        menu_choice = exp.get(user_profile=self.request.user).menu_choice
+        eating_time = exp.get(user_profile=self.request.user).eating_time
+        
+        
+        queryset = exp.filter(restaurant_name__contains=restaurant_name,menu_choice__contains=menu_choice,eating_time__contains=eating_time)
+        # querset2 = queryset.exclude(user_profile = self.request.user)
+        queryset2 = []
+        for item in queryset:
+            if(item.user_profile != self.request.user):
+                queryset2.append(item)
+        
+        serializer = serializers.ExploreRestaurantsCardSerializer(queryset2, many=True)
+        return Response(serializer.data)    
+    
 class ProfileAboutItemDetailView(APIView):
     permission_classes = [IsAuthenticated]
     """
@@ -189,7 +212,7 @@ class ProfileAboutItemViewSet(viewsets.ModelViewSet):
     #     return ps
         
             
-            
+
 
 
 class ProfileSettingsViewSet(viewsets.ModelViewSet):
@@ -204,7 +227,29 @@ class ProfileSettingsViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
+
+
+class ExploreRestaurantsCardViewSet(viewsets.ModelViewSet):
+    # authentication_classes = (TokenAuthentication,)
+    http_method_names = ['post', 'put', 'delete','get']
+    serializer_class = serializers.ExploreRestaurantsCardSerializer
+    queryset = models.ExploreRestaurantsCard.objects.all()
+    permission_classes = (permissions.UpdateOwnRestaurant, IsAuthenticated)
+    
+
+    def get_queryset(self):
         
+        return ExploreRestaurantsCard.objects.filter(user_profile=self.request.user)
+        # exp = models.ExploreRestaurantsCard.objects.all()
+        
+        # restaurant_name = exp.get(user_profile=self.request.user).restaurant_name
+        # menu_choice = exp.get(user_profile=self.request.user).menu_choice
+        # eating_time = exp.get(user_profile=self.request.user).eating_time
+        
+        # return ExploreRestaurantsCard.objects.filter(restaurant_name=restaurant_name,menu_choice=menu_choice,eating_time=eating_time)
+
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user)        
         
 class ImageViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)

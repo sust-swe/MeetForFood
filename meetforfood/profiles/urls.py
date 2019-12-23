@@ -13,6 +13,7 @@ routers.register('profile', views.UserProfileViewSet)
 routers.register('profilesettings', views.ProfileSettingsViewSet)
 routers.register('profileaboutitem', views.ProfileAboutItemViewSet)
 routers.register('image', views.ImageViewSet)
+routers.register('explorerestaurantscard',views.ExploreRestaurantsCardViewSet)
 # routers.register('bio', views.BioViewSet)
 
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain'),
     path('token/refresh/', jwt_view.TokenRefreshView.as_view(), name='token_refresh'),
     path('profilecard/', views.ProfileAboutItemView.as_view()),
+    path('explorerestaurantscard/', views.ExploreRestaurantsCardView.as_view()),
     # path('profilecreate/', views.ProfileAboutItemPostView.as_view()),
     # path('profilecard/<int:pk>/', views.ProfileAboutItemDetailView.as_view()),
     # path('api-token-auth/',obtain_jwt_token),

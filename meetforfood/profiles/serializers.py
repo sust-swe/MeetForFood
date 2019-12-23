@@ -7,9 +7,6 @@ from friendship.models import FriendshipRequest
 
 from rest_framework.authtoken.models import Token
 
-
-from stream_chat import StreamChat
-
 from django.conf import settings
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -59,12 +56,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
 
-        id1 = str(self.user.id)
         
-        client = StreamChat(api_key=settings.STREAM_API_KEY, api_secret=settings.STREAM_API_SECRET)
-        token = client.create_token(id1)
         
-        data['stream'] = token
+        # data['stream'] = token
 
         # Add extra responses here
         # data['username'] = self.user.username
@@ -113,27 +107,23 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id', 'name', 'user_settings', 'email', 'image', 'user_bio', 'phone_number', 'birth_date', 'user_age',
+        fields = ('id', 'name', 'user_settings', 'email', 'image','phone_number', 'birth_date', 'user_age',
                   'gender', 'what_you_crave_for', 'created_time')
         extra_kwargs = {'user_profile': {'read_only': True}}
 
 
-class FavRestaurantSerializer(serializers.ModelSerializer):
+class ExploreRestaurantsCardSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='user_profile.name')
     email = serializers.ReadOnlyField(source = 'user_profile.email')
     image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True)
     user_age = serializers.IntegerField(source='user_about.age', read_only=True)
     
-    
-    
-    
-    # phone_number = serializers.ReadOnlyField(source = 'user_about.phone_number')
-    
-    
-    
+    # phone_number = serializers.ReadOnlyField(source = 'user_about.phone_number')    
     class Meta:
         model = models.ExploreRestaurantsCard
-        fields = ('name','email','image','user_age','restaurant_name','menu_choice','eating_time')
+        fields = ('id','name','email','user_profile','user_about','image','user_age','restaurant_name','menu_choice','eating_time')
+        
+    
         
         
 

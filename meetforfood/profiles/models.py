@@ -183,9 +183,9 @@ class ExploreRestaurantsCard(models.Model):
         on_delete=models.CASCADE,related_name='explorerestaurants'
     )
     user_about = models.ForeignKey(ProfileAboutItem,on_delete = models.CASCADE)
-    restaurant_name=models.CharField(max_length=320,blank=True,null=True)
-    menu_choice = models.CharField(max_length = 500,blank=True,null=True)
-    eating_time = models.TimeField(auto_now=False,blank = True,null=True)
+    restaurant_name=models.CharField(max_length=320,blank=False,default='a')
+    menu_choice = models.CharField(max_length = 500,blank=False,default='a')
+    eating_time = models.CharField(max_length=10,blank=False,default='0')
     
     
     
