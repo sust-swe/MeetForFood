@@ -19,6 +19,10 @@ class SetImage extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.props.getResSetting();
+  }
+
   setButtonName(data) {
     if (data[0] == null || data[0] === "" || data[0] === undefined) {
       return "Skip";
@@ -37,7 +41,7 @@ class SetImage extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.props.profileData);
-    this.props.setImageData(this.state.imageData[0]);
+    this.props.setImageData(this.state.imageData[0], this.props.restID.id);
     this.props.getProfile();
     this.handleRedirect();
   };
@@ -132,17 +136,21 @@ const mapStateToProps = state => {
     loading: state.dataReducer.dataLoading,
     profileLoading: state.dataReducer.profileLoading,
     setImageLoading: state.dataReducer.submitImageLoading,
-    profileData: state.dataReducer.data
+    profileData: state.dataReducer.data,
+    restID: state.dataReducer.resSetting
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setImageData: imageData => {
-      dispatch(actions.setImage(imageData));
+    setImageData: (imageData, restaurantID) => {
+      dispatch(actions.setImage(imageData, restaurantID));
     },
     getProfile: () => {
       dispatch(actions.getUser());
+    },
+    getResSetting: () => {
+      dispatch(actions.getRestaurantChoice());
     }
   };
 };

@@ -4,13 +4,30 @@ import { updateObject } from "../utility";
 const initialState = {
   data: [],
   image: {},
+  resSetting: {},
   restaurants: [],
   restMenu: [],
   dataError: null,
   dataLoading: false,
   profileLoading: false,
   imageLoading: false,
-  submitImageLoading: false
+  submitImageLoading: false,
+  resSettingLoading: false
+};
+
+const restaurantProccessStart = (state, action) => {
+  return updateObject(state, {
+    dataError: null,
+    resSettingLoading: true
+  });
+};
+
+const restaurantProccessSuccess = (state, action) => {
+  return updateObject(state, {
+    dataError: null,
+    resSettingLoading: false,
+    resSetting: action.data.data
+  });
 };
 
 const getDataStart = (state, action) => {
@@ -123,6 +140,10 @@ const dataReducer = (state = initialState, action) => {
       return getRestaurants(state, action);
     case actionType.GET_RESTAURANTS_MENU:
       return getRestaurantsMenu(state, action);
+    case actionType.REST_SETTING_START:
+      return restaurantProccessStart(state, action);
+    case actionType.REST_SETTING_SUCCESS:
+      return restaurantProccessSuccess(state, action);
     default:
       return state;
   }

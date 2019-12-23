@@ -11,12 +11,14 @@ import FriendRequests from "./components/FriendRequest";
 import EditProfile from "./Containers/EditProfile";
 import UpdateProfilePhoto from "./Containers/UpdateProfilePhoto";
 import RestaurantMenu from "./components/RestaurantMenu";
+import SetRestaurant from "./components/SetRestaurant";
 
 export const BaseRouter = () => (
   <Switch>
     <Route exact path="/" component={Profile} />
     <Route exact path="/editprofile" component={EditProfile} />
     <Route exact path="/restaurants" component={Restaurants} />
+    <Route exact path="/setrestaurant" component={SetRestaurant} />
     <Route
       exact
       path="/restaurants/restaurantmenu"

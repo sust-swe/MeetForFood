@@ -7,6 +7,19 @@ export const getDataSuccess = () => {
   };
 };
 
+export const restProcessStart = () => {
+  return {
+    type: actionType.REST_SETTING_START
+  };
+};
+
+export const restProcessSuccess = data => {
+  return {
+    type: actionType.REST_SETTING_SUCCESS,
+    data: { data }
+  };
+};
+
 export const setImageStart = () => {
   return {
     type: actionType.SET_IMAGE_START
@@ -147,11 +160,12 @@ const setAbout = (
     });
 };
 
-export const setImage = userImage => {
+export const setImage = (userImage, restaurantID) => {
   return dispatch => {
     dispatch(setImageStart());
     const token = localStorage.getItem("token");
     console.log(token);
+    console.log("res ID: " + restaurantID);
     axios
       .get("http://127.0.0.1:8000/api/profileaboutitem/", {
         headers: {
@@ -160,15 +174,30 @@ export const setImage = userImage => {
       })
       .then(response => {
         const userId = response.data[0];
-        uploadImage(userImage, userId.user_id, userId.id, token, dispatch);
+        uploadImage(
+          userImage,
+          userId.user_id,
+          userId.id,
+          restaurantID,
+          token,
+          dispatch
+        );
       });
   };
 };
 
-const uploadImage = (userImage, userID, aboutId, token, dispatch) => {
+const uploadImage = (
+  userImage,
+  userID,
+  aboutId,
+  restaurantId,
+  token,
+  dispatch
+) => {
   const formData = new FormData();
   formData.append("user_profile", userID);
   formData.append("user_about", aboutId);
+  formData.append("restaurant_card", restaurantId);
   formData.append("image", userImage, userImage.name);
   console.log(userImage.name);
   axios
@@ -338,6 +367,51 @@ export const updateImage = (userProfile, userAbout, userImage) => {
       })
       .catch(err => {
         dispatch(getDataFail(err));
+      });
+  };
+};
+
+export const setRestaurantChoice = (userId, id, resName, food, time) => {
+  return dispatch => {
+    dispatch(restProcessStart());
+    const token = localStorage.getItem("token");
+    console.log("accesing the function");
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/explorerestaurants/",
+        {
+          user_profile: userId,
+          user_about: id,
+          restaurant_name: resName,
+          menu_choice: food,
+          eating_time: time
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        dispatch(restProcessSuccess(response.data));
+      });
+  };
+};
+
+export const getRestaurantChoice = () => {
+  return dispatch => {
+    dispatch(restProcessStart());
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://127.0.0.1:8000/api/explorerestaurants/", {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log(response.data[0]);
+        dispatch(restProcessSuccess(response.data[0]));
       });
   };
 };

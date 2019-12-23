@@ -32,6 +32,7 @@ asgiref = "==3.2.2"
 configparser = "==3.7.4"
 hiredis = "==1.0.0"
 async-timeout = "==3.0.1"
+phonenumber-field = "*"
 
 [requires]
 python_version = "3.7"

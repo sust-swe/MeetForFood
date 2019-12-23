@@ -90,6 +90,9 @@ export const authSignUp = (fullName, email, password) => {
           dispatch(authFail(existed));
         } else {
           const id = response.data.id;
+          console.log(
+            "email: " + email + "password: " + password + "id: " + id
+          );
           login(email, password, dispatch, id);
         }
       })

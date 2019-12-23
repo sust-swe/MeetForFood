@@ -90,6 +90,8 @@ class StreamTokenSerializer(CustomTokenSerializer):
 class ProfileAboutItemSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source="user_profile.name")
     email = serializers.ReadOnlyField(source="user_profile.email")
+    user_id = serializers.ReadOnlyField(source="user_profile.id")
+
     
     image = serializers.ImageField(source = "image.image",allow_null = True,required = False,read_only=True)
     
@@ -107,7 +109,7 @@ class ProfileAboutItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ProfileAboutItem
-        fields = ('id', 'name', 'user_settings', 'email', 'image','phone_number', 'birth_date', 'user_age',
+        fields = ('id', 'name','user_id', 'user_settings', 'email', 'image','phone_number', 'birth_date', 'user_age',
                   'gender', 'what_you_crave_for', 'created_time')
         extra_kwargs = {'user_profile': {'read_only': True}}
 
@@ -133,7 +135,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Image
-        fields = ('user_profile','user_about', 'image')
+        fields = ('user_profile','user_about','restaurant_card', 'image')
 
 
 # class BioSerializer(serializers.ModelSerializer):

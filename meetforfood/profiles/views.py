@@ -332,17 +332,9 @@ class FriendViewSet(viewsets.ViewSet):
                               email=request.data['email']),  # The recipient
             message=request.data.get('message', 'Add Me')
         )
-        # image = Image.objects.filter(user_profile__id=friend_obj.from_user.id)
-        
-        
-        
-        # result_list = set()
-        # result = result_list.union(friend_obj,image)
-        
-        # print(result)
 
         return Response(
-            FriendshipRequestSerializer(result).data,
+            FriendshipRequestSerializer(friend_obj).data,
             status.HTTP_201_CREATED
         )
 

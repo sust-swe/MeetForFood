@@ -198,6 +198,8 @@ class Info extends React.Component {
         <div id="form-container">
           {this.props.completionLoading ? (
             <Ripple color="#FFFFFF" size={200} />
+          ) : this.state.redirect ? (
+            <Redirect to="setrestaurant" />
           ) : (
             <Card>
               <CardHeader
@@ -294,13 +296,12 @@ class Info extends React.Component {
                     type="submit"
                     disabled={this.state.buttonDisabled}
                   >
-                    Create
+                    Next
                   </Button>
                 </Form>
               </CardBody>
             </Card>
           )}
-          {this.state.redirect ? <Redirect to="/setimage" /> : null}
         </div>
       </div>
     );

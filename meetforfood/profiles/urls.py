@@ -13,7 +13,7 @@ routers.register('profile', views.UserProfileViewSet)
 routers.register('profilesettings', views.ProfileSettingsViewSet)
 routers.register('profileaboutitem', views.ProfileAboutItemViewSet)
 routers.register('image', views.ImageViewSet)
-routers.register('explorerestaurantscard',views.ExploreRestaurantsCardViewSet)
+routers.register('explorerestaurants',views.ExploreRestaurantsCardViewSet)
 # routers.register('bio', views.BioViewSet)
 
 

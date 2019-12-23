@@ -208,7 +208,7 @@ class Image(models.Model):
     )
     restaurant_card = models.OneToOneField(
         ExploreRestaurantsCard,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,blank=True, null=True,default = None
     )
     
     
