@@ -96,6 +96,7 @@ class ProfileAboutItemView(APIView):
         
         result_list = []
         result_list2 = []
+        result_list3 = []
         
 
         for item in ps :
@@ -104,18 +105,24 @@ class ProfileAboutItemView(APIView):
 
         print (result_list)
         
-        # result_list = result_list2
-        for item in result_list:
-            if(item.user_profile != user_id2):
+        from_user = FriendshipRequest.objects.filter(from_user=self.request.user)
+        
+        for item in result_list and item2 in from_user:
+            if(item.user_profile!= item2.to_user):
                 result_list2.append(item)
                 
-        print(result_list2)
+        # result_list = result_list2
+        for item in result_list2:
+            if(item.user_profile != self.request.user):
+                result_list3.append(item)
+                
+        print(result_list3)
             
             
         
         # result_list2 = result_list.exclude(user_profile = self.request.user)
 
-        serializer = serializers.ProfileAboutItemSerializer(result_list2, many=True)
+        serializer = serializers.ProfileAboutItemSerializer(result_list3, many=True)
         return Response(serializer.data)
     
     
@@ -147,14 +154,25 @@ class ExploreRestaurantsCardView(APIView):
         eating_time = exp.get(user_profile=self.request.user).eating_time
         
         
-        queryset = exp.filter(restaurant_name__contains=restaurant_name,menu_choice__contains=menu_choice,eating_time__contains=eating_time)
+        queryset = exp.filter(restaurant_name__icontains=restaurant_name,menu_choice__icontains=menu_choice,eating_time__icontains=eating_time)
         # querset2 = queryset.exclude(user_profile = self.request.user)
-        queryset2 = []
-        for item in queryset:
-            if(item.user_profile != self.request.user):
-                queryset2.append(item)
         
-        serializer = serializers.ExploreRestaurantsCardSerializer(queryset2, many=True)
+        from_user = FriendshipRequest.objects.filter(from_user=self.request.user)
+        
+        
+        queryset2 = []
+        queryset3 = []
+        
+        for item in queryset and item2 in from_user:
+            if(item.user_profile!= item2.to_user):
+                queryset2.append(item)
+                
+        
+        for item in queryset2:
+            if(item.user_profile != self.request.user):
+                queryset3.append(item)
+        
+        serializer = serializers.ExploreRestaurantsCardSerializer(queryset3, many=True)
         return Response(serializer.data)    
     
 class ProfileAboutItemDetailView(APIView):
