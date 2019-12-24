@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Ripple } from "react-spinners-css";
 import PhoneInput from "react-phone-input-2";
 import * as actions from "../redux_store/actions/dataAction";
+
 import "../Styles/header.css";
 import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
 import {
@@ -235,7 +236,7 @@ class Info extends React.Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col md={6}>
+                    <Col>
                       <FormGroup>
                         <Label for="exampleDate">Birth Date</Label>
                         <Input
@@ -254,7 +255,7 @@ class Info extends React.Component {
                     </Col>
                   </Row>
                   <Row form>
-                    <Col md={6}>
+                    <Col md={5}>
                       <Label>Gender</Label>
                       <Container>
                         <Dropdown
@@ -275,7 +276,7 @@ class Info extends React.Component {
                         </Dropdown>
                       </Container>
                     </Col>
-                    <Col md={6}>
+                    <Col md={7}>
                       <FormGroup>
                         <Label>What you crave for</Label>
                         <Input

@@ -156,21 +156,23 @@ class ExploreRestaurantsCardView(APIView):
         
         queryset = exp.filter(restaurant_name__icontains=restaurant_name,menu_choice__icontains=menu_choice,eating_time__icontains=eating_time)
         # querset2 = queryset.exclude(user_profile = self.request.user)
-        
+        print(queryset)
         from_user = FriendshipRequest.objects.filter(from_user=self.request.user)
         
         
         queryset2 = []
         queryset3 = []
         
-        for item in queryset and item2 in from_user:
-            if(item.user_profile!= item2.to_user):
-                queryset2.append(item)
+        # for item in queryset:
+        #     for item2 in from_user:
+        #         if(item.user_profile!= item2.to_user):
+        #             queryset2.append(item)
                 
         
-        for item in queryset2:
+        for item in queryset:
             if(item.user_profile != self.request.user):
                 queryset3.append(item)
+                print(queryset3)
         
         serializer = serializers.ExploreRestaurantsCardSerializer(queryset3, many=True)
         return Response(serializer.data)    

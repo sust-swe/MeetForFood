@@ -94,7 +94,7 @@ export const getFriendSuggestion = () => {
     dispatch(filterStart());
     const token = localStorage.getItem("token");
     axios
-      .get("http://127.0.0.1:8000/api/profilecard/", {
+      .get("http://127.0.0.1:8000/api/explorerestaurantscard/", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -113,7 +113,7 @@ export const getFilter = () => {
     dispatch(getFilterSettingStart());
     const token = localStorage.getItem("token");
     axios
-      .get("http://127.0.0.1:8000/api/profilesettings/", {
+      .get("http://127.0.0.1:8000/api/explorerestaurants/", {
         headers: {
           Authorization: `Bearer ${token}`
         }

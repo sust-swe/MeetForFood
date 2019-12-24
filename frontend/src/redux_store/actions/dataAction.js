@@ -371,21 +371,53 @@ export const updateImage = (userProfile, userAbout, userImage) => {
   };
 };
 
-export const setRestaurantChoice = (userId, id, resName, food, time) => {
+export const setRestaurantChoice = (userId, id, resName) => {
   return dispatch => {
     dispatch(restProcessStart());
     const token = localStorage.getItem("token");
     console.log("accesing the function");
+    const formData = new FormData();
+    formData.append("user_profile", userId);
+    formData.append("user_about", id);
+    formData.append("restaurant_name", resName);
+    formData.append("menu_choice", "");
+    formData.append("eating_time", "");
     axios
-      .post(
-        "http://127.0.0.1:8000/api/explorerestaurants/",
-        {
-          user_profile: userId,
-          user_about: id,
-          restaurant_name: resName,
-          menu_choice: food,
-          eating_time: time
-        },
+      .post("http://127.0.0.1:8000/api/explorerestaurants/", formData, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        dispatch(restProcessSuccess(response.data));
+      });
+  };
+};
+
+export const updateRestaurantChoice = (
+  userId,
+  id,
+  resName,
+  menu_choice,
+  eating_time,
+  filterId
+) => {
+  return dispatch => {
+    dispatch(restProcessStart());
+    const token = localStorage.getItem("token");
+    console.log("accesing the function");
+    console.log("filter: " + filterId);
+    const formData = new FormData();
+    formData.append("user_profile", userId);
+    formData.append("user_about", id);
+    formData.append("restaurant_name", resName);
+    formData.append("menu_choice", menu_choice);
+    formData.append("eating_time", eating_time);
+    axios
+      .put(
+        `http://127.0.0.1:8000/api/explorerestaurants/${filterId}/`,
+        formData,
         {
           headers: {
             authorization: `Bearer ${token}`

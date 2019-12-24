@@ -1,17 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Image,
-  Button,
-  Dropdown
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
+import { FormGroup, Input, Label } from "reactstrap";
 import NavBar from "./Navbar";
 import ProfileCard from "./Profilecard";
-import InputRange from "react-input-range";
 import { connect } from "react-redux";
 import { Affix } from "antd";
 import { DualRing, Ellipsis } from "react-spinners-css";
@@ -40,7 +32,11 @@ class Profile extends React.Component {
       reload: false,
       update: false,
       suggestionListData: [],
-      suggestionUpdate: false
+      suggestionUpdate: false,
+      filterSettingUpdate: true,
+      restaurant: "",
+      food: "",
+      time: ""
     };
   }
 
@@ -82,7 +78,7 @@ class Profile extends React.Component {
 
   componentWillMount() {
     this.props.getSuggestion();
-    this.props.getFilter();
+    this.props.getRestaurantSetting();
     this.setState({ loading: this.props.profileLoading });
     this.setState({ loading: this.props.suggestionLoading });
   }
@@ -131,7 +127,7 @@ class Profile extends React.Component {
                     <h3 style={{ color: "#F99116" }}>{data.name}</h3>
                     <p style={{ fontStyle: "italic" }}>Age: {data.user_age}</p>
                     <p style={{ fontStyle: "italic" }}>
-                      Gender: {this.getGender(data.gender)}
+                      Restaurant: {data.restaurant_name}
                     </p>
                   </div>
                 </Card.Title>
@@ -164,6 +160,19 @@ class Profile extends React.Component {
         });
         this.createSuggestionList();
       }
+
+      if (this.props.restaurSettingLoading !== true) {
+        if (this.state.filterSettingUpdate !== false) {
+          console.log("access " + this.props.suggestionSetting.restaurant_name);
+          this.setState({
+            restaurant: this.props.suggestionSetting.restaurant_name,
+            food: this.props.suggestionSetting.menu_choice,
+            time: this.props.suggestionSetting.eating_time,
+            filterSettingUpdate: false
+          });
+          this.createSuggestionList();
+        }
+      }
     }
 
     if (this.props.suggestionLoading !== true) {
@@ -178,9 +187,36 @@ class Profile extends React.Component {
     return <Redirect to="/profileinfo" />;
   }
 
+  handleChangeRestaurantName = event => {
+    this.setState({ restaurant: event.target.value });
+  };
+
+  handleChangeFood = event => {
+    this.setState({ food: event.target.value });
+  };
+
+  handleChangeTime = event => {
+    this.setState({ time: event.target.value });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    this.props.updateFilterSetting(
+      this.props.profileData.user_id,
+      this.props.profileData.id,
+      this.state.restaurant,
+      this.state.food,
+      this.state.time,
+      this.props.suggestionSetting.id
+    );
+
+    this.setState({ reload: true });
+  };
+
   render() {
-    console.log(this.props.userSuggestion);
-    console.log(this.props.profileLoading);
+    console.log(this.props.suggestionSetting.id);
+
     return (
       <div>
         <Affix offsetTop={0}>
@@ -210,105 +246,92 @@ class Profile extends React.Component {
               </Container>
             </Col>
             <Col id="profile-history">
-              <Card
-                className="profile-dashboard "
-                style={{
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  boxShadow: "1px 1px 5px #242424"
-                }}
-              >
-                <Card.Body style={{ justifyContent: "center" }}>
-                  <Card.Header as="h4">Filter Suggestion</Card.Header>
-                  <Container
-                    style={{
-                      padding: "15px",
-                      alignContent: "center",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
+              {this.props.filterLoading ? (
+                <Ellipsis color="#F99116" size={25} />
+              ) : (
+                <Card
+                  className="profile-dashboard "
+                  style={{
+                    alignItems: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    boxShadow: "1px 1px 5px #242424"
+                  }}
+                >
+                  <Card.Body style={{ justifyContent: "center" }}>
+                    <Card.Header as="h4">Filter Suggestion</Card.Header>
                     <Container
                       style={{
                         padding: "15px",
-                        display: "flex",
-                        justifyContent: "center"
+                        alignContent: "center",
+                        justifyContent: "center",
+                        alignItems: "center"
                       }}
                     >
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <Label>Which restaurant you want to go?</Label>
+                            <Input
+                              type="text"
+                              placeholder="enter restaurant name"
+                              name="restaurant_name"
+                              value={this.state.restaurant}
+                              onChange={this.handleChangeRestaurantName}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <Label>What do you want to eat?</Label>
+                            <Input
+                              type="text"
+                              placeholder="enter restaurant name"
+                              name="restaurant_name"
+                              value={this.state.food}
+                              onChange={this.handleChangeRestaurantName}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <Label>When do you want to go?</Label>
+                            <Input
+                              type="text"
+                              placeholder="enter restaurant name"
+                              name="restaurant_name"
+                              value={this.state.time}
+                              onChange={this.handleChangeRestaurantName}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
                       <Button
-                        pill
-                        style={{
-                          borderRadius: "25px",
-                          backgroundColor: "#242424",
-                          border: 0
-                        }}
-                        disabled
+                        className="btn-lg btn-block"
+                        id="button"
+                        onClick={this.handleSubmit}
                       >
-                        Set Age Range
+                        Filter
                       </Button>
                     </Container>
-                    <Container
-                      style={{
-                        padding: "15px",
-                        display: "flex",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <InputRange
-                        minValue={18}
-                        maxValue={50}
-                        name="Set Age range"
-                        value={this.state.ageRange}
-                        style={{ padding: "20px" }}
-                        onChange={event => this.handleAgeRange(event)}
+                  </Card.Body>
+                  {this.state.reload ? (
+                    this.props.restaurSettingLoading ? (
+                      <Ellipsis
+                        style={{ display: "flex", justifyContent: "center" }}
+                        color="#F99116"
                       />
-                    </Container>
-                    <Container
-                      style={{
-                        padding: "10px",
-                        display: "flex",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Dropdown
-                        isOpen={this.state.dropDownOpen}
-                        toggle={this.toggle}
-                      >
-                        <Dropdown.Toggle caret>
-                          {this.state.gender}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={this.select}>
-                            Male
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={this.select}>
-                            Female
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Container>
-                    <Button
-                      className="btn-lg btn-block"
-                      id="button"
-                      onClick={this.handleFilter}
-                    >
-                      Filter
-                    </Button>
-                  </Container>
-                </Card.Body>
-                {this.state.reload ? (
-                  this.props.suggestionLoading ? (
-                    <Ellipsis
-                      style={{ display: "flex", justifyContent: "center" }}
-                      color="#F99116"
-                    />
-                  ) : (
-                    this.handleRedirect()
-                  )
-                ) : null}
-              </Card>
+                    ) : (
+                      this.handleRedirect()
+                    )
+                  ) : null}
+                </Card>
+              )}
             </Col>
           </Row>
         </div>
@@ -325,6 +348,7 @@ const mapStateToProps = state => {
     profileData: state.dataReducer.data,
     suggestionSetting: state.filterReducer.filterInfo,
     filterLoading: state.filterReducer.filterDataLoading,
+    restaurSettingLoading: state.dataReducer.resSettingLoading,
     propsData: state.dataReducer
   };
 };
@@ -339,7 +363,22 @@ const mapDispatchToProps = dispatch => {
       dispatch(requestAction.sendRequest(requestID));
     },
     getImage: () => dispatch(actions.getImage()),
-    getFilter: () => dispatch(filterActions.getFilter())
+    getFilter: () => dispatch(filterActions.getFilter()),
+    getRestaurantSetting: () => {
+      dispatch(filterActions.getFilter());
+    },
+    updateFilterSetting: (userID, Id, resName, food, time, resSettingId) => {
+      dispatch(
+        actions.updateRestaurantChoice(
+          userID,
+          Id,
+          resName,
+          food,
+          time,
+          resSettingId
+        )
+      );
+    }
   };
 };
 

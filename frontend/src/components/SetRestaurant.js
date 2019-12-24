@@ -50,9 +50,7 @@ class SetRestaurant extends React.Component {
     this.props.setRestSetting(
       this.props.userId,
       this.props.id,
-      this.state.restaurant,
-      this.state.food,
-      this.state.time
+      this.state.restaurant
     );
     this.setState({ redirect: true });
   };
@@ -105,32 +103,7 @@ class SetRestaurant extends React.Component {
                       </FormGroup>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <Label>Which food you want to eat?</Label>
-                        <Input
-                          type="text"
-                          placeholder="enter food name"
-                          value={this.state.food}
-                          onChange={this.handleChangeFood}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <Label>When do you wanna go?</Label>
-                        <Input
-                          type="text"
-                          placeholder="Lunch, Dinner or Breakfast"
-                          value={this.state.time}
-                          onChange={this.handleChangeTime}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
+
                   <Button
                     className="btn-lg btn-block"
                     id="button"
@@ -158,8 +131,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setRestSetting: (name, food, time) => {
-      dispatch(actions.setRestaurantChoice(name, food, time));
+    setRestSetting: (userId, Id, name) => {
+      dispatch(actions.setRestaurantChoice(userId, Id, name));
     },
     getUserProfile: () => {
       dispatch(actions.getUser());
