@@ -158,6 +158,9 @@ class Profile extends React.Component {
                     <p style={{ fontStyle: "italic" }}>
                       Restaurant: {data.restaurant_name}
                     </p>
+                    <p style={{ fontStyle: "italic" }}>
+                      Want to eat: {data.menu_choice}
+                    </p>
                   </div>
                 </Card.Title>
               </div>
