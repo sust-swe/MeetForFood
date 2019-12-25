@@ -179,7 +179,12 @@ class Profile extends React.Component {
     if (this.props.filterSettingLoading !== true) {
       if (this.state.settingUpdate !== true) {
         this.createRestaurantList();
-        this.setState({ settingUpdate: true });
+        this.setState({
+          settingUpdate: true,
+          selectedRestaurant: this.props.filterSettings.restaurant_name,
+          selectedMenu: this.props.filterSettings.menu_choice,
+          selectedTime: this.props.filterSettings.eating_time
+        });
       }
     }
 
@@ -191,7 +196,6 @@ class Profile extends React.Component {
     }
 
     if (this.props.menuLoading !== true) {
-      console.log("menu access 1st: " + this.props.menuLoading);
       if (this.state.foodMenuUpdate !== false) {
         this.createRestaurantMenu();
         this.setState({ foodMenuUpdate: false });
