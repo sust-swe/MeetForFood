@@ -28,7 +28,8 @@ class Profile extends React.Component {
     this.state = {
       dropDownOpen: false,
       menuOpen: false,
-      selectedMenu: "Menu",
+      timeOpen: false,
+      selectedMenu: "Select Item",
       menuList: [],
       settingUpdate: false,
       suggestionUpdate: false,
@@ -38,7 +39,7 @@ class Profile extends React.Component {
       selectedRestaurant: "Restaurant",
       restaurantList: [],
       foodMenu: [],
-      time: ""
+      selectedTime: "Select Eating Time"
     };
     this.toggle = this.toggle.bind(this);
     this.select = this.select.bind(this);
@@ -105,7 +106,7 @@ class Profile extends React.Component {
       dropDownOpen: !this.state.dropDownOpen,
       selectedRestaurant: event.target.innerText,
       foodMenuUpdate: true,
-      selectedMenu: "Menu"
+      selectedMenu: "Select Item"
     });
     this.props.getMenu(id);
   };
@@ -118,6 +119,17 @@ class Profile extends React.Component {
     this.setState({
       menuOpen: !this.state.menuOpen,
       selectedMenu: event.target.innerText
+    });
+  };
+
+  toggleTime = () => {
+    this.setState({ timeOpen: !this.state.timeOpen });
+  };
+
+  selectTime = event => {
+    this.setState({
+      timeOpen: !this.state.timeOpen,
+      selectedTime: event.target.innerText
     });
   };
 
@@ -194,7 +206,7 @@ class Profile extends React.Component {
       this.props.myProfile.id,
       this.state.selectedRestaurant,
       this.state.selectedMenu,
-      this.state.time,
+      this.state.selectedTime,
       this.props.filterSettings.id
     );
     this.setState({ reload: true });
@@ -241,14 +253,20 @@ class Profile extends React.Component {
                       boxShadow: "1px 1px 5px #242424"
                     }}
                   >
-                    <Card.Body style={{ justifyContent: "center" }}>
-                      <Card.Header as="h4">Filter Suggestion</Card.Header>
+                    <Card.Body
+                      style={{ justifyContent: "center", padding: "0px" }}
+                    >
+                      <Card.Header as="h4" style={{ margin: "0px" }}>
+                        Filter Suggestion
+                      </Card.Header>
                       <Container
                         style={{
                           padding: "15px",
                           alignContent: "center",
                           justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
+                          display: "flex",
+                          flexDirection: "column"
                         }}
                       >
                         <Row>
@@ -294,23 +312,42 @@ class Profile extends React.Component {
                         </Row>
 
                         <Row>
-                          <Col>
-                            <FormGroup>
-                              <Label for="time">When do you want to go?</Label>
-                              <Input
-                                type="time"
-                                placeholder="time to meet"
-                                name="time"
-                                value={this.state.time}
-                                onChange={this.handleChangeTime}
-                              />
-                            </FormGroup>
+                          <Col
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              margin: "5px"
+                            }}
+                          >
+                            <Dropdown
+                              isOpen={this.state.timeOpen}
+                              toggle={this.toggleTime}
+                            >
+                              <DropdownToggle caret>
+                                {this.state.selectedTime}
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem onClick={this.selectTime}>
+                                  Breakfast
+                                </DropdownItem>
+                                <DropdownItem onClick={this.selectTime}>
+                                  Lunch
+                                </DropdownItem>
+                                <DropdownItem onClick={this.selectTime}>
+                                  Dinner
+                                </DropdownItem>
+                                <DropdownItem onClick={this.selectTime}>
+                                  Snack
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
                           </Col>
                         </Row>
 
                         <Button
                           className="btn-lg btn-block"
                           id="button"
+                          style={{ margin: "10px" }}
                           onClick={this.handleSettingSubmit}
                         >
                           Filter

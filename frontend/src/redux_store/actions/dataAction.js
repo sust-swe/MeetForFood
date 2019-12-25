@@ -365,17 +365,19 @@ export const updateImage = (userProfile, userAbout, userImage) => {
   };
 };
 
-export const setRestaurantChoice = (userId, id, resName) => {
+export const setRestaurantChoice = (userId, id, resName, menuItem, time) => {
   return dispatch => {
     dispatch(restProcessStart());
     const token = localStorage.getItem("token");
     console.log("accesing the function");
+    console.log("menu: " + menuItem);
+    console.log("menu: " + time);
     const formData = new FormData();
     formData.append("user_profile", userId);
     formData.append("user_about", id);
     formData.append("restaurant_name", resName);
-    formData.append("menu_choice", "");
-    formData.append("eating_time", "");
+    formData.append("menu_choice", menuItem);
+    formData.append("eating_time", time);
     axios
       .post("http://127.0.0.1:8000/api/explorerestaurants/", formData, {
         headers: {
