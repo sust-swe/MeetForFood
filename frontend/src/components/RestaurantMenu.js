@@ -35,7 +35,7 @@ class RestaurantMenu extends React.Component {
 
   getRestMenu() {
     this.state.menu = this.props.restaurantMenu.map(data => (
-      <Col key={data.id}>
+      <Col key={data.id} md={3}>
         <Card
           style={{
             alignItems: "left",
@@ -110,28 +110,6 @@ class RestaurantMenu extends React.Component {
               <Col md={4}>
                 <h2 style={{ color: "#F99116" }}>Restaurant Menu</h2>
               </Col>
-              {/* <Col>
-                <InputGroup
-                  style={{ marginLeft: "10px", marginRight: "20px" }}
-                  size="lg"
-                  className="mb-3"
-                >
-                  <FormControl
-                    placeholder="Search item with category, price or name"
-                    aria-label="With textarea"
-                    value={this.state.searcheItem}
-                    onChange={this.handleChange}
-                  />
-                  <InputGroup.Append>
-                    <Button
-                      className="btn-lg btn-block btn-dark"
-                      onClick={this.search}
-                    >
-                      Search
-                    </Button>
-                  </InputGroup.Append>
-                </InputGroup>
-              </Col> */}
             </Row>
           </Affix>
           <div className="restaurnat-scroll">

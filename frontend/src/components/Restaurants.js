@@ -42,7 +42,7 @@ class Restaurants extends React.Component {
 
   render() {
     const restaurants = this.props.restaurant.map(data => (
-      <Col key={data.id}>
+      <Col key={data.id} md={3}>
         <Card
           style={{
             alignItems: "left",

@@ -1,6 +1,12 @@
 import axios from "axios";
 import * as actionType from "./actionType";
 
+export const setFilterStart = data => {
+  return {
+    type: actionType.SET_FILTER_START
+  };
+};
+
 export const setFilterSuccess = data => {
   return {
     type: actionType.SET_FILTER_SUCCESS,
@@ -108,7 +114,7 @@ export const getFriendSuggestion = () => {
   };
 };
 
-export const getFilter = () => {
+export const getRestaurantsSetting = () => {
   return dispatch => {
     dispatch(getFilterSettingStart());
     const token = localStorage.getItem("token");
@@ -121,6 +127,42 @@ export const getFilter = () => {
       .then(response => {
         console.log(response.data);
         dispatch(getFilterSetting(response.data[0]));
+      });
+  };
+};
+
+export const updateRestaurantChoice = (
+  userId,
+  id,
+  resName,
+  menu_choice,
+  eating_time,
+  filterId
+) => {
+  return dispatch => {
+    dispatch(setFilterStart());
+    const token = localStorage.getItem("token");
+    console.log("accesing the function");
+    console.log("filter: " + filterId);
+    const formData = new FormData();
+    formData.append("user_profile", userId);
+    formData.append("user_about", id);
+    formData.append("restaurant_name", resName);
+    formData.append("menu_choice", menu_choice);
+    formData.append("eating_time", eating_time);
+    axios
+      .put(
+        `http://127.0.0.1:8000/api/explorerestaurants/${filterId}/`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        dispatch(setFilterSuccess(response.data));
       });
   };
 };

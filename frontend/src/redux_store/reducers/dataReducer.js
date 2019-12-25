@@ -12,7 +12,8 @@ const initialState = {
   profileLoading: false,
   imageLoading: false,
   submitImageLoading: false,
-  resSettingLoading: false
+  resSettingLoading: false,
+  restaurantMenuLoading: false
 };
 
 const restaurantProccessStart = (state, action) => {
@@ -107,10 +108,17 @@ const getRestaurants = (state, action) => {
   });
 };
 
-const getRestaurantsMenu = (state, action) => {
+const getRestaurantsMenuStart = (state, action) => {
+  return updateObject(state, {
+    dataError: null,
+    restaurantMenuLoading: true
+  });
+};
+
+const getRestaurantsMenuSuccess = (state, action) => {
   return updateObject(state, {
     restMenu: action.data,
-    dataLoading: false
+    restaurantMenuLoading: false
   });
 };
 
@@ -138,8 +146,10 @@ const dataReducer = (state = initialState, action) => {
       return getImageDataSuccess(state, action);
     case actionType.GET_RESTAURANTS_DATA:
       return getRestaurants(state, action);
-    case actionType.GET_RESTAURANTS_MENU:
-      return getRestaurantsMenu(state, action);
+    case actionType.GET_RESTAURANTS_MENU_START:
+      return getRestaurantsMenuStart(state, action);
+    case actionType.GET_RESTAURANTS_MENU_SUCCESS:
+      return getRestaurantsMenuSuccess(state, action);
     case actionType.REST_SETTING_START:
       return restaurantProccessStart(state, action);
     case actionType.REST_SETTING_SUCCESS:

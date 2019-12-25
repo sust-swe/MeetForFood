@@ -6,7 +6,8 @@ const initialState = {
   filterInfo: {},
   filterError: null,
   filterLoading: false,
-  filterDataLoading: false
+  filterDataLoading: false,
+  filterUpdateLoading: false
 };
 
 const getFilteredStart = (state, action) => {
@@ -24,11 +25,18 @@ const getFilterSuccess = (state, action) => {
   });
 };
 
+const setFilterStart = (state, action) => {
+  return updateObject(state, {
+    filterError: null,
+    filterUpdateLoading: true
+  });
+};
+
 const setFilterSuccess = (state, action) => {
   return updateObject(state, {
     filterInfo: action.filterInfo.data,
     filterError: null,
-    filterLoading: false
+    filterUpdateLoading: false
   });
 };
 
@@ -62,6 +70,8 @@ const filterReducer = (state = initialState, action) => {
       return getFilterSettingStart(state, action);
     case actionType.GET_FILTER_SUCCESS:
       return getFilterSuccess(state, action);
+    case actionType.SET_FILTER_START:
+      return setFilterStart(state, action);
     case actionType.SET_FILTER_SUCCESS:
       return setFilterSuccess(state, action);
     case actionType.GET_FILTER_FAIL:

@@ -86,9 +86,15 @@ export const getRestaurantData = data => {
   };
 };
 
+export const getRestaurantMenuStart = () => {
+  return {
+    type: actionType.GET_RESTAURANTS_MENU_START
+  };
+};
+
 export const getRestaurantMenuSuccess = data => {
   return {
-    type: actionType.GET_RESTAURANTS_MENU,
+    type: actionType.GET_RESTAURANTS_MENU_SUCCESS,
     data: data
   };
 };
@@ -223,29 +229,17 @@ export const getImage = () => {
     dispatch(getImageDataStart());
     const token = localStorage.getItem("token");
     axios
-      .get("http://127.0.0.1:8000/api/profilesettings/", {
+      .get("http://127.0.0.1:8000/api/image/", {
         headers: {
           authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        const userID = response.data[0].user_profile;
-        downloadImage(userID, token, dispatch);
+        console.log("gettting image");
+        console.log(response.data[0]);
+        dispatch(getImageDataSuccess(response.data[0]));
       });
   };
-};
-
-const downloadImage = (userID, token, dispatch) => {
-  axios
-    .get("http://127.0.0.1:8000/api/image/", {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-      dispatch(getImageDataSuccess(response.data[0]));
-    });
 };
 
 export const getUser = () => {
@@ -259,7 +253,7 @@ export const getUser = () => {
         }
       })
       .then(response => {
-        // console.log(response.data);
+        console.log(response.data[0]);
         dispatch(getProfileDataSuccess(response.data[0]));
       })
       .catch(err => {
@@ -300,7 +294,7 @@ export const getSearchedRestaurants = item => {
 
 export const getRestaurantMenu = id => {
   return dispatch => {
-    dispatch(getDataStart());
+    dispatch(getRestaurantMenuStart());
     axios
       .get(`http://127.0.0.1:8000/restaurantapi/restaurants/${id}/menu/`)
       .then(response => {
@@ -388,42 +382,6 @@ export const setRestaurantChoice = (userId, id, resName) => {
           authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
-        console.log(response.data);
-        dispatch(restProcessSuccess(response.data));
-      });
-  };
-};
-
-export const updateRestaurantChoice = (
-  userId,
-  id,
-  resName,
-  menu_choice,
-  eating_time,
-  filterId
-) => {
-  return dispatch => {
-    dispatch(restProcessStart());
-    const token = localStorage.getItem("token");
-    console.log("accesing the function");
-    console.log("filter: " + filterId);
-    const formData = new FormData();
-    formData.append("user_profile", userId);
-    formData.append("user_about", id);
-    formData.append("restaurant_name", resName);
-    formData.append("menu_choice", menu_choice);
-    formData.append("eating_time", eating_time);
-    axios
-      .put(
-        `http://127.0.0.1:8000/api/explorerestaurants/${filterId}/`,
-        formData,
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
-      )
       .then(response => {
         console.log(response.data);
         dispatch(restProcessSuccess(response.data));

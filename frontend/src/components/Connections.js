@@ -1,5 +1,5 @@
 import React from "react";
-import { Affix, Input, Button } from "antd";
+import { Affix, Button } from "antd";
 import NavBar from "./Navbar";
 import { connect } from "react-redux";
 import * as friendAction from "../redux_store/actions/friendRequest";

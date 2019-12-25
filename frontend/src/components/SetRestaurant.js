@@ -1,21 +1,21 @@
 import React from "react";
-import { Ripple } from "react-spinners-css";
+import { Ripple, Ellipsis } from "react-spinners-css";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../redux_store/actions/dataAction";
-import { Navbar, NavbarBrand, Image, Container } from "react-bootstrap";
+import { Navbar, NavbarBrand, Image } from "react-bootstrap";
 import {
   Card,
   CardBody,
-  FormGroup,
   Form,
-  Input,
   Button,
-  Label,
   Row,
   Col,
   CardHeader,
-  FormFeedback
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 
 class SetRestaurant extends React.Component {
@@ -25,12 +25,27 @@ class SetRestaurant extends React.Component {
       redirect: false,
       restaurant: "",
       food: "",
-      time: ""
+      time: "",
+      dropDownOpen: false,
+      selectedRestaurant: "Select Restaurant",
+      availRestaurant: [],
+      updateRestaurant: false
     };
   }
 
   componentWillMount() {
     this.props.getUserProfile();
+    this.props.getExistedRestaurants();
+  }
+
+  createRestaurantList() {
+    this.setState({
+      availRestaurant: this.props.restaurants.map(data => (
+        <DropdownItem key={data.id} onClick={this.select}>
+          {data.name}
+        </DropdownItem>
+      ))
+    });
   }
 
   handleChangeRestaurantName = event => {
@@ -47,13 +62,35 @@ class SetRestaurant extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.setRestSetting(
-      this.props.userId,
-      this.props.id,
-      this.state.restaurant
-    );
-    this.setState({ redirect: true });
+    if (this.state.selectedRestaurant !== "Select Restaurant") {
+      this.props.setRestSetting(
+        this.props.userId,
+        this.props.id,
+        this.state.selectedRestaurant
+      );
+      this.setState({ redirect: true });
+    }
   };
+
+  toggle = () => {
+    this.setState({ dropDownOpen: !this.state.dropDownOpen });
+  };
+
+  select = event => {
+    this.setState({
+      dropDownOpen: !this.state.dropDownOpen,
+      selectedRestaurant: event.target.innerText
+    });
+  };
+
+  componentDidUpdate() {
+    if (this.props.loading !== true) {
+      if (this.state.updateRestaurant !== true) {
+        this.createRestaurantList();
+        this.setState({ updateRestaurant: true });
+      }
+    }
+  }
 
   render() {
     return (
@@ -89,18 +126,23 @@ class SetRestaurant extends React.Component {
               </CardHeader>
               <CardBody className="card-color">
                 <Form onSubmit={this.handleSubmit}>
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <Label>Which restaurant you want to go?</Label>
-                        <Input
-                          type="text"
-                          placeholder="enter restaurant name"
-                          name="restaurant_name"
-                          value={this.state.restaurant}
-                          onChange={this.handleChangeRestaurantName}
-                        />
-                      </FormGroup>
+                  <Row style={{ margin: "15px" }}>
+                    <Col md={12}>
+                      {this.props.loading ? (
+                        <Ellipsis color="#F99116" size={25} />
+                      ) : (
+                        <Dropdown
+                          isOpen={this.state.dropDownOpen}
+                          toggle={this.toggle}
+                        >
+                          <DropdownToggle caret>
+                            {this.state.selectedRestaurant}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            {this.state.availRestaurant}
+                          </DropdownMenu>
+                        </Dropdown>
+                      )}
                     </Col>
                   </Row>
 
@@ -125,7 +167,9 @@ const mapStateToProps = state => {
   return {
     userId: state.dataReducer.data.user_id,
     id: state.dataReducer.data.id,
-    settingLoading: state.dataReducer.resSettingLoading
+    settingLoading: state.dataReducer.resSettingLoading,
+    restaurants: state.dataReducer.restaurants,
+    loading: state.dataReducer.dataLoading
   };
 };
 
@@ -136,6 +180,9 @@ const mapDispatchToProps = dispatch => {
     },
     getUserProfile: () => {
       dispatch(actions.getUser());
+    },
+    getExistedRestaurants: () => {
+      dispatch(actions.getRestaurants());
     }
   };
 };

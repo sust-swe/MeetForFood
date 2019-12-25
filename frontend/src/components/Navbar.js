@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, Image, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { DualRing } from "react-spinners-css";
 import * as actions from "../redux_store/actions/authenticate";
+import * as profileActions from "../redux_store/actions/dataAction";
 import { connect } from "react-redux";
 import "../Styles/header.css";
 
@@ -14,6 +15,10 @@ export class NavBar extends React.Component {
 
   handleLogout() {
     this.props.onLogout();
+  }
+
+  componentWillMount() {
+    this.props.getProfileImage();
   }
 
   render() {
@@ -99,7 +104,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogout: () => dispatch(actions.logout())
+    onLogout: () => dispatch(actions.logout()),
+    getProfileImage: () => {
+      dispatch(profileActions.getImage());
+    }
   };
 };
 

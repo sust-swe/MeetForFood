@@ -217,7 +217,7 @@ class Info extends React.Component {
               <CardBody className="card-color">
                 <Form onSubmit={this.handleSubmit}>
                   <Row form>
-                    <Col md={4}>
+                    <Col md={12}>
                       <FormGroup style={{ paddingRight: "10px" }}>
                         <Label>Phone number</Label>
                         <PhoneInput
