@@ -1,4 +1,4 @@
-asgiref==3.0.2
+asgiref==3.2.2
 attrs==19.3.0
 autobahn==19.11.1
 Automat==0.8.0
@@ -11,7 +11,7 @@ constantly==15.1.0
 cryptography==2.8
 daphne==2.3.0
 defusedxml==0.6.0
-Django==2.1.7
+Django==3.0.2
 django-allauth==0.40.0
 django-cors-headers==3.2.0
 django-filter==1.1.0
