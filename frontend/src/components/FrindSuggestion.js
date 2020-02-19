@@ -1,7 +1,6 @@
 import React from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Card, Navbar, Nav, Image, Container } from "react-bootstrap";
-import CustomScroll from "react-custom-scroll";
+import { Card, Navbar, Nav, Image } from "react-bootstrap";
 import "../Styles/header.css";
 
 class FriendSuggestion extends React.Component {

@@ -6,3 +6,5 @@ Pipfile.lock
 media
 migrations
 config
+public
+src
