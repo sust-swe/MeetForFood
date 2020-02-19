@@ -7,7 +7,7 @@ verify_ssl = true
 autopep8 = "*"
 
 [packages]
-django = "==2.1.7"
+django = "==2.1.15"
 djangorestframework = "*"
 psycopg2 = "*"
 django-phonenumber-field = "*"
