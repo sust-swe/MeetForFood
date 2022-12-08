@@ -3,7 +3,7 @@ attrs==19.3.0
 autobahn==19.11.1
 Automat==0.8.0
 Babel==2.7.0
-certifi==2019.11.28
+certifi==2022.12.7
 cffi==1.13.2
 chardet==3.0.4
 configparser==3.7.4
